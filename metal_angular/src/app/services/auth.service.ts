@@ -8,10 +8,12 @@ import {Router} from '@angular/router';
 import {GlobalVariable} from '../shared/global';
 
 export interface AuthResponseData {
+
+
+
   success: number;
-  token: {headers: object, original: {access_token: string, token_type: string, expires_in: number}, exception: object };
-  user: {id: number, person_name: string,  person_type_id: number};
-  message: string;
+  user: {id: number, user_name: string,  email: string, mobile1: string, mobile2: string, user_type_id: number};
+  token: string;
 }
 
 @Injectable({
@@ -48,9 +50,9 @@ export class AuthService {
         // tslint:disable-next-line:max-line-length
         if (resData.success === 1){
             const user = new User(resData.user.id,
-              resData.user.person_name,
-              resData.token.original.access_token,
-              resData.user.person_type_id);
+              resData.user.user_name,
+              resData.token,
+              resData.user.user_type_id);
             this.user.next(user); // here two user is used one is user and another user is subject of rxjs
             localStorage.setItem('user', JSON.stringify(user));
           }
