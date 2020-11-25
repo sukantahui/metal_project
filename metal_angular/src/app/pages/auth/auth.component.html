@@ -1,0 +1,43 @@
+
+
+
+
+<div fxLayout.xs="column" fxLayout="row" fxFlex="30" fxLayoutAlign="space-between" fxFlexFill id="login-outer-div">
+  <div *ngIf="isLoading" fxLayout.xs="column" fxLayout="row" fxFlex="50" fxLayoutAlign="space-between stretch" fxFlexFill>
+    <div  style="text-align: center; height: 90vh;" >
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  </div>
+  <div *ngIf="!isLoading"  fxLayout="column" fxLayoutAlign="center"  fxFlex="90" class="mr-1">
+    <mat-card style="min-height: 80vh;">
+      <mat-card-title>
+      </mat-card-title>
+      <mat-card-title *ngIf="!isLoading" style="text-align: center">Login</mat-card-title>
+      <mat-card-content >
+        <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
+          <div class="container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field>
+              <input type="text" matInput placeholder="Username"
+                     id="email"
+                     class=""
+                     ngModel
+                     name="email"
+                     required
+                     minlength="6">
+            </mat-form-field>
+          </div>
+
+          <div class="container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field>
+              <input type="password" matInput id="password" class="" ngModel name="password" placeholder="Password" required>
+            </mat-form-field>
+          </div>
+          <div class="button">
+            <button mat-button class="btn btn-primary" type="submit" >Login</button>
+          </div>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

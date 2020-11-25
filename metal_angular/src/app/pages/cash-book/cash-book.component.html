@@ -1,0 +1,27 @@
+<div fxLayout.xs="column" fxLayout="row" fxFlexFill>
+  <div fxFlex="30" id="receive-left">
+    <div style="min-height: 92vh; background-color: #dddddd">
+      <h3>Angular Material Select with Search</h3>
+      <form [formGroup]="bookForm" (ngSubmit)="onFormSubmit()" class="book-form">
+        <mat-form-field class="select-book">
+          <input type="text" placeholder="Select a book" matInput formControlName="book" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let book of $filteredBooks | async" [value]="book">
+              {{book.name}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="book.hasError('required')">
+            Book required.
+          </mat-error>
+        </mat-form-field>
+        <br/>
+        <br/>
+        <button mat-raised-button>Submit</button>
+        <button mat-raised-button type="button" (click)="resetForm()">Reset</button>
+      </form>
+    </div>
+  </div>
+  <div fxFlex="70" id="receive-right">
+    <router-outlet></router-outlet>
+  </div>
+</div>

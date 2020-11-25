@@ -1,0 +1,36 @@
+<div fxLayout.xs="column" fxLayout="row" fxFlexFill>
+  <div fxFlex="100" id="cash-book-div">
+    <div style="min-height: 92vh;">
+      <table class="table" id="income-transaction-table">
+        <thead>
+        <tr>
+          <th class="w-5 text-center">SL.</th>
+          <th class="w-10 text-sm-left">Date</th>
+          <th class="w-10 text-sm-left">Trn. No.</th>
+          <th class="w-15 text-left">Income</th>
+          <th class="w-15 text-left">Expenditure</th>
+          <th class="w-5 text-right">Cash</th>
+          <th class="w-5 text-right">Bank</th>
+          <th class="w-5 text-right">Cash Balance</th>
+          <th class="w-5 text-right">Bank Balance</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of cashBookList; let indexOfElement = index;">
+          <td class="text-center">{{(indexOfElement+1) | number:'3.0'}}</td>
+          <td class="text-left">{{item.formatted_date}}</td>
+          <td class="text-left">{{item.transaction_number}}</td>
+          <td class="text-left">{{item.income}}</td>
+          <td class="text-left">{{item.expenditure}}</td>
+          <td class="text-right">{{item.cash | currency:"&#8377;"}}</td>
+          <td class="text-right">{{item.bank | currency:"&#8377;"}}</td>
+          <td class="text-right">{{item.cash_balance | currency:"&#8377;"}}</td>
+          <td class="text-right">{{item.bank_balance | currency:"&#8377;"}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

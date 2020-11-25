@@ -1,0 +1,75 @@
+<div fxLayout.xs="column" fxLayout="row" fxFlexFill>
+  <div fxFlex="30" id="left-div">
+    <div style="min-height: 92vh;">
+      <div class="form-container mt-5" >
+        <form [formGroup] = ledgerForm>
+          <div class="container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <mat-form-field fxFlex="50" class="mr-2">
+                <mat-label>Select Type</mat-label>
+                <mat-select   formControlName="ledger_type_id">
+                  <mat-option *ngFor="let item of ledgerTypes" [value]="item.id">
+                    {{item.ledger_type_name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <mat-form-field fxFlex="90" class="mr-2">
+                <mat-label>Ledger Name</mat-label>
+                <input matInput placeholder="Ledger Name" formControlName="ledger_name">
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+        <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
+          <button mat-button  mat-stroked-button (click)="saveLedger()">
+            Save
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div fxFlex="70" id="right-div">
+    <div fxFlex="50" id="right-left-div">
+      <h1>Expenditures</h1>
+      <table class="table" id="expenditure-ledger-table">
+        <thead>
+        <tr>
+          <th class="w-5 text-center">SL.</th>
+          <th class="w-10 text-sm-left">Ledger</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of expenditureLedgers ; let indexOfElement = index;">
+          <td class="text-center">{{(indexOfElement+1) | number:'3.0'}}</td>
+          <td class="text-left">{{item.ledger_name}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        </tfoot>
+      </table>
+    </div>
+    <div fxFlex="50" id="right-right-div">
+      <h1>Incomes</h1>
+      <table class="table" id="income-ledger-table">
+        <thead>
+        <tr>
+          <th class="w-5 text-center">SL.</th>
+          <th class="w-10 text-sm-left">Ledger</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of incomeLedgers ; let indexOfElement = index;">
+          <td class="text-center">{{(indexOfElement+1) | number:'3.0'}}</td>
+          <td class="text-left">{{item.ledger_name}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

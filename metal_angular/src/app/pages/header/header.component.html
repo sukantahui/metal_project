@@ -1,0 +1,120 @@
+<div class="navbar">
+  <!--For Public-->
+  <mat-toolbar [ngStyle]="myStyle()" *ngIf="!isAuthenticated">
+    <mat-toolbar-row fxLayoutAlign="space-between center">
+      <div fxLayout="row">
+        <button mat-button >
+          <mat-icon>home</mat-icon>
+          <span class="logo">DAccounts</span>
+        </button>
+        <div *ngIf="!deviceXs">
+          <button mat-button
+                  [routerLink]="['/']"
+                  routerLinkActive="MyActiveMenu"
+                  [routerLinkActiveOptions]="{exact: true}">Home</button>
+          <button mat-button >Contact Us</button>
+          <button mat-button >About Us</button>
+        </div>
+
+
+      </div>
+      <button mat-button mat-raised-button
+              [routerLink]="['/auth']"
+              routerLinkActive="MyActiveMenu">Login</button>
+      <button mat-button *ngIf="isAuthenticated" (click)="logout()">Logout</button>
+    </mat-toolbar-row>
+
+    <mat-toolbar-row *ngIf="deviceXs" fxLayoutAlign="space-between end">
+      <button mat-button >Home</button>
+      <button mat-button >Contact Us</button>
+      <button mat-button >About Us</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <!--For Owner-->
+  <mat-toolbar [ngStyle]="myStyle()" *ngIf="isAuthenticated && isOwner">
+    <mat-toolbar-row fxLayoutAlign="space-between center">
+      <div fxLayout="row">
+          <button mat-button >
+            <mat-icon>home</mat-icon>
+            <span class="logo">Accounts</span>
+          </button>
+
+          <button mat-button [matMenuTriggerFor]="menuLedger">Master</button>
+          <mat-menu #menuLedger="matMenu">
+            <button mat-menu-item [routerLink]="['/ledger']" routerLinkActive="MyActiveMenu"><mat-icon>send</mat-icon>Ledger</button>
+          </mat-menu>
+
+          <button mat-button [matMenuTriggerFor]="menuTransaction"><mat-icon>add</mat-icon>Transaction</button>
+          <mat-menu #menuTransaction="matMenu">
+            <button mat-menu-item [routerLink]="['/receive']" routerLinkActive="MyActiveMenu"><mat-icon>send</mat-icon>Receive</button>
+            <button mat-menu-item [routerLink]="['/payment']" routerLinkActive="MyActiveMenu"><mat-icon>send</mat-icon>Payment</button>
+          </mat-menu>
+
+          <button mat-button [matMenuTriggerFor]="menuReport"><mat-icon>add</mat-icon>Report</button>
+          <mat-menu #menuReport="matMenu">
+            <button mat-menu-item [routerLink]="['/transactions']" routerLinkActive="MyActiveMenu">Transactions</button>
+            <button mat-menu-item [routerLink]="['/incomeAndExpenditure']" routerLinkActive="MyActiveMenu">Income & Expenditure</button>
+            <button mat-menu-item [routerLink]="['/cashBook']" routerLinkActive="MyActiveMenu">Cash Book</button>
+          </mat-menu>
+      </div>
+      <button mat-button mat-raised-button *ngIf="isAuthenticated" (click)="logout()">Logout</button>
+    </mat-toolbar-row>
+
+    <mat-toolbar-row *ngIf="deviceXs" fxLayoutAlign="space-between end">
+      <button mat-button >Home</button>
+      <button mat-button >Contact Us</button>
+      <button mat-button >About Us</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <!--For Manager-->
+  <mat-toolbar color="accent" *ngIf="isAuthenticated && isWorker">
+    <mat-toolbar-row fxLayoutAlign="space-between center">
+      <div fxLayout="row">
+          <button mat-button >
+            <mat-icon>home</mat-icon>
+            <span class="logo">Coder</span>
+          </button>
+          <div *ngIf="!deviceXs">
+            <button mat-button
+                    [routerLink]="['/']"
+                    routerLinkActive="MyActiveMenu"
+                    [routerLinkActiveOptions]="{exact: true}">Home</button>
+            <button mat-button >Contact Us</button>
+            <button mat-button >About Us</button>
+          </div>
+          <div ngbDropdown class="d-inline-block">
+            <button class="btn btn-outline-primary" id="dropdownBasic3" ngbDropdownToggle>Toggle dropdown</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button ngbDropdownItem>Action - 1</button>
+              <button ngbDropdownItem>Another Action</button>
+              <button ngbDropdownItem>Something else is here</button>
+            </div>
+          </div>
+
+          <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item [routerLink]="['/customer']" routerLinkActive="MyActiveMenu">Customer</button>
+            <button mat-menu-item [routerLink]="['/product']" routerLinkActive="MyActiveMenu">Product</button>
+          </mat-menu>
+
+
+      </div>
+      <button mat-button
+              [routerLink]="['/auth']"
+              routerLinkActive="MyActiveMenu">Login</button>
+      <button mat-button *ngIf="isAuthenticated" (click)="logout()">Logout</button>
+      <div>
+          <button  mat-button>
+            <mat-icon *ngIf="deviceXs">more_vert</mat-icon>
+            <span *ngIf="!deviceXs">Menu</span>
+          </button>
+      </div>
+    </mat-toolbar-row>
+
+    <mat-toolbar-row *ngIf="deviceXs" fxLayoutAlign="space-between end">
+      <button mat-button >Home</button>
+      <button mat-button >Contact Us</button>
+      <button mat-button >About Us</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>

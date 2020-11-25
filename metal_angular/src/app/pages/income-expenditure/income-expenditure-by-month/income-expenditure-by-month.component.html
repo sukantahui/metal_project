@@ -1,0 +1,74 @@
+<div fxLayout.xs="column" fxLayout="column">
+  <h1 fxFlex="100">Income and Expenditure</h1>
+  <h3 fxFlex="100">Income and Expenditure for the month of {{months[searchMonth]}}, {{searchYear}}</h3>
+</div>
+
+<div fxLayout.xs="column" fxLayout="row">
+  <div fxFlex="50" id="expenditure-left">
+    <div style="min-height: 30vh;">
+      <table class="table" id="expenditure-transaction-table">
+        <thead>
+        <tr>
+          <th class="w-70 text-left">Expenditures</th>
+          <th class="w-30 text-right">amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of expenditureList">
+          <td class="text-left">{{item.ledger_name}}</td>
+          <td class="text-right">{{item.amount | currency:"&#8377;"}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+  <div fxFlex="50" id="income-right">
+    <div style="min-height: 30vh;">
+      <table class="table" id="income-transaction-table">
+        <thead>
+        <tr>
+          <th class="w-70 text-left">Incomes</th>
+          <th class="w-30 text-right">amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of incomeList">
+          <td class="text-left">{{item.ledger_name}}</td>
+          <td class="text-right">{{item.amount | currency:"&#8377;"}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+<div fxLayout.xs="column" fxLayout="row">
+  <div fxFlex="40">
+    <span class="pl-5" *ngIf="surplus>0">Surplus: Income over Expenditure</span>
+  </div>
+  <div fxFlex="10" fxLayoutAlign="end center">
+    <span class="surplus" *ngIf="surplus>0">{{surplus | currency:"&#8377;"}}</span>
+  </div>
+  <div fxFlex="40">
+    <span class="pl-5"  *ngIf="surplus<=0">Deficit: Expenditure over Income</span>
+  </div>
+  <div fxFlex="10" fxLayoutAlign="end center">
+    <span class="surplus" *ngIf="surplus<0">{{deficit | currency:"&#8377;"}}</span>
+  </div>
+</div>
+<div fxLayout.xs="column" fxLayout="row">
+  <div fxFlex="40">
+  </div>
+  <div fxFlex="10" class="total-div">
+    {{(expenditureTotal>incomeTotal ? expenditureTotal : incomeTotal) | currency:"&#8377;"}}
+  </div>
+  <div fxFlex="40">
+  </div>
+  <div fxFlex="10" class="total-div">
+      {{(expenditureTotal>incomeTotal ? expenditureTotal : incomeTotal)  | currency:"&#8377;"}}
+  </div>
+</div>
+

@@ -1,0 +1,36 @@
+h1{
+  margin-top: 10px;
+  text-align: center;
+  align-content: center;
+}
+h3{
+  margin-top: 10px;
+  text-align: center;
+  align-content: center;
+  padding: 0px !important;
+}
+table td {
+  padding: 2px 10px 2px 10px;
+  border-top: none !important;
+}
+table th{
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+.total-div{
+  border-top: 1px #2e2e2e;
+  border-bottom: 2px  #2e2e2e;
+  border-style: solid none double none;
+  text-align: right; padding: 2px 10px 2px 10px;
+
+}
+.surplus{
+  align-self: end;
+  text-align: right; padding: 2px 10px 2px 10px;
+}
+#income-right{
+  border-left: 1px solid black;
+}
+
+
+

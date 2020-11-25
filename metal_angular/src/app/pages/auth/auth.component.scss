@@ -1,0 +1,42 @@
+:host {
+  display: flex;
+  justify-content: center;
+  margin: 100px 0px;
+}
+
+.mat-form-field {
+  width: 100%;
+  min-width: 300px;
+}
+
+mat-card-title,
+mat-card-content {
+  display: flex;
+  justify-content: center;
+}
+
+.error {
+  padding: 16px;
+  width: 300px;
+  color: white;
+  background-color: red;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+body{
+  background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+}
+
+mat-card{
+  background: linear-gradient(90deg, rgba(226, 221, 225, 0.56) 0%, rgb(232, 224, 181) 35%, rgb(202, 226, 218) 80%);;
+}
+#login-outer-div{
+  padding: 10px;
+  background: linear-gradient(90deg, rgba(10, 22, 36, 0.56) 0%, rgb(11, 98, 121) 35%, rgb(17, 12, 67) 80%);;
+}
+
+

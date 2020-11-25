@@ -1,0 +1,156 @@
+<div fxLayout.xs="column" fxLayout="row" fxFlexFill>
+  <div fxFlex="50" id="expenditure-left">
+    <div style="min-height: 92vh;">
+        <mat-card class="ml-2 mt-2 mr-2 form-mat-card" id="transaction-display-div">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>
+          <div fxLayout="row" fxLayoutAlign="end center" fxFlexFill>
+            Expenditure Transactions
+          </div>
+        </mat-card-title>
+      </mat-card-header>
+      <div class="form-container">
+        <form class="example-form">
+          <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="30px" fxLayoutGap.xs="0">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Search..." [(ngModel)]="searchTerm" name="search" type="text" autofocus>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Items per page" [(ngModel)]="pageSize" name="PageSize" type="text">
+            </mat-form-field>
+          </div>
+        </form>
+        <table class="table" id="expenditure-transaction-table">
+          <thead>
+          <tr>
+            <th class="w-5 text-center">SL.</th>
+            <th class="w-10 text-sm-left">Date</th>
+            <th class="w-10 text-sm-left">Trn. No.</th>
+            <th class="w-25 text-left">Purpose</th>
+            <th class="w-15 text-left">Type</th>
+            <th class="w-20 text-right">amount</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of expenditureTransactions | filter:searchTerm | paginate: { itemsPerPage: pageSize, currentPage: p }; let indexOfElement = index;">
+            <td class="text-center">{{(indexOfElement+1) | number:'2.0'}}</td>
+            <td class="text-left">{{item.formatted_date}}</td>
+            <td class="text-left">{{item.transaction_number}}</td>
+            <td class="text-left">{{item.ledger_name}}</td>
+            <td class="text-left">{{item.assets_name}}</td>
+            <td class="text-right">{{item.amount | currency:"&#8377;"}}</td>
+          </tr>
+          </tbody>
+          <tfoot>
+          </tfoot>
+        </table>
+        <div fxLayout.xs="column" fxLayout="column" fxFlexFill>
+          <!--    https://www.npmjs.com/package/ngx-pagination-->
+          <!--    npm i ngx-pagination-->
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          <pagination-controls  id="expenditure_id"
+                                (pageChange)="p=($event)"
+                                maxSize="5"
+                                directionLinks="true"
+                                autoHide="true"
+                                responsive="true"
+                                previousLabel="Previous"
+                                nextLabel="Next"
+                                screenReaderPaginationLabel="Pagination"
+                                screenReaderPageLabel="page"
+                                screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+      </div>
+    </mat-card>
+    </div>
+  </div>
+  <div fxFlex="50" id="expenditure-right">
+    <div style="min-height: 92vh;">
+      <mat-card class="ml-2 mt-2 mr-2 form-mat-card" id="transaction-display-right-div">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>
+          <div fxLayout="row" fxLayoutAlign="end center" fxFlexFill>
+            Income Transactions
+          </div>
+        </mat-card-title>
+      </mat-card-header>
+      <div class="form-container">
+        <form class="example-form">
+          <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="30px" fxLayoutGap.xs="0">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Search..." [(ngModel)]="searchTerm" name="search" type="text" autofocus>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Items per page" [(ngModel)]="pageSize" name="PageSize" type="text">
+            </mat-form-field>
+          </div>
+        </form>
+        <table class="table" id="income-transaction-table">
+          <thead>
+          <tr>
+            <th class="w-5 text-center">SL.</th>
+            <th class="w-10 text-sm-left">Date</th>
+            <th class="w-10 text-sm-left">Trn. No.</th>
+            <th class="w-25 text-left">Purpose</th>
+            <th class="w-15 text-left">Type</th>
+            <th class="w-20 text-right">amount</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of incomeTransactions | filter:searchTerm | paginate: { itemsPerPage: pageSize, currentPage: p }; let indexOfElement = index;">
+            <td class="text-center">{{(indexOfElement+1) | number:'2.0'}}</td>
+            <td class="text-left">{{item.formatted_date}}</td>
+            <td class="text-left">{{item.transaction_number}}</td>
+            <td class="text-left">{{item.ledger_name}}</td>
+            <td class="text-left">{{item.assets_name}}</td>
+            <td class="text-right">{{item.amount | currency:"&#8377;"}}</td>
+          </tr>
+          </tbody>
+          <tfoot>
+          </tfoot>
+        </table>
+        <div fxLayout.xs="column" fxLayout="column" fxFlexFill>
+          <!--    https://www.npmjs.com/package/ngx-pagination-->
+          <!--    npm i ngx-pagination-->
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          <pagination-controls  id="some_id"
+                                (pageChange)="p=($event)"
+                                maxSize="5"
+                                directionLinks="true"
+                                autoHide="true"
+                                responsive="true"
+                                previousLabel="Previous"
+                                nextLabel="Next"
+                                screenReaderPaginationLabel="Pagination"
+                                screenReaderPageLabel="page"
+                                screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+      </div>
+    </mat-card>
+    </div>
+  </div>
+</div>
+
+<div fxLayout.xs="column" fxLayout="row" fxLayoutAlign="space-between stretch"  id="developer-div" *ngIf="true">
+  <div fxLayout="column" fxFlex="25" class="mr-1" style="background-color: #cdd20c">
+    <pre>
+      expenditureTransactions = {{expenditureTransactions | json}}
+    </pre>
+  </div>
+  <div fxLayout="column" fxFlex="50" class="mr-1" style="background-color: #f2f2f2">
+    <pre>
+        incomeTransactions = {{incomeTransactions | json}}
+    </pre>
+
+  </div>
+
+
+  <div fxLayout="column" fxFlex="25" class="mr-1" style="background-color: #f2f2f2">
+  </div>
+</div>
