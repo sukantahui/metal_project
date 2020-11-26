@@ -46,6 +46,7 @@ import { LedgerComponent } from './pages/ledger/ledger.component';
 import { CashBookComponent } from './pages/cash-book/cash-book.component';
 import { CashBookHomeComponent } from './pages/cash-book/cash-book-home/cash-book-home.component';
 import {NgSelectModule} from '@ng-select/ng-select';
+import { ProductComponent } from './pages/product/product.component';
 
 
 
@@ -74,6 +75,7 @@ import {NgSelectModule} from '@ng-select/ng-select';
     LedgerComponent,
     CashBookComponent,
     CashBookHomeComponent,
+    ProductComponent,
   ],
   imports: [
     BrowserModule,
