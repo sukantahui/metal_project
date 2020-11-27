@@ -115,6 +115,7 @@ form:after {
   text-shadow: 0 1px 0 #fff;
   width: 400px;
   border-radius: 5px;
+  padding: 10px;
 }
 #content h1 {
   color: #7E7E7E;
@@ -305,5 +306,10 @@ form:after {
   background-position: 0 -135px;
   color: #00aeef;
 }
+
+router-outlet{
+  height: 100%;
+}
+
 
 

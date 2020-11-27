@@ -1,11 +1,9 @@
 
 
+<div fxLayout.xs="column" fxLayout="row" fxFlex="30" fxLayoutAlign="center center" id="login-outer-div">
 
-
-<div fxLayout.xs="column" fxLayout="row" fxFlex="30" fxLayoutAlign="center center" fxFlexFill id="login-outer-div">
-
-
-  <mat-card fxFlex="95"  class="example-card">
+  <div style="min-height: 65vh">
+    <mat-card fxFlex="95"  class="example-card">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
       <mat-card-title></mat-card-title>
@@ -29,6 +27,7 @@
         </div>
         <div>
           <input type="password" matInput id="password" class="" ngModel name="password" placeholder="Password" required>
+
         </div>
         <div>
           <button mat-button class="btn btn-primary" type="submit" >Login</button>
@@ -40,6 +39,6 @@
 
     </mat-card-actions>
   </mat-card>
-
+  </div>
 
 </div>
