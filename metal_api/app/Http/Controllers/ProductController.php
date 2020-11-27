@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Model\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -16,6 +17,17 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function getAllProducts(){
+        $products = Product::select('products.id', 'products.product_name', 'products.description', 'product_categories.category_name',
+                    'products.product_category_id', 'products.purchase_unit_id'
+                    ,DB::raw('(select unit_name from units where units.id=products.purchase_unit_id) as purchase_unit'),'products.sale_unit_id'
+                    ,DB::raw('(select unit_name from units where units.id=products.sale_unit_id) as sale_unit'))
+                    ->join('product_categories','product_categories.id','products.product_category_id')
+                    ->get();
+        return response()->json(['success'=>1,'data'=>$products], 200,[],JSON_NUMERIC_CHECK);
+    }
+
 
     /**
      * Show the form for creating a new resource.

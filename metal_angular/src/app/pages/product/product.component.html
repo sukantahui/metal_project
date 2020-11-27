@@ -1,1 +1,24 @@
-<H1 style="background: #cdd20c">product works!</H1>
+<div fxLayout="row" fxLayoutAlign="space-around center" >
+  <div fxFlex="40" style="background-color: #c4c6ca">This is first div</div>
+  <div fxFlex="60" style="background-color: #a1ea9f">
+      <table>
+        <thead>
+          <tr>
+            <th>Sl</th>
+            <th>Product</th>
+            <th>qty</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products">
+            <td>{{product.product_name}}</td>
+          </tr>
+        </tbody>
+      </table>
+    <pre>
+      {{products | json}}
+    </pre>
+  </div>
+</div>
