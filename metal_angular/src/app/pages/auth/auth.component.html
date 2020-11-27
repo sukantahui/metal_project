@@ -27,11 +27,69 @@
         </div>
         <div>
           <input type="password" matInput id="password" class="" ngModel name="password" placeholder="Password" required>
+<!--          <fa-icon [icon]="faAtlas"></fa-icon>-->
 
         </div>
+
+            <mat-form-field>
+              <input id="mysecretpassword" type="password" placeholder="Password" matInput showHideInput>
+              <i matSuffix
+                 class="material-icons"
+                 showHideTrigger="mysecretpassword"
+                 [showHideStatus]="{ materialIcon: true, id: 'mysecretpassword' }"
+              ></i>
+            </mat-form-field>
+
+
         <div>
           <button mat-button class="btn btn-primary" type="submit" >Login</button>
         </div>
+
+<!--        &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;    -->
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                   <i class="fa fa-envelope" aria-hidden="true"></i>
+                      </span>
+                            </div>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="example@mail.com"
+                              formControlName="email"
+                            />
+                          </div>
+
+                          <div class="input-group">
+                            <input
+                              type="password"
+                              class="form-control"
+                              formControlName="password"
+                            />
+                            <div class="input-group-append">
+                    <span class="input-group-text">
+                      <i matSuffix
+                         class="material-icons"
+                         showHideTrigger="mysecretpassword"
+                         [showHideStatus]="{ materialIcon: true, id: 'mysecretpassword' }"
+                      ></i>
+                    </span>
+              </div>
+            </div>
+            <span class="input-placeholder">
+              <input style="float: left" type="password" id="inputPassword"  name="password"  placeholder="Enter password"  required>
+              <i matSuffix
+                 class="material-icons"
+                 showHideTrigger="mysecretpassword"
+                 [showHideStatus]="{ materialIcon: true, id: 'mysecretpassword' }"
+              ></i>
+            </span>
+
+
+           
+
+<!--            &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+
       </form><!-- form -->
       </section>
     </mat-card-content>

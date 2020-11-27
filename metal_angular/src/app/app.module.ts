@@ -47,6 +47,7 @@ import { CashBookComponent } from './pages/cash-book/cash-book.component';
 import { CashBookHomeComponent } from './pages/cash-book/cash-book-home/cash-book-home.component';
 import {NgSelectModule} from '@ng-select/ng-select';
 import { ProductComponent } from './pages/product/product.component';
+import {ShowHidePasswordModule} from 'ngx-show-hide-password';
 
 
 
@@ -77,23 +78,24 @@ import { ProductComponent } from './pages/product/product.component';
     CashBookHomeComponent,
     ProductComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NgbModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    FontAwesomeModule,
-    MaterialModule,
-    FlexLayoutModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    NgxPrintModule,
-    Ng2SearchPipeModule,
-    NgxPaginationModule,
-    NgSelectModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        NgbModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        FontAwesomeModule,
+        MaterialModule,
+        FlexLayoutModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        NgxPrintModule,
+        Ng2SearchPipeModule,
+        NgxPaginationModule,
+        NgSelectModule,
+        ShowHidePasswordModule
+    ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorInterceptor, multi: true},
               {provide: DateAdapter, useClass: DateFormat} ],
   bootstrap: [AppComponent]

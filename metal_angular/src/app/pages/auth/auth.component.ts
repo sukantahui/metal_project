@@ -5,6 +5,7 @@ import {StorageMap} from '@ngx-pwa/local-storage';
 import {Md5} from 'ts-md5';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
+import { faAtlas} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-auth',
@@ -14,7 +15,7 @@ import {Router} from '@angular/router';
 export class AuthComponent implements OnInit {
   isLoginMode = true;
   isLoading = false;
-
+  faAtlas = faAtlas;
   constructor(private authService: AuthService, private storage: StorageMap, private router: Router) { }
 
   ngOnInit(): void {
