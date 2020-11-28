@@ -1,19 +1,96 @@
-<div fxLayout="row" fxLayoutAlign="space-around center" >
-  <div fxFlex="40" style="background-color: #c4c6ca">This is first div</div>
-  <div fxFlex="60" style="background-color: #a1ea9f">
-      <table>
+<div fxLayout="row" fxLayoutAlign="space-around top" >
+  <div fxFlex="50" style="background-color: #f6e663">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>Product Form</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="productForm">
+          <!--          product name-->
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field fxFlex="50">
+              <input matInput placeholder="Product Name" type="text"  formControlName="product_name" class="text-right">
+            </mat-form-field>
+          </div>
+          <!--          Description-->
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field fxFlex="50">
+              <input matInput placeholder="Description" type="text"  formControlName="description" class="text-right">
+            </mat-form-field>
+          </div>
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field fxFlex="40">
+              <mat-label>Category</mat-label>
+              <mat-select  formControlName="product_category_id">
+                <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.id">
+                  {{productCategory.category_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field fxFlex="40">
+              <mat-label>Purchase Unit</mat-label>
+              <mat-select  formControlName="purchase_unit_id">
+                <mat-option *ngFor="let unit of units" [value]="unit.id">
+                  {{unit.unit_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="40">
+              <mat-label>Sale Unit</mat-label>
+              <mat-select  formControlName="sale_unit_id">
+                <mat-option *ngFor="let unit of units" [value]="unit.id">
+                  {{unit.unit_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field fxFlex="20">
+              <input matInput placeholder="GST rate" type="number"  formControlName="gst_rate" class="text-right">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="20">
+              <input matInput placeholder="HSN code" type="text"  formControlName="hsn_code" class="text-right">
+            </mat-form-field>
+          </div>
+
+        </form>
+      </mat-card-content>
+      <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
+        <button mat-button (click)="onSubmit()" mat-stroked-button [disabled]="!productForm.valid">Save</button>
+        <button mat-button (click)="updateProduct()" [disabled]="!productForm.valid" mat-stroked-button>Update</button>
+        <button mat-button (click)="clearProductForm()" mat-stroked-button>clear</button>
+      </div>
+    </mat-card>
+
+  </div>
+  <div fxFlex="50" style="background-color: #c5c4d0">
+      <table class="table table-bordered table-responsive products-list" width="100%">
         <thead>
           <tr>
             <th>Sl</th>
             <th>Product</th>
-            <th>qty</th>
-            <th></th>
-            <th></th>
+            <th>Description</th>
+            <th>Unit</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let product of products">
+          <tr *ngFor="let product of products;let indexOfElement=index">
+            <td>{{indexOfElement+1}}</td>
             <td>{{product.product_name}}</td>
+            <td>{{product.description}}</td>
+            <td>{{product.sale_unit}}</td>
+            <td>
+              <button mat-icon-button color="primary" aria-label="Edit Product">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>

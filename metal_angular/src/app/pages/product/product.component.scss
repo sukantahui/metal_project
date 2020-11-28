@@ -5,3 +5,20 @@
 #right-div{
   height: 600px;
 }
+.products-list{
+  max-height: 800px;
+  overflow-y: scroll;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+

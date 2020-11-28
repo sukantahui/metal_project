@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\UnitController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,5 +37,9 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
 Route::group(array('prefix' => 'dev'), function() {
     Route::get("products",[ProductController::class,'getAllProducts']);
+
+    Route::get("productCategories",[ProductCategoryController::class,'getProductCategories']);
+
+    Route::get("units",[UnitController::class,'getAllUnits']);
 });
 

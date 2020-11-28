@@ -17,6 +17,11 @@ class UnitController extends Controller
         //
     }
 
+    public function getAllUnits(){
+        $units = Unit::get();
+        return response()->json(['success'=>1,'data'=>$units], 200,[],JSON_NUMERIC_CHECK);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

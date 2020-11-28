@@ -17,6 +17,11 @@ class ProductCategoryController extends Controller
         //
     }
 
+    public function getProductCategories(){
+        $productCategories = ProductCategory::get();
+        return response()->json(['success'=>1,'data'=>$productCategories], 200,[],JSON_NUMERIC_CHECK);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
