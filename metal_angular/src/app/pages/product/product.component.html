@@ -29,9 +29,9 @@
               </mat-select>
             </mat-form-field>
           </div>
-
+          <!--          purchase unit and Sale unit-->
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field fxFlex="40">
+            <mat-form-field fxFlex="15">
               <mat-label>Purchase Unit</mat-label>
               <mat-select  formControlName="purchase_unit_id">
                 <mat-option *ngFor="let unit of units" [value]="unit.id">
@@ -40,7 +40,7 @@
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field fxFlex="40">
+            <mat-form-field fxFlex="15">
               <mat-label>Sale Unit</mat-label>
               <mat-select  formControlName="sale_unit_id">
                 <mat-option *ngFor="let unit of units" [value]="unit.id">
@@ -49,6 +49,7 @@
               </mat-select>
             </mat-form-field>
           </div>
+          <!--          End ofpurchase unit and Sale unit-->
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <mat-form-field fxFlex="20">
               <input matInput placeholder="GST rate" type="number"  formControlName="gst_rate" class="text-right">

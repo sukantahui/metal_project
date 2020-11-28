@@ -9,6 +9,11 @@ export interface Unit {
   unit_name: string;
   formal_name: string;
 }
+
+export interface ProductCategory {
+  id: number;
+  category_name: string;
+}
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
@@ -17,7 +22,7 @@ export interface Unit {
 export class ProductComponent implements OnInit {
   products: Product[];
   productForm: FormGroup;
-  productCategories: {id: number, category_name: string}[] = [];
+  productCategories: ProductCategory[] = [];
   units: Unit[]=[];
   isProductUpdateAble: any;
 
@@ -37,7 +42,7 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get('http://127.0.0.1:8000/api/dev/productCategories')
-      .subscribe((response: {success: number, data: {id: number,category_name: string}[]})=>{
+      .subscribe((response: {success: number, data: ProductCategory[]})=>{
       this.productCategories = response.data;
     });
 
