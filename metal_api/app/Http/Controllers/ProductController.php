@@ -32,7 +32,7 @@ class ProductController extends Controller
 
     public function saveProduct(Request $request){
         $validator = Validator::make($request->all(), [
-            'product_name' => 'required',
+            'product_name' => 'required|unique:products,product_name',
             'description' => 'required|max:25',
             'product_category_id' => 'required',
             'purchase_unit_id' => 'required',
@@ -43,7 +43,7 @@ class ProductController extends Controller
 
         if ($validator->fails()) {
 
-            return response()->json(['success'=>0,'data'=>$validator], 200,[],JSON_NUMERIC_CHECK);
+            return response()->json(['success'=>0,'data'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
 
         }
         /*
@@ -62,16 +62,16 @@ class ProductController extends Controller
         /*
          * This way we can check the product is updated or created
          * */
-        $product = Product::updateOrCreate ([
-            'product_name'=>$request->input('product_name')
-            ,'description'=>$request->input('description')
-            ,'product_category_id'=>$request->input('product_category_id')
-            ,'purchase_unit_id'=>$request->input('purchase_unit_id')
-            ,'sale_unit_id'=>$request->input('sale_unit_id')
-            ,'gst_rate'=>$request->input('gst_rate')
-            ,'hsn_code'=>$request->input('hsn_code')
-        ]);
-        return response()->json(['success'=>1,'data'=>$product,'stat'=>$product->wasRecentlyCreated], 200,[],JSON_NUMERIC_CHECK);
+//        $product = Product::updateOrCreate ([
+//            'product_name'=>$request->input('product_name')
+//            ,'description'=>$request->input('description')
+//            ,'product_category_id'=>$request->input('product_category_id')
+//            ,'purchase_unit_id'=>$request->input('purchase_unit_id')
+//            ,'sale_unit_id'=>$request->input('sale_unit_id')
+//            ,'gst_rate'=>$request->input('gst_rate')
+//            ,'hsn_code'=>$request->input('hsn_code')
+//        ]);
+//        return response()->json(['success'=>1,'data'=>$product,'stat'=>$product->wasRecentlyCreated], 200,[],JSON_NUMERIC_CHECK);
 
 
 
@@ -98,69 +98,11 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Model\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Model\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Model\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Product $product)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Model\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Product $product)
-    {
-        //
-    }
+
+
 }

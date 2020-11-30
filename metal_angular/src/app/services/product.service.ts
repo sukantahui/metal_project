@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Product} from "../models/product.model";
-import {Subject, throwError} from "rxjs";
-import {catchError, tap} from "rxjs/operators";
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Product} from '../models/product.model';
+import {Subject, throwError} from 'rxjs';
+import {catchError, tap} from 'rxjs/operators';
 export interface PostResponseData{
-  success: number,
+  success: number;
   data: Product;
 }
 
@@ -29,8 +29,8 @@ export class ProductService {
 
   // saving data in product
   saveProduct(product){
-    return this.http.post<PostResponseData>('http://127.0.0.1:8000/api/dev/products',product)
-      .pipe(catchError(this.serverError),tap((response: PostResponseData) => {
+    return this.http.post<PostResponseData>('http://127.0.0.1:8000/api/dev/products', product)
+      .pipe(catchError(this.serverError), tap((response: PostResponseData) => {
           this.products.unshift(response.data);
           this.productSubject.next([...this.products]);
       }));
@@ -44,7 +44,6 @@ export class ProductService {
       // instead of the line above:
       // return Observable.throw(err.text() || 'backend server error');
     }
-    console.log('err',err);
     if (err.status === 0){
       // tslint:disable-next-line:label-position
       return throwError ({status: err.status, message: 'Backend Server is not Working', statusText: err.statusText});

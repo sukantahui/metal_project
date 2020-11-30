@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ProductService} from "../../services/product.service";
-import {Product} from "../../models/product.model";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
+import {ProductService} from '../../services/product.service';
+import {Product} from '../../models/product.model';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
 
 export interface Unit {
   id: number;
@@ -23,7 +23,7 @@ export class ProductComponent implements OnInit {
   products: Product[];
   productForm: FormGroup;
   productCategories: ProductCategory[] = [];
-  units: Unit[]=[];
+  units: Unit[] = [];
   isProductUpdateAble: any;
 
   constructor(private productService: ProductService, private http: HttpClient) {
@@ -47,12 +47,12 @@ export class ProductComponent implements OnInit {
     });
 
     this.http.get('http://127.0.0.1:8000/api/dev/units')
-      .subscribe((response: {success: number, data: Unit[]})=>{
+      .subscribe((response: {success: number, data: Unit[]}) =>{
         this.units = response.data;
       });
 
-    this.productService.getProductServiceListener().subscribe(response=>{
-      this.products=response;
+    this.productService.getProductServiceListener().subscribe(response =>{
+      this.products = response;
     });
 
   }
@@ -60,7 +60,9 @@ export class ProductComponent implements OnInit {
   onSubmit() {
     this.productService.saveProduct(this.productForm.value)
       .subscribe((response: {success: number, data: Product}) => {
-      console.log("my product save response: "+ response);
+      console.log('my product save response: ' + response.data);
+    }, (error) => {
+        // when error occured
     });
   }
 
@@ -70,6 +72,6 @@ export class ProductComponent implements OnInit {
 
   clearProductForm() {
     this.productForm.reset();
-    this.productForm.patchValue({purchase_unit_id: 1,sale_unit_id:1,gst_rate:12,hsn_code:12});
+    this.productForm.patchValue({purchase_unit_id: 1, sale_unit_id:1, gst_rate:12, hsn_code:12});
   }
 }
