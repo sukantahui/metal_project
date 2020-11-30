@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Model\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use http\Exception;
 
 class ProductController extends Controller
 {
@@ -28,6 +29,29 @@ class ProductController extends Controller
         return response()->json(['success'=>1,'data'=>$products], 200,[],JSON_NUMERIC_CHECK);
     }
 
+    public function saveProduct(Request $request){
+        try{
+            $product = new Product();
+            $product->product_name = $request->input('product_name');
+            $product->description = $request->input('description');
+            $product->product_category_id = $request->input('product_category_id');
+            $product->purchase_unit_id = $request->input('purchase_unit_id');
+            $product->sale_unit_id = $request->input('sale_unit_id');
+            $product->gst_rate = $request->input('gst_rate');
+            $product->hsn_code = $request->input('hsn_code');
+
+            $product->save();
+            return response()->json(['success'=>1,'data'=>$product], 200,[],JSON_NUMERIC_CHECK);
+        }catch (Illuminate\Database\QueryException $e){
+            $errorCode = $e->errorInfo[1];
+            if($errorCode == 1062){
+                // houston, we have a duplicate entry problem
+                return response()->json(['success'=>0,'data'=>$e], 200,[],JSON_NUMERIC_CHECK);
+            }else{
+                return response()->json(['success'=>0,'data'=>$e], 200,[],JSON_NUMERIC_CHECK);
+            }
+        }
+    }
 
     /**
      * Show the form for creating a new resource.

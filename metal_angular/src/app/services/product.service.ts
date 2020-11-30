@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Product} from "../models/product.model";
-import {Subject} from "rxjs";
-
+import {Subject, throwError} from "rxjs";
+import {catchError, tap} from "rxjs/operators";
+export interface PostResponseData{
+  success: number,
+  data: Product;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -22,4 +26,41 @@ export class ProductService {
   getProductServiceListener(){
     return this.productSubject.asObservable();
   }
+
+  // saving data in product
+  saveProduct(product){
+    return this.http.post<PostResponseData>('http://127.0.0.1:8000/api/dev/products',product)
+      .pipe(catchError(this.serverError),tap((response: PostResponseData) => {
+          this.products.unshift(response.data);
+          this.productSubject.next([...this.products]);
+      }));
+  }
+
+  private serverError(err: any) {
+    // console.log('sever error:', err);  // debug
+    if (err instanceof Response) {
+      return throwError('backend server error');
+      // if you're using lite-server, use the following line
+      // instead of the line above:
+      // return Observable.throw(err.text() || 'backend server error');
+    }
+    console.log('err',err);
+    if (err.status === 0){
+      // tslint:disable-next-line:label-position
+      return throwError ({status: err.status, message: 'Backend Server is not Working', statusText: err.statusText});
+    }
+    if (err.status === 401){
+      // tslint:disable-next-line:label-position
+      return throwError ({status: err.status, message: 'Your are not authorised', statusText: err.statusText});
+    }
+    return throwError(err);
+  }
+  private handleError(errorResponse: HttpErrorResponse){
+    if (errorResponse.error.message.includes('1062')){
+      return throwError('Record already exists');
+    }else {
+      return throwError(errorResponse.error.message);
+    }
+  }
+
 }

@@ -11,5 +11,7 @@ export class Product{
   purchase_unit?: string;
   sale_unit_id: number;
   sale_unit?: string;
-
+  gst_rate?: number;
+  hsn_code?: number;
 }
+
