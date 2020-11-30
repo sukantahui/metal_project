@@ -6,6 +6,7 @@ use App\Models\Model\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use http\Exception;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -30,6 +31,50 @@ class ProductController extends Controller
     }
 
     public function saveProduct(Request $request){
+        $validator = Validator::make($request->all(), [
+            'product_name' => 'required',
+            'description' => 'required|max:25',
+            'product_category_id' => 'required',
+            'purchase_unit_id' => 'required',
+            'sale_unit_id' => 'required',
+            'gst_rate' => 'required',
+            'hsn_code' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+
+            return response()->json(['success'=>0,'data'=>$validator], 200,[],JSON_NUMERIC_CHECK);
+
+        }
+        /*
+             {
+                "product_name": "teste234",
+                "description": "asdfasfdas dfgh d dfdf sd sdf sdf sdfg sdf sdf sd df sdfg  sdfgsdgsdggh",
+                "product_category_id": 2,
+                "purchase_unit_id": 1,
+                "sale_unit_id": 1,
+                "hsn_code": "asdf",
+                "gst_rate": 12
+
+             }
+         */
+
+        /*
+         * This way we can check the product is updated or created
+         * */
+        $product = Product::updateOrCreate ([
+            'product_name'=>$request->input('product_name')
+            ,'description'=>$request->input('description')
+            ,'product_category_id'=>$request->input('product_category_id')
+            ,'purchase_unit_id'=>$request->input('purchase_unit_id')
+            ,'sale_unit_id'=>$request->input('sale_unit_id')
+            ,'gst_rate'=>$request->input('gst_rate')
+            ,'hsn_code'=>$request->input('hsn_code')
+        ]);
+        return response()->json(['success'=>1,'data'=>$product,'stat'=>$product->wasRecentlyCreated], 200,[],JSON_NUMERIC_CHECK);
+
+
+
         try{
             $product = new Product();
             $product->product_name = $request->input('product_name');
