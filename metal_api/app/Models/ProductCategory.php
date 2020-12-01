@@ -12,4 +12,9 @@ class ProductCategory extends Model
     protected $hidden = [
         "inforce","created_at","updated_at"
     ];
+
+    public function products()
+    {
+        return $this->hasMany('App\Models\Product','product_category_id');
+    }
 }

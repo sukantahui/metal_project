@@ -40,6 +40,7 @@ Route::group(array('prefix' => 'dev'), function() {
     Route::post("products",[ProductController::class,'saveProduct']);
 
     Route::get("productCategories",[ProductCategoryController::class,'getProductCategories']);
+    Route::get("productCategories/isDeletable/{id}",[ProductCategoryController::class,'isDeletable']);
 
     Route::get("units",[UnitController::class,'getAllUnits']);
 
