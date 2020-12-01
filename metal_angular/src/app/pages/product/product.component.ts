@@ -3,7 +3,7 @@ import {ProductService} from '../../services/product.service';
 import {Product} from '../../models/product.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
-
+import Swal from 'sweetalert2';
 export interface Unit {
   id: number;
   unit_name: string;
@@ -58,11 +58,23 @@ export class ProductComponent implements OnInit {
   }
 
   onSubmit() {
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Do you sure to add this product',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Create It!'
+    }).then((result) => {
+        console.log(result);
+    });
     this.productService.saveProduct(this.productForm.value)
-      .subscribe((response: {success: number, data: Product}) => {
-      console.log('my product save response: ' + response.data);
+      .subscribe(response  => {
+      console.log(`this is strange ${response.data.id}`);
     }, (error) => {
         // when error occured
+        console.log(error);
     });
   }
 
