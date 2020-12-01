@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,4 +12,5 @@ class Product extends Model
     protected $hidden = [
         "inforce","created_at","updated_at"
     ];
+
 }

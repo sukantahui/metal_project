@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Model\CustomerCategory;
+use App\Models\CustomerCategory;
 use Illuminate\Http\Request;
 
 class CustomerCategoryController extends Controller

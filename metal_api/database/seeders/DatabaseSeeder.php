@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Model\Unit;
+use App\Models\Unit;
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\Model\UserType;
-use App\Models\Model\ProductCategory;
-use App\Models\Model\TransactionType;
-use App\Models\Model\LedgerGroup;
-use App\Models\Model\CustomerCategory;
+use App\Models\UserType;
+use App\Models\ProductCategory;
+use App\Models\TransactionType;
+use App\Models\LedgerGroup;
+use App\Models\CustomerCategory;
 
 
 class DatabaseSeeder extends Seeder

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Model\UserType;
+use App\Models\UserType;
 use Illuminate\Http\Request;
 
 class UserTypeController extends Controller

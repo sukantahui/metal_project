@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Model\LedgerGroup;
+use App\Models\LedgerGroup;
 use Illuminate\Http\Request;
 
 class LedgerGroupController extends Controller
