@@ -12,6 +12,14 @@ class Product extends Model
     protected $hidden = [
         "inforce","created_at","updated_at"
     ];
+    private $hsn_code;
+    private $gst_rate;
+    private $sale_unit_id;
+    private $purchase_unit_id;
+    private $product_category_id;
+    private $description;
+    private $product_name;
+
     public function category()
     {
         return $this->belongsTo('App\Models\ProductCategory','product_category_id');
