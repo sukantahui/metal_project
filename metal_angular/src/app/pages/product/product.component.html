@@ -13,6 +13,7 @@
             <mat-form-field fxFlex="50">
               <input matInput placeholder="Product Name" type="text"  formControlName="product_name" class="text-left">
             </mat-form-field>
+            <span class="text-danger" *ngIf="validationError">{{validationError.product_name}}</span>
           </div>
           <!--          End of product name-->
 
@@ -22,6 +23,7 @@
             <mat-form-field fxFlex="50">
               <input matInput placeholder="Description" type="text"  formControlName="description" class="text-light">
             </mat-form-field>
+            <span class="text-danger" *ngIf="validationError">{{validationError.description}}</span>
           </div>
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <mat-form-field fxFlex="40">
@@ -99,6 +101,10 @@
           </tr>
         </tbody>
       </table>
+    Error: {{validationError ? validationError.description:'353535'}}
+    <pre>
+      validationError = {{validationError | json}}
+    </pre>
     <pre>
       {{products | json}}
     </pre>

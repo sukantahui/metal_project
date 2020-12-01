@@ -36,17 +36,20 @@ class ProductController extends Controller
             'description' => 'required|max:25',
             'product_category_id' => 'required|exists:product_categories,id',
             'purchase_unit_id' => 'required',
-            'sale_unit_id' => 'required',
+            'sale_unit_id' => 'required|exists:units,id',
 //             to use between
             'gst_rate' => 'required|integer|between:1,18',
 //              for greater than value
 //            'gst_rate' => 'required|integer|gt:1',
             'hsn_code' => 'required',
+        ],[
+            'product_name.unique' => 'Product already exist',
+            'description.required' => 'Please enter a valid description'
         ]);
 
         if ($validator->fails()) {
 
-            return response()->json(['success'=>0,'data'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
+            return response()->json(['success'=>0,'data'=>null, 'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
 
         }
         /*
@@ -93,14 +96,14 @@ class ProductController extends Controller
             $product->setAttribute('purchase_unit_name', $product->purchase_unit->unit_name);
             $product->setAttribute('sale_unit_name', $product->sale_unit->unit_name);
 
-            return response()->json(['success'=>1,'data'=>$product], 200,[],JSON_NUMERIC_CHECK);
+            return response()->json(['success'=>1,'data'=>$product, 'error'=>null], 200,[],JSON_NUMERIC_CHECK);
         }catch (Illuminate\Database\QueryException $e){
             $errorCode = $e->errorInfo[1];
             if($errorCode == 1062){
                 // houston, we have a duplicate entry problem
-                return response()->json(['success'=>0,'data'=>$e], 200,[],JSON_NUMERIC_CHECK);
+                return response()->json(['success'=>0,'data'=>null, 'error'=>$e], 200,[],JSON_NUMERIC_CHECK);
             }else{
-                return response()->json(['success'=>0,'data'=>$e], 200,[],JSON_NUMERIC_CHECK);
+                return response()->json(['success'=>0,'data'=>null,'error'=>$e], 200,[],JSON_NUMERIC_CHECK);
             }
         }
     }
