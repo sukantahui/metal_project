@@ -58,20 +58,20 @@ export class ProductComponent implements OnInit {
   }
 
   onSubmit() {
-    Swal.fire({
-      title: 'Confirmation',
-      text: 'Do you sure to add this product',
-      icon: 'info',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Create It!'
-    }).then((result) => {
-        console.log(result);
-    });
+    // Swal.fire({
+    //   title: 'Confirmation',
+    //   text: 'Do you sure to add this product',
+    //   icon: 'info',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Yes, Create It!'
+    // }).then((result) => {
+    //     console.log(result);
+    // });
     this.productService.saveProduct(this.productForm.value)
       .subscribe(response  => {
-      console.log(`this is strange ${response.data.id}`);
+      console.log(response.data);
     }, (error) => {
         // when error occured
         console.log(error);

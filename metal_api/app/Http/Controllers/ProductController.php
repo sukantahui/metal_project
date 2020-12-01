@@ -23,8 +23,8 @@ class ProductController extends Controller
     public function getAllProducts(){
         $products = Product::select('products.id', 'products.product_name', 'products.description', 'product_categories.category_name',
                     'products.product_category_id', 'products.purchase_unit_id'
-                    ,DB::raw('(select unit_name from units where units.id=products.purchase_unit_id) as purchase_unit'),'products.sale_unit_id'
-                    ,DB::raw('(select unit_name from units where units.id=products.sale_unit_id) as sale_unit'))
+                    ,DB::raw('(select unit_name from units where units.id=products.purchase_unit_id) as purchase_unit_name'),'products.sale_unit_id'
+                    ,DB::raw('(select unit_name from units where units.id=products.sale_unit_id) as sale_unit_name'))
                     ->join('product_categories','product_categories.id','products.product_category_id')
                     ->get();
         return response()->json(['success'=>1,'data'=>$products], 200,[],JSON_NUMERIC_CHECK);
@@ -34,10 +34,13 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'product_name' => 'required|unique:products,product_name',
             'description' => 'required|max:25',
-            'product_category_id' => 'required',
+            'product_category_id' => 'required|exists:product_categories,id',
             'purchase_unit_id' => 'required',
             'sale_unit_id' => 'required',
-            'gst_rate' => 'required',
+//             to use between
+            'gst_rate' => 'required|integer|between:1,18',
+//              for greater than value
+//            'gst_rate' => 'required|integer|gt:1',
             'hsn_code' => 'required',
         ]);
 
@@ -86,6 +89,10 @@ class ProductController extends Controller
             $product->hsn_code = $request->input('hsn_code');
 
             $product->save();
+            $product->setAttribute('category_name', $product->category->category_name);
+            $product->setAttribute('purchase_unit_name', $product->purchase_unit->unit_name);
+            $product->setAttribute('sale_unit_name', $product->sale_unit->unit_name);
+
             return response()->json(['success'=>1,'data'=>$product], 200,[],JSON_NUMERIC_CHECK);
         }catch (Illuminate\Database\QueryException $e){
             $errorCode = $e->errorInfo[1];
