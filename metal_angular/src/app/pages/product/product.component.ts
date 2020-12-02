@@ -24,9 +24,8 @@ export class ProductComponent implements OnInit {
   productForm: FormGroup;
   productCategories: ProductCategory[] = [];
   units: Unit[] = [];
-  validationError: object = null;
   isProductUpdateAble: any;
-  resetProduct = {};
+
   constructor(private productService: ProductService, private http: HttpClient) {
 
     this.productForm = new FormGroup({
@@ -59,52 +58,24 @@ export class ProductComponent implements OnInit {
   }
 
   onSubmit() {
-    this.validationError = null;
-    Swal.fire({
-      title: 'Confirmation',
-      text: 'Do you sure to add this product',
-      icon: 'info',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Create It!'
-    }).then((result) => {
-        if(result.isConfirmed){
-          this.productService.saveProduct(this.productForm.value)
-            .subscribe(response  => {
-              if(response.success==1){
-                Swal.fire({
-                  position: 'top-end',
-                  icon: 'success',
-                  title: 'Product saved',
-                  showConfirmButton: false,
-                  timer: 1000
-                });
-                this.clearProductForm();
-              }else{
-                this.validationError= response.error;
-                Swal.fire({
-                  position: 'top-end',
-                  icon: 'error',
-                  title: 'Error saving product',
-                  showConfirmButton: false,
-                  timer: 3000
-                });
-
-              }
-            }, (error) => {
-              // when error occured
-              Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: error.message,
-                showConfirmButton: false,
-                timer: 3000
-              });
-            });
-        }
+    // Swal.fire({
+    //   title: 'Confirmation',
+    //   text: 'Do you sure to add this product',
+    //   icon: 'info',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Yes, Create It!'
+    // }).then((result) => {
+    //     console.log(result);
+    // });
+    this.productService.saveProduct(this.productForm.value)
+      .subscribe(response  => {
+      console.log(response.data);
+    }, (error) => {
+        // when error occured
+        console.log(error);
     });
-
   }
 
   updateProduct() {
@@ -114,6 +85,5 @@ export class ProductComponent implements OnInit {
   clearProductForm() {
     this.productForm.reset();
     this.productForm.patchValue({purchase_unit_id: 1, sale_unit_id:1, gst_rate:12, hsn_code:12});
-    this.validationError =null;
   }
 }

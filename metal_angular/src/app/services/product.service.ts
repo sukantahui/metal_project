@@ -6,7 +6,6 @@ import {catchError, tap} from 'rxjs/operators';
 export interface PostResponseData{
   success: number;
   data: Product;
-  error: object;
 }
 
 @Injectable({
@@ -32,10 +31,8 @@ export class ProductService {
   saveProduct(product){
     return this.http.post<PostResponseData>('http://127.0.0.1:8000/api/dev/products', product)
       .pipe(catchError(this.serverError), tap((response: PostResponseData) => {
-        if(response.success==1){
           this.products.unshift(response.data);
           this.productSubject.next([...this.products]);
-        }
       }));
   }
 
