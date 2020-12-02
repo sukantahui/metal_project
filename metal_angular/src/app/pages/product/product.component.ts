@@ -31,9 +31,9 @@ export class ProductComponent implements OnInit {
 
     this.productForm = new FormGroup({
       id: new FormControl(null),
-      product_name: new FormControl(null,[Validators.required]),
-      description: new FormControl(null),
-      product_category_id: new FormControl(1,[Validators.required]),
+      product_name: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.minLength(4)]),
+      description: new FormControl(null, [Validators.required, Validators.maxLength(50), Validators.minLength(5)]),
+      product_category_id: new FormControl(1, [Validators.required]),
       purchase_unit_id: new FormControl(1),
       sale_unit_id: new FormControl(1),
       gst_rate: new FormControl(12),
@@ -43,16 +43,16 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get('http://127.0.0.1:8000/api/dev/productCategories')
-      .subscribe((response: {success: number, data: ProductCategory[]})=>{
+      .subscribe((response: {success: number, data: ProductCategory[]}) =>{
       this.productCategories = response.data;
     });
 
     this.http.get('http://127.0.0.1:8000/api/dev/units')
-      .subscribe((response: {success: number, data: Unit[]}) =>{
+      .subscribe((response: {success: number, data: Unit[]}) => {
         this.units = response.data;
       });
 
-    this.productService.getProductServiceListener().subscribe(response =>{
+    this.productService.getProductServiceListener().subscribe(response => {
       this.products = response;
     });
 
@@ -72,7 +72,7 @@ export class ProductComponent implements OnInit {
         if(result.isConfirmed){
           this.productService.saveProduct(this.productForm.value)
             .subscribe(response  => {
-              if(response.success==1){
+              if (response.success === 1){
                 Swal.fire({
                   position: 'top-end',
                   icon: 'success',
@@ -85,7 +85,7 @@ export class ProductComponent implements OnInit {
                 Swal.fire({
                   position: 'top-end',
                   icon: 'error',
-                  title: "Validation error",
+                  title: 'Validation error',
                   showConfirmButton: false,
                   timer: 3000
                 });
@@ -107,7 +107,7 @@ export class ProductComponent implements OnInit {
   clearProductForm() {
     this.productForm.reset();
     this.productForm.patchValue({purchase_unit_id: 1, sale_unit_id:1, gst_rate:12, hsn_code:12});
-    this.validatorError=null;
+    this.validatorError = null;
   }
 
   editProduct() {
