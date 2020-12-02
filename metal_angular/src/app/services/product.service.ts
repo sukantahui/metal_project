@@ -31,8 +31,11 @@ export class ProductService {
   saveProduct(product){
     return this.http.post<PostResponseData>('http://127.0.0.1:8000/api/dev/products', product)
       .pipe(catchError(this.serverError), tap((response: PostResponseData) => {
-          this.products.unshift(response.data);
-          this.productSubject.next([...this.products]);
+          if(response.success==1){
+            this.products.unshift(response.data);
+            this.productSubject.next([...this.products]);
+          }
+
       }));
   }
 
