@@ -107,5 +107,10 @@ export class ProductComponent implements OnInit {
   clearProductForm() {
     this.productForm.reset();
     this.productForm.patchValue({purchase_unit_id: 1, sale_unit_id:1, gst_rate:12, hsn_code:12});
+    this.validatorError=null;
+  }
+
+  editProduct() {
+
   }
 }
