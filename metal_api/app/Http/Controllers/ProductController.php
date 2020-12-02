@@ -46,7 +46,7 @@ class ProductController extends Controller
 
         if ($validator->fails()) {
 
-            return response()->json(['success'=>0,'data'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
+            return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
 
         }
         /*
@@ -93,14 +93,14 @@ class ProductController extends Controller
             $product->setAttribute('purchase_unit_name', $product->purchase_unit->unit_name);
             $product->setAttribute('sale_unit_name', $product->sale_unit->unit_name);
 
-            return response()->json(['success'=>1,'data'=>$product], 200,[],JSON_NUMERIC_CHECK);
+            return response()->json(['success'=>1,'data'=>$product, 'error'=>null], 200,[],JSON_NUMERIC_CHECK);
         }catch (Illuminate\Database\QueryException $e){
             $errorCode = $e->errorInfo[1];
             if($errorCode == 1062){
                 // houston, we have a duplicate entry problem
-                return response()->json(['success'=>0,'data'=>$e], 200,[],JSON_NUMERIC_CHECK);
+                return response()->json(['success'=>0,'data'=>null, 'error'=>$e], 200,[],JSON_NUMERIC_CHECK);
             }else{
-                return response()->json(['success'=>0,'data'=>$e], 200,[],JSON_NUMERIC_CHECK);
+                return response()->json(['success'=>0,'data'=>null, 'error'=>$e], 200,[],JSON_NUMERIC_CHECK);
             }
         }
     }
