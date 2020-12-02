@@ -25,6 +25,7 @@ export class ProductComponent implements OnInit {
   productCategories: ProductCategory[] = [];
   units: Unit[] = [];
   isProductUpdateAble: any;
+  validatorError: any = null;
 
   constructor(private productService: ProductService, private http: HttpClient) {
 
@@ -58,24 +59,45 @@ export class ProductComponent implements OnInit {
   }
 
   onSubmit() {
-    // Swal.fire({
-    //   title: 'Confirmation',
-    //   text: 'Do you sure to add this product',
-    //   icon: 'info',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#3085d6',
-    //   cancelButtonColor: '#d33',
-    //   confirmButtonText: 'Yes, Create It!'
-    // }).then((result) => {
-    //     console.log(result);
-    // });
-    this.productService.saveProduct(this.productForm.value)
-      .subscribe(response  => {
-      console.log(response.data);
-    }, (error) => {
-        // when error occured
-        console.log(error);
+    this.validatorError = null;
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Do you sure to add this product',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Create It!'
+    }).then((result) => {
+        if(result.isConfirmed){
+          this.productService.saveProduct(this.productForm.value)
+            .subscribe(response  => {
+              if(response.success==1){
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: 'Product saved',
+                  showConfirmButton: false,
+                  timer: 1000
+                });
+              }else{
+                this.validatorError = response.error;
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'error',
+                  title: "Validation error",
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+              }
+
+            }, (error) => {
+              // when error occured
+              console.log(error);
+            });
+        }
     });
+
   }
 
   updateProduct() {

@@ -3,9 +3,15 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Product} from '../models/product.model';
 import {Subject, throwError} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
+export interface ValidatorErrorResponse {
+  product_name?: string;
+  description?: string;
+}
+
 export interface PostResponseData{
   success: number;
   data: Product;
+  error: ValidatorErrorResponse ;
 }
 
 @Injectable({
