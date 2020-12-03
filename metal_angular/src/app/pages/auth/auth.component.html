@@ -10,12 +10,14 @@
       <mat-card-subtitle></mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <div *ngIf="isLoading" style="text-align: center; height: 90vh;" >
-        <app-loading-spinner></app-loading-spinner>
-      </div>
+
       <section id="content" *ngIf="!isLoading">
+        <div *ngIf="isLoading" style="text-align: center; width: 20vh;" >
+          <app-loading-spinner></app-loading-spinner>
+        </div>
           <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
         <h1>Login</h1>
+            <mat-error>User ID or Password is wrong</mat-error>
             <mat-form-field>
               <input type="text" matInput placeholder="Username"
                      id="email"

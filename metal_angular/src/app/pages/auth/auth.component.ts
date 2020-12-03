@@ -6,6 +6,7 @@ import {Md5} from 'ts-md5';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
 import { faAtlas} from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-auth',
@@ -37,15 +38,20 @@ export class AuthComponent implements OnInit {
       if (response.success === 1){
         this.isLoading = false;
         // tslint:disable-next-line:triple-equals
-        if (response.user.user_type_id == 1){
+        if (response.data.user.user_type_id == 1){
           this.router.navigate(['/owner']).then(r => {});
         }
       }else{
-        alert('Check user id or Password');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'User ID or Password is wrong',
+          showConfirmButton: false,
+          timer: 1000
+        });
         this.isLoading = false;
       }
     }, (error) => {
-      console.log('error occured ');
       console.log(error);
       this.isLoading = false;
     });

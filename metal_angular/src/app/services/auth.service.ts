@@ -12,8 +12,11 @@ export interface AuthResponseData {
 
 
   success: number;
-  user: {id: number, user_name: string,  email: string, mobile1: string, mobile2: string, user_type_id: number};
-  token: string;
+  data: {
+    user: { id: number, user_name: string, email: string, mobile1: string, mobile2: string, user_type_id: number };
+    token: string;
+  };
+  message: string;
 }
 
 @Injectable({
@@ -46,22 +49,21 @@ export class AuthService {
   }
   login(loginData){
     return this.http.post<AuthResponseData>(GlobalVariable.BASE_API_URL + '/login', loginData)
-      .pipe(catchError(this.handleError), tap(resData => {
+      .pipe(catchError(this.serverError), tap(resData => {
         // tslint:disable-next-line:max-line-length
+        // console.log(resData);
         if (resData.success === 1){
-            const user = new User(resData.user.id,
-              resData.user.user_name,
-              resData.token,
-              resData.user.user_type_id);
+            const user = new User(resData.data.user.id,
+            resData.data.user.user_name,
+            resData.data.token,
+            resData.data.user.user_type_id);
             this.user.next(user); // here two user is used one is user and another user is subject of rxjs
             localStorage.setItem('user', JSON.stringify(user));
           }
       }));  // this.handleError is a method created by me
   }
 
-  private handleError(errorResponse: HttpErrorResponse){
-    return throwError(errorResponse.error.message);
-  }
+
 
   logout(){
     this.user.next(null);
@@ -73,6 +75,32 @@ export class AuthService {
     });
     // location.reload();
     // this.router.navigate(['/auth']);
+  }
+
+  private serverError(err: any) {
+    // console.log('sever error:', err);  // debug
+    if (err instanceof Response) {
+      return throwError('backend server error');
+      // if you're using lite-server, use the following line
+      // instead of the line above:
+      // return Observable.throw(err.text() || 'backend server error');
+    }
+    if (err.status === 0){
+      // tslint:disable-next-line:label-position
+      return throwError ({status: err.status, message: 'Backend Server is not Working', statusText: err.statusText});
+    }
+    if (err.status === 401){
+      // tslint:disable-next-line:label-position
+      return throwError ({status: err.status, message: 'Your are not authorised', statusText: err.statusText});
+    }
+    return throwError(err);
+  }
+  private handleError(errorResponse: HttpErrorResponse){
+    if (errorResponse.error.message.includes('1062')){
+      return throwError('Record already exists');
+    }else {
+      return throwError(errorResponse.error.message);
+    }
   }
 
 

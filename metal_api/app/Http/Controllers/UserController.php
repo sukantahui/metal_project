@@ -39,20 +39,22 @@ class UserController extends Controller
         $user= User::where('email', $request->email)->first();
         // print_r($data);
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response([
-                'message' => ['These credentials do not match our records.']
-            ], 404);
+//            return response([
+//                'message' => ['These credentials do not match our records.']
+//            ], 404);
+
+            return response()->json(['success'=>0,'data'=>null, 'message'=>'Credential does not matched'], 200,[],JSON_NUMERIC_CHECK);
         }
 
         $token = $user->createToken('my-app-token')->plainTextToken;
 
         $response = [
-            'success'=>1,
             'user' => $user,
             'token' => $token
         ];
 
-        return response($response, 201);
+//        return response($response, 201);
+        return response()->json(['success'=>1,'data'=>$response, 'message'=>'Welcome'], 200,[],JSON_NUMERIC_CHECK);
     }
     function getCurrentUser(Request $request){
         return $request->user();
