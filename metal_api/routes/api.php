@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 Route::group(array('prefix' => 'dev'), function() {
     Route::get("products",[ProductController::class,'getAllProducts']);
     Route::post("products",[ProductController::class,'saveProduct']);
+    Route::put("products",[ProductController::class,'updateProduct']);
 
     Route::get("productCategories",[ProductCategoryController::class,'getProductCategories']);
     Route::get("productCategories/isDeletable/{id}",[ProductCategoryController::class,'isDeletable']);

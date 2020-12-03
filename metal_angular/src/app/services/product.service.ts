@@ -45,6 +45,19 @@ export class ProductService {
       }));
   }
 
+  // update product
+  updateProduct(product){
+    return this.http.put<PostResponseData>('http://127.0.0.1:8000/api/dev/products',product)
+      .pipe(catchError(this.serverError),tap((response: PostResponseData) => {
+        if(response.success){
+          const index = this.products.findIndex(x => x.id === product.id);
+          this.products[index] = response.data;
+          this.productSubject.next([...this.products]);
+        }
+      }));
+
+  }
+
   private serverError(err: any) {
     // console.log('sever error:', err);  // debug
     if (err instanceof Response) {

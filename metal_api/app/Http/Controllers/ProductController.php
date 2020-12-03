@@ -106,7 +106,45 @@ class ProductController extends Controller
     }
 
 
+    public function updateProduct(Request $request){
+        $validator = Validator::make($request->all(), [
+            'product_name' => 'required',
+            'description' => 'required|max:25',
+            'product_category_id' => 'required|exists:product_categories,id',
+            'purchase_unit_id' => 'required',
+            'sale_unit_id' => 'required',
+//             to use between
+            'gst_rate' => 'required|integer|between:1,18',
+//              for greater than value
+//            'gst_rate' => 'required|integer|gt:1',
+            'hsn_code' => 'required',
+        ]);
+       if($validator->fails()){
+           return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
+       }
 
+        try{
+            $product = new Product();
+            $product=Product::find($request->input('id'));
+            $product->product_name = $request->input('product_name');
+            $product->description = $request->input('description');
+            $product->product_category_id = $request->input('product_category_id');
+            $product->purchase_unit_id = $request->input('purchase_unit_id');
+            $product->sale_unit_id = $request->input('sale_unit_id');
+            $product->gst_rate = $request->input('gst_rate');
+            $product->hsn_code = $request->input('hsn_code');
+
+            $product->update();
+            $product->setAttribute('category_name', $product->category->category_name);
+            $product->setAttribute('purchase_unit_name', $product->purchase_unit->unit_name);
+            $product->setAttribute('sale_unit_name', $product->sale_unit->unit_name);
+
+            return response()->json(['success'=>1,'data'=>$product, 'error'=>null], 200,[],JSON_NUMERIC_CHECK);
+        }catch(Illuminate\Database\QueryException $e){
+            return response()->json(['success'=>0,'data'=>null, 'error'=>$e], 200,[],JSON_NUMERIC_CHECK);
+        }
+
+    }
 
 
 

@@ -27,6 +27,9 @@ export class ProductComponent implements OnInit {
   isProductUpdateAble: any;
   validatorError: any = null;
 
+  page: number;
+  pageSize = 10;
+  p = 1;
   constructor(private productService: ProductService, private http: HttpClient) {
 
     this.productForm = new FormGroup({
@@ -101,7 +104,30 @@ export class ProductComponent implements OnInit {
   }
 
   updateProduct() {
+    this.validatorError = null;
+    this.productService.updateProduct(this.productForm.value).subscribe((response) => {
+      if(response.success){
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Product updated',
+          showConfirmButton: false,
+          timer: 1000
+        });
+      }else{
+        this.validatorError = response.error;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Validation error',
+          showConfirmButton: false,
+          timer: 3000
+        });
+      }
 
+    },(error) => {
+      console.log(error);
+    });
   }
 
   clearProductForm() {
@@ -110,7 +136,7 @@ export class ProductComponent implements OnInit {
     this.validatorError = null;
   }
 
-  editProduct() {
-
+  editProduct(product) {
+    this.productForm.patchValue(product);
   }
 }
