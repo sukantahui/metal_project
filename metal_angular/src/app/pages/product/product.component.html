@@ -29,7 +29,7 @@
             <mat-form-field fxFlex="50">
               <mat-label>Description</mat-label>
               <input type="text" matInput formControlName="description" placeholder="Description">
-              <mat-hint>Description is optional</mat-hint>
+
               <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" *ngIf="!productForm.get('description').valid && productForm.get('description').touched">
                 <mat-error *ngIf="productForm.get('description').errors['required']">Description is required</mat-error>
                 <mat-error *ngIf="productForm.get('description').errors['minlength']">Minimum length of description is {{productForm.get('description').errors.minlength.requiredLength}}</mat-error>
@@ -45,14 +45,15 @@
 
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <mat-form-field fxFlex="40">
-              <mat-label>Category</mat-label>
-              <mat-select  formControlName="product_category_id">
+              <mat-label>Product Category</mat-label>
+              <mat-select  formControlName="product_category_id" placeholder="Category">
                 <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.id">
                   {{productCategory.category_name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
+
           <!--          purchase unit and Sale unit-->
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <mat-form-field fxFlex="15">
@@ -84,6 +85,19 @@
             </mat-form-field>
           </div>
 
+          <!--          Opening Balance-->
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field fxFlex="20">
+              <mat-label>Opening Balance</mat-label>
+              <input type="number" matInput formControlName="opening_balance" placeholder="Opening Balance" class="text-right">
+              <mat-hint>Please be sure before update</mat-hint>
+              <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" *ngIf="!productForm.get('opening_balance').valid && productForm.get('opening_balance').touched">
+                <mat-error *ngIf="productForm.get('opening_balance').errors['required']">Please check opening balance</mat-error>
+                <mat-error *ngIf="validatorError!=null && validatorError.opening_balance">{{validatorError.opening_balance}}</mat-error>
+              </div>
+            </mat-form-field>
+          </div>
+
         </form>
       </mat-card-content>
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
@@ -104,6 +118,8 @@
             <th>Sl</th>
             <th>Product</th>
             <th>Description</th>
+            <th>Category</th>
+            <th>Opening Balance</th>
             <th>Unit</th>
             <th>Action</th>
           </tr>
@@ -113,6 +129,8 @@
             <td>{{indexOfElement+1}}</td>
             <td>{{product.product_name}}</td>
             <td>{{product.description}}</td>
+            <td>{{product.category_name}}</td>
+            <td>{{product.opening_balance}}</td>
             <td>{{product.sale_unit_name}}</td>
             <td>
               <button mat-icon-button color="primary" aria-label="Edit Product">

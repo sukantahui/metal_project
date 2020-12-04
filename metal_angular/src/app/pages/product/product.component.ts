@@ -41,6 +41,7 @@ export class ProductComponent implements OnInit {
       sale_unit_id: new FormControl(1),
       gst_rate: new FormControl(12),
       hsn_code: new FormControl(12),
+      opening_balance: new FormControl(0, [Validators.required, Validators.pattern('^[0-9]*$')]),
     });
   }
 
@@ -72,7 +73,7 @@ export class ProductComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, Create It!'
     }).then((result) => {
-        if(result.isConfirmed){
+        if (result.isConfirmed){
           this.productService.saveProduct(this.productForm.value)
             .subscribe(response  => {
               if (response.success === 1){
@@ -132,7 +133,7 @@ export class ProductComponent implements OnInit {
 
   clearProductForm() {
     this.productForm.reset();
-    this.productForm.patchValue({purchase_unit_id: 1, sale_unit_id:1, gst_rate:12, hsn_code:12});
+    this.productForm.patchValue({purchase_unit_id: 1, sale_unit_id: 1, gst_rate: 12, hsn_code: 12});
     this.validatorError = null;
   }
 

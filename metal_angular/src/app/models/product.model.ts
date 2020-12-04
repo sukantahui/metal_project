@@ -13,5 +13,6 @@ export class Product{
   sale_unit_name?: string;
   gst_rate?: number;
   hsn_code?: number;
+  opening_balance?: number;
 }
 

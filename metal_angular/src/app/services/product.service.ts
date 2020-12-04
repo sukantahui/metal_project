@@ -23,7 +23,8 @@ export class ProductService {
   productSubject = new Subject<Product[]>();
 
   constructor(private http: HttpClient) {
-    this.http.get('http://127.0.0.1:8000/api/dev/products').subscribe((response: {success: number, data: Product[]})=>{
+    this.http.get('http://127.0.0.1:8000/api/dev/products')
+      .subscribe((response: {success: number, data: Product[]}) => {
       this.products = response.data;
       this.productSubject.next([...this.products]);
     });
@@ -47,9 +48,9 @@ export class ProductService {
 
   // update product
   updateProduct(product){
-    return this.http.put<PostResponseData>('http://127.0.0.1:8000/api/dev/products',product)
-      .pipe(catchError(this.serverError),tap((response: PostResponseData) => {
-        if(response.success){
+    return this.http.put<PostResponseData>('http://127.0.0.1:8000/api/dev/products', product)
+      .pipe(catchError(this.serverError), tap((response: PostResponseData) => {
+        if (response.success){
           const index = this.products.findIndex(x => x.id === product.id);
           this.products[index] = response.data;
           this.productSubject.next([...this.products]);

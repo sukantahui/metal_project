@@ -30,6 +30,8 @@ class CreateProductsTable extends Migration
             $table->integer('gst_rate')->default(12);
             $table->string('hsn_code',12)->nullable(true);
 
+            $table->decimal('opening_balance')->default(0);
+
             $table->tinyInteger('inforce')->default(1);
             $table->timestamps();
         });

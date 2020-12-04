@@ -22,7 +22,7 @@ class ProductController extends Controller
 
     public function getAllProducts(){
         $products = Product::select('products.id', 'products.product_name', 'products.description', 'product_categories.category_name',
-                    'products.product_category_id', 'products.purchase_unit_id'
+                    'products.product_category_id', 'products.purchase_unit_id', 'opening_balance'
                     ,DB::raw('(select unit_name from units where units.id=products.purchase_unit_id) as purchase_unit_name'),'products.sale_unit_id'
                     ,DB::raw('(select unit_name from units where units.id=products.sale_unit_id) as sale_unit_name'))
                     ->join('product_categories','product_categories.id','products.product_category_id')
@@ -42,6 +42,7 @@ class ProductController extends Controller
 //              for greater than value
 //            'gst_rate' => 'required|integer|gt:1',
             'hsn_code' => 'required',
+            'opening_balance' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -87,6 +88,7 @@ class ProductController extends Controller
             $product->sale_unit_id = $request->input('sale_unit_id');
             $product->gst_rate = $request->input('gst_rate');
             $product->hsn_code = $request->input('hsn_code');
+            $product->opening_balance = $request->input('opening_balance');
 
             $product->save();
             $product->setAttribute('category_name', $product->category->category_name);

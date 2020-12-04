@@ -19,6 +19,7 @@ class Product extends Model
     private $product_category_id;
     private $description;
     private $product_name;
+    private $opening_balance;
 
     public function category()
     {
