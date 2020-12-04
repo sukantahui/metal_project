@@ -24,12 +24,13 @@ export class ProductComponent implements OnInit {
   productForm: FormGroup;
   productCategories: ProductCategory[] = [];
   units: Unit[] = [];
-  isProductUpdateAble: any;
+  isProductUpdateAble: boolean = false;
   validatorError: any = null;
 
   page: number;
   pageSize = 10;
   p = 1;
+  currentPage = 1;
   constructor(private productService: ProductService, private http: HttpClient) {
 
     this.productForm = new FormGroup({
@@ -59,6 +60,8 @@ export class ProductComponent implements OnInit {
     this.productService.getProductServiceListener().subscribe(response => {
       this.products = response;
     });
+
+    this.products = this.productService.getProducts();
 
   }
 
@@ -135,9 +138,42 @@ export class ProductComponent implements OnInit {
     this.productForm.reset();
     this.productForm.patchValue({purchase_unit_id: 1, sale_unit_id: 1, gst_rate: 12, hsn_code: 12});
     this.validatorError = null;
+    this.isProductUpdateAble = false;
   }
 
   editProduct(product) {
     this.productForm.patchValue(product);
+    this.isProductUpdateAble = true;
+  }
+
+  deleteProduct(productId) {
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Are you sure to delete this product',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Create It!'
+    }).then((result) => {
+      if (result.isConfirmed){
+        this.productService.deleteProduct(productId)
+          .subscribe(response  => {
+            if (response.success){
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Product deleted',
+                showConfirmButton: false,
+                timer: 1000
+              });
+            }
+
+          }, (error) => {
+            // when error occured
+            console.log(error);
+          });
+      }
+    });
   }
 }

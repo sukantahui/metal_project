@@ -30,6 +30,9 @@ export class ProductService {
     });
   }
 
+  getProducts(){
+    return [...this.products];
+  }
   getProductServiceListener(){
     return this.productSubject.asObservable();
   }
@@ -57,6 +60,14 @@ export class ProductService {
         }
       }));
 
+  }
+  deleteProduct(productId){
+    return this.http.delete('http://127.0.0.1:8000/api/dev/products/'+productId)
+      .pipe(catchError(this.serverError),tap((response:{success: boolean, id: number}) => {
+        const index = this.products.findIndex(x => x.id === productId);
+        this.products.splice(index,1);
+        this.productSubject.next([...this.products]);
+      }));
   }
 
   private serverError(err: any) {

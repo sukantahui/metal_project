@@ -101,15 +101,15 @@
         </form>
       </mat-card-content>
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
-        <button mat-button (click)="onSubmit()" mat-stroked-button [disabled]="!productForm.valid">Save</button>
-        <button mat-button (click)="updateProduct()" mat-stroked-button>Update</button>
+        <button mat-button (click)="onSubmit()" *ngIf="!isProductUpdateAble" mat-stroked-button [disabled]="!productForm.valid">Save</button>
+        <button mat-button (click)="updateProduct()" *ngIf="isProductUpdateAble" [disabled]="!productForm.valid" mat-stroked-button>Update</button>
         <button mat-button (click)="clearProductForm()" mat-stroked-button>clear</button>
       </div>
     </mat-card>
 
-    <pre>
-      validatorError={{validatorError | json}}
-    </pre>
+<!--    <pre>-->
+<!--      validatorError={{validatorError | json}}-->
+<!--    </pre>-->
   </div>
   <div fxFlex="50" style="background-color: #c5c4d0">
       <table class="table table-bordered table-responsive products-list" width="100%">
@@ -124,9 +124,9 @@
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody >
           <tr *ngFor="let product of products| paginate: { itemsPerPage: pageSize, currentPage: p };let indexOfElement=index">
-            <td>{{indexOfElement+1}}</td>
+            <td>{{(p-1)*10+indexOfElement+1}}</td>
             <td>{{product.product_name}}</td>
             <td>{{product.description}}</td>
             <td>{{product.category_name}}</td>
@@ -135,6 +135,9 @@
             <td>
               <button mat-icon-button color="primary" aria-label="Edit Product">
                 <mat-icon (click)="editProduct(product)">edit</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" aria-label="Edit Product">
+                <mat-icon (click)="deleteProduct(product.id)">delete</mat-icon>
               </button>
             </td>
           </tr>
