@@ -135,6 +135,7 @@ class ProductController extends Controller
             $product->sale_unit_id = $request->input('sale_unit_id');
             $product->gst_rate = $request->input('gst_rate');
             $product->hsn_code = $request->input('hsn_code');
+            $product->opening_balance = $request->input('opening_balance');
 
             $product->update();
             $product->setAttribute('category_name', $product->category->category_name);
@@ -146,6 +147,16 @@ class ProductController extends Controller
             return response()->json(['success'=>0,'data'=>null, 'error'=>$e], 200,[],JSON_NUMERIC_CHECK);
         }
 
+    }
+
+    public function deleteProduct($id){
+        $product = Product::find($id);
+        if(!empty($product)){
+            $result = $product->delete();
+        }else{
+            $result = false;
+        }
+        return response()->json(['success'=>$result,'id'=>$id], 200);
     }
 
 
