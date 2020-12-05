@@ -21,12 +21,12 @@ class CreateLedgersTable extends Migration
             $table->bigInteger('ledger_group_id')->unsigned();
             $table ->foreign('ledger_group_id')->references('id')->on('ledger_groups');
 
-            $table->bigInteger('customer_category_id')->unsigned()->nullable()->default(null);
+            $table->bigInteger('customer_category_id')->unsigned()->nullable(true)->default(null);
             $table->foreign('customer_category_id')->nullable()->references('id')->on('customer_categories')->onDelete('cascade');
 
 
 
-            $table->string('email')->nullable(true)->nullable(true);
+            $table->string('email')->nullable(true);
             $table->string('mobile1',15)->nullable(true);
             $table->string('mobile2',15)->nullable(true);
 
@@ -37,7 +37,10 @@ class CreateLedgersTable extends Migration
 
             $table->String('address1', 100)->nullable(true);
             $table->String('address2', 100)->nullable(true);
-            $table->String('state', 50)->default('West Bengal')->nullable(true);
+
+            $table->bigInteger('state_id')->unsigned()->default(0);
+            $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
+
             $table->String('po', 50)->nullable(true);
             $table->String('area', 50)->nullable(true);
             $table->String('city', 50)->nullable(true);

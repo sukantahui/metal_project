@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\CustomerController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,15 +37,23 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
 
 Route::group(array('prefix' => 'dev'), function() {
+    //products
     Route::get("products",[ProductController::class,'getAllProducts']);
     Route::post("products",[ProductController::class,'saveProduct']);
     Route::put("products",[ProductController::class,'updateProduct']);
     Route::delete("products/{id}",[ProductController::class,'deleteProduct']);
 
+    //product_category
     Route::get("productCategories",[ProductCategoryController::class,'getProductCategories']);
     Route::get("productCategories/isDeletable/{id}",[ProductCategoryController::class,'isDeletable']);
 
+    //units
     Route::get("units",[UnitController::class,'getAllUnits']);
 
+    //customers
+    Route::get("customers",[CustomerController::class,'index']);
+    Route::post("customers",[CustomerController::class,'store']);
+    Route::patch("customers",[CustomerController::class,'update']);
+    Route::delete("customers/{id}",[CustomerController::class,'destroy']);
 });
 

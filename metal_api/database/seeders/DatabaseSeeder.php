@@ -10,6 +10,7 @@ use App\Models\ProductCategory;
 use App\Models\TransactionType;
 use App\Models\LedgerGroup;
 use App\Models\CustomerCategory;
+use App\Models\State;
 
 
 class DatabaseSeeder extends Seeder
@@ -83,6 +84,7 @@ class DatabaseSeeder extends Seeder
         CustomerCategory::create(['customer_category_name'=>'Best']);
         CustomerCategory::create(['customer_category_name'=>'Excellent']);
         State::insert([
+            ['state_code'=>0,'state_name'=>'Not applicable'],
             ['state_code'=>1,'state_name'=>'Jammu & Kashmir'],
             ['state_code'=>2,'state_name'=>'Himachal Pradesh'],
             ['state_code'=>3,'state_name'=>'Punjab'],
