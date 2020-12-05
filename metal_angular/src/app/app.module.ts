@@ -48,6 +48,7 @@ import { CashBookHomeComponent } from './pages/cash-book/cash-book-home/cash-boo
 import {NgSelectModule} from '@ng-select/ng-select';
 import { ProductComponent } from './pages/product/product.component';
 import {ShowHidePasswordModule} from 'ngx-show-hide-password';
+import { CustomerComponent } from './pages/customer/customer.component';
 
 
 
@@ -77,6 +78,7 @@ import {ShowHidePasswordModule} from 'ngx-show-hide-password';
     CashBookComponent,
     CashBookHomeComponent,
     ProductComponent,
+    CustomerComponent
   ],
     imports: [
         BrowserModule,

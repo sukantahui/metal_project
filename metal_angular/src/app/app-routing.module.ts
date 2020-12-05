@@ -15,6 +15,7 @@ import {LedgerComponent} from './pages/ledger/ledger.component';
 import {CashBookComponent} from "./pages/cash-book/cash-book.component";
 import {CashBookHomeComponent} from "./pages/cash-book/cash-book-home/cash-book-home.component";
 import {ProductComponent} from "./pages/product/product.component";
+import {CustomerComponent} from "./pages/customer/customer.component";
 
 
 // @ts-ignore
@@ -23,6 +24,7 @@ const routes: Routes = [
   {path: 'auth', component: AuthComponent},
   {path: 'owner', canActivate:  [AuthGuardService], component: OwnerComponent},
   {path: 'ledger', canActivate:  [AuthGuardService], component: LedgerComponent},
+  {path: 'customer', canActivate:  [AuthGuardService], component: CustomerComponent},
   {path: 'products', canActivate:  [AuthGuardService], component: ProductComponent},
   {path: 'transactions', canActivate:  [AuthGuardService], component: TransactionReportComponent},
   {path: 'incomeAndExpenditure', canActivate:  [AuthGuardService], component: IncomeExpenditureComponent,
