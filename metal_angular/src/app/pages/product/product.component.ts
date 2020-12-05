@@ -24,13 +24,14 @@ export class ProductComponent implements OnInit {
   productForm: FormGroup;
   productCategories: ProductCategory[] = [];
   units: Unit[] = [];
-  isProductUpdateAble: boolean = false;
+  isProductUpdateAble = false;
   validatorError: any = null;
-
+  isLoading = false;
   page: number;
   pageSize = 10;
   p = 1;
   currentPage = 1;
+  searchTerm: any;
   constructor(private productService: ProductService, private http: HttpClient) {
 
     this.productForm = new FormGroup({
@@ -47,8 +48,9 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.http.get('http://127.0.0.1:8000/api/dev/productCategories')
-      .subscribe((response: {success: number, data: ProductCategory[]}) =>{
+      .subscribe((response: {success: number, data: ProductCategory[]}) => {
       this.productCategories = response.data;
     });
 
@@ -59,6 +61,7 @@ export class ProductComponent implements OnInit {
 
     this.productService.getProductServiceListener().subscribe(response => {
       this.products = response;
+      this.isLoading = false;
     });
 
     this.products = this.productService.getProducts();
