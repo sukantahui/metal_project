@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\VendorController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -55,5 +56,8 @@ Route::group(array('prefix' => 'dev'), function() {
     Route::post("customers",[CustomerController::class,'store']);
     Route::patch("customers",[CustomerController::class,'update']);
     Route::delete("customers/{id}",[CustomerController::class,'destroy']);
+
+    //vendors
+    Route::post("vendors",[VendorController::class,'store']);
 });
 

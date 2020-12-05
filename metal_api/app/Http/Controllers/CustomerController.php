@@ -52,7 +52,7 @@ class CustomerController extends Controller
             $customer = new Ledger();
             $customer->ledger_name = $request->input('ledger_name');
             $customer->billing_name = $request->input('billing_name');
-            $customer->ledger_group_id = 15;
+            $customer->ledger_group_id = 16;
             $customer->customer_category_id = $request->input('customer_category_id');
             $customer->email = $request->input('email');
             $customer->mobile1 = $request->input('mobile1');
