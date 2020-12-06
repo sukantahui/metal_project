@@ -183,8 +183,10 @@ export class ProductComponent implements OnInit {
 
   saveCost(value, index){
 
-    const x = this.products[index];
+    const z = this.products[index];
+    const x = Object.assign({}, z);
     x.opening_balance = value ;
+
     Swal.fire({
       title: 'Confirmation',
       text: 'Do you want to update opening stock',
