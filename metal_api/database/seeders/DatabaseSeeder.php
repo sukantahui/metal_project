@@ -121,8 +121,6 @@ class DatabaseSeeder extends Seeder
             ['state_code'=>34,'state_name'=>'Pondicherry'],
             ['state_code'=>35,'state_name'=>'Andaman & Nicobar Islands'],
             ['state_code'=>36,'state_name'=>'Telangana']
-
         ]);
-
     }
 }
