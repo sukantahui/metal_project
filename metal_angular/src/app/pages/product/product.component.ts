@@ -32,6 +32,7 @@ export class ProductComponent implements OnInit {
   p = 1;
   currentPage = 1;
   searchTerm: any;
+  cost = 100;
   constructor(private productService: ProductService, private http: HttpClient) {
 
     this.productForm = new FormGroup({
@@ -113,7 +114,7 @@ export class ProductComponent implements OnInit {
   updateProduct() {
     this.validatorError = null;
     this.productService.updateProduct(this.productForm.value).subscribe((response) => {
-      if(response.success){
+      if (response.success){
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -178,5 +179,50 @@ export class ProductComponent implements OnInit {
           });
       }
     });
+  }
+
+  saveCost(value, index){
+
+    const x = this.products[index];
+    x.opening_balance = value ;
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Do you want to update opening stock',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Update It!',
+      allowEnterKey: false
+    }).then(result => {
+      if (result.isConfirmed){
+        this.productService.updateProduct(x).subscribe((response) => {
+          if (response.success){
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Opening Stock updated',
+              showConfirmButton: false,
+              timer: 1000
+            });
+          }else{
+            this.validatorError = response.error;
+            console.log(response.error);
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Validation error',
+              showConfirmButton: false,
+              timer: 3000
+            });
+          }
+
+        }, (error) => {
+
+        });
+      }
+    });
+
+
   }
 }

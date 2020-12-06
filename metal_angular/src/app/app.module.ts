@@ -49,6 +49,8 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import { ProductComponent } from './pages/product/product.component';
 import {ShowHidePasswordModule} from 'ngx-show-hide-password';
 import { CustomerComponent } from './pages/customer/customer.component';
+import {EditInputComponent} from './pages/product/edit-input/edit-input.component';
+
 
 
 
@@ -78,7 +80,8 @@ import { CustomerComponent } from './pages/customer/customer.component';
     CashBookComponent,
     CashBookHomeComponent,
     ProductComponent,
-    CustomerComponent
+    CustomerComponent,
+    EditInputComponent
   ],
     imports: [
         BrowserModule,

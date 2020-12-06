@@ -107,6 +107,7 @@
       </div>
     </mat-card>
 
+
 <!--    <pre>-->
 <!--      validatorError={{validatorError | json}}-->
 <!--    </pre>-->
@@ -142,7 +143,9 @@
             <td>{{product.product_name}}</td>
             <td>{{product.description}}</td>
             <td>{{product.category_name}}</td>
-            <td class="text-right">{{product.opening_balance}}</td>
+            <td class="text-right">
+              <app-edit-input [data]='product.opening_balance' (focusOut)='saveCost($event,indexOfElement)'></app-edit-input>
+            </td>
             <td>{{product.sale_unit_name}}</td>
             <td>
               <button mat-icon-button color="primary" aria-label="Edit Product">
@@ -168,6 +171,7 @@
                            directionLinks="true">
       </pagination-controls>
     </div>
+
 
   </div>
 </div>

@@ -22,7 +22,7 @@ class ProductController extends Controller
 
     public function getAllProducts(){
         $products = Product::select('products.id', 'products.product_name', 'products.description', 'product_categories.category_name',
-                    'products.product_category_id', 'products.purchase_unit_id', 'opening_balance'
+                    'products.product_category_id', 'products.purchase_unit_id', 'products.gst_rate', 'products.hsn_code' ,'opening_balance'
                     ,DB::raw('(select unit_name from units where units.id=products.purchase_unit_id) as purchase_unit_name'),'products.sale_unit_id'
                     ,DB::raw('(select unit_name from units where units.id=products.sale_unit_id) as sale_unit_name'))
                     ->join('product_categories','product_categories.id','products.product_category_id')
@@ -109,17 +109,18 @@ class ProductController extends Controller
 
 
     public function updateProduct(Request $request){
+
         $validator = Validator::make($request->all(), [
             'product_name' => 'required',
-            'description' => 'required|max:25',
+            'description' => 'max:50',
             'product_category_id' => 'required|exists:product_categories,id',
             'purchase_unit_id' => 'required',
             'sale_unit_id' => 'required',
 //             to use between
-            'gst_rate' => 'required|integer|between:1,18',
+//            'gst_rate' => 'integer|between:1,18',
 //              for greater than value
 //            'gst_rate' => 'required|integer|gt:1',
-            'hsn_code' => 'required',
+//            'hsn_code' => 'required',
         ]);
        if($validator->fails()){
            return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
