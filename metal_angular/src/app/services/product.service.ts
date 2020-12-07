@@ -26,6 +26,12 @@ export class ProductService {
     this.http.get('http://127.0.0.1:8000/api/dev/products')
       .subscribe((response: {success: number, data: Product[]}) => {
       this.products = response.data;
+        // for (let i = 0; i < this.products.length; i++) {
+        //   this.products[i].total = 2; // Add "total": 2 to all objects in array
+        // }
+      for (const value of this.products) {
+          value.isEditMode = false;
+        }
       this.productSubject.next([...this.products]);
     });
   }

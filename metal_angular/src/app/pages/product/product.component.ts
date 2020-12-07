@@ -4,6 +4,9 @@ import {Product} from '../../models/product.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { faFacebook} from '@fortawesome/free-brands-svg-icons';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+
 export interface Unit {
   id: number;
   unit_name: string;
@@ -20,6 +23,8 @@ export interface ProductCategory {
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit {
+  faFB = faFacebook;
+  faCheck = faCheck;
   products: Product[];
   productForm: FormGroup;
   productCategories: ProductCategory[] = [];

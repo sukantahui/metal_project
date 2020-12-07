@@ -137,6 +137,7 @@
             <th>Description</th>
             <th>Category</th>
             <th>Opening Balance</th>
+            <th>Opening Balance</th>
             <th>Unit</th>
             <th>Action</th>
           </tr>
@@ -148,9 +149,19 @@
             <td>{{product.description}}</td>
             <td>{{product.category_name}}</td>
             <td class="text-right">
-              <app-edit-input [data]='product.opening_balance' (focusOut)='saveCost($event,indexOfElement)'></app-edit-input>
+              <app-edit-input [data]='product' (focusOut)='saveCost($event,indexOfElement)'></app-edit-input>
             </td>
-            <td>{{product.sale_unit_name}}</td>
+            <td>
+              <span *ngIf='product.isEditMode'>
+                <input
+                  [(ngModel)]='product.opening_balance' class='cellInput'
+                  appAutofocus type='number'><button><fa-icon [icon]="faCheck"></fa-icon></button><button>F</button>
+              </span>
+              <a *ngIf="!product.isEditMode" routerLink="#" (click)='product.isEditMode=true'>{{product.opening_balance}}</a>
+            </td>
+            <td>
+              {{product.sale_unit_name}}
+            </td>
             <td>
               <button mat-icon-button color="primary" aria-label="Edit Product">
                 <mat-icon (click)="editProduct(product)">edit</mat-icon>

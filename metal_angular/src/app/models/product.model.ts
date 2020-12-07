@@ -14,5 +14,6 @@ export class Product{
   gst_rate?: number;
   hsn_code?: number;
   opening_balance?: number;
+  isEditMode?: boolean;
 }
 

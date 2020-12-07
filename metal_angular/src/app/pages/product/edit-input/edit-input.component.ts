@@ -6,7 +6,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   styleUrls: ['./edit-input.component.scss']
 })
 export class EditInputComponent implements OnInit {
-  @Input() data: number;
+  @Input() data: any;
   @Output() focusOut: EventEmitter<number> = new EventEmitter<number>();
   currency = '$';
   editMode = false;
@@ -15,6 +15,10 @@ export class EditInputComponent implements OnInit {
   ngOnInit(): void {
   }
   onFocusOut() {
-    this.focusOut.emit(this.data);
+    this.focusOut.emit(this.data.opening_balance);
+  }
+
+  test() {
+    alert("sdfgs");
   }
 }

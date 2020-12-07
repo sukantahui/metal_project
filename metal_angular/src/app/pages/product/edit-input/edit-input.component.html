@@ -1,7 +1,7 @@
-<div *ngIf='!editMode' (click)='editMode=true' class='cell'>{{ data }}</div>
+<div *ngIf='!editMode' (click)='editMode=true' class='cell'>{{ data.opening_balance }}</div>
 <input
   *ngIf='editMode'
   (focusout)="onFocusOut()"
-  (keydown.enter)='$event.target.blur()'
-  [(ngModel)]='data' class='cellInput'
-  appAutofocus type='number' (keydown.enter)='$event.target.blur()' (focusout)="editMode=false">
+
+  [(ngModel)]='data.opening_balance' class='cellInput'
+  appAutofocus type='number' (keydown.enter)='test()' (focusout)="editMode=false">
