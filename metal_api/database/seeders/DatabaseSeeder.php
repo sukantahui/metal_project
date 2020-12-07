@@ -47,6 +47,7 @@ class DatabaseSeeder extends Seeder
         // Product has separate file
         // php artisan db:seed --class=ProductSeeder
 
+
         //Transaction types
         TransactionType::create(['transaction_name'=>'Dr.','formal_name'=>'Debit','transaction_type_value'=>1]);
         TransactionType::create(['transaction_name'=>'Cr.','formal_name'=>'Credit','transaction_type_value'=>-1]);

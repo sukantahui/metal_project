@@ -32,7 +32,7 @@ class VendorController extends Controller
             $customer->ledger_name = $request->input('ledger_name');
             $customer->billing_name = $request->input('billing_name');
             $customer->ledger_group_id = 15;
-            $customer->customer_category_id =0;
+            $customer->customer_category_id =1;
             $customer->email = $request->input('email');
             $customer->mobile1 = $request->input('mobile1');
             $customer->mobile2 = $request->input('mobile2');
