@@ -151,11 +151,17 @@
             <td class="text-right">
               <app-edit-input [data]='product' (focusOut)='saveCost($event,indexOfElement)'></app-edit-input>
             </td>
-            <td>
+            <td class="text-right">
               <span *ngIf='product.isEditMode'>
                 <input
                   [(ngModel)]='product.opening_balance' class='cellInput'
-                  appAutofocus type='number'><button><fa-icon [icon]="faCheck"></fa-icon></button><button>F</button>
+                  appAutofocus type='number'>
+                  <button  style="padding: 3px; margin-right: 10px; margin-left: 10px; background-color: #c4c6ca; height: 30px; width: 30px; border-radius: 5px;">
+                    <fa-icon [icon]="faCheck"></fa-icon>
+                  </button>
+                  <a routerLink="#">
+                    <fa-icon [icon]="faTimes"></fa-icon>
+                  </a>
               </span>
               <a *ngIf="!product.isEditMode" routerLink="#" (click)='product.isEditMode=true'>{{product.opening_balance}}</a>
             </td>

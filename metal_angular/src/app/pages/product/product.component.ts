@@ -6,6 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { faFacebook} from '@fortawesome/free-brands-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faTimes} from '@fortawesome/free-solid-svg-icons';
 
 export interface Unit {
   id: number;
@@ -24,6 +25,7 @@ export interface ProductCategory {
 })
 export class ProductComponent implements OnInit {
   faFB = faFacebook;
+  faTimes = faTimes;
   faCheck = faCheck;
   products: Product[];
   productForm: FormGroup;
