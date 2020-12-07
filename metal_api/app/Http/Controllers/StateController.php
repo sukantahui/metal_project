@@ -15,6 +15,8 @@ class StateController extends Controller
     public function index()
     {
         //
+        $states = State::get();
+        return response()->json(['success'=>1,'data'=>$states], 200,[],JSON_NUMERIC_CHECK);
     }
 
     /**

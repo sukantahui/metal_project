@@ -15,6 +15,8 @@ class TransactionTypeController extends Controller
     public function index()
     {
         //
+        $transactionTypes = TransactionType::get();
+        return response()->json(['success'=>1,'data'=>$transactionTypes], 200,[],JSON_NUMERIC_CHECK);
     }
 
     /**

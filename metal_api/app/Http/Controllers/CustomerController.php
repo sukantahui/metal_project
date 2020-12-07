@@ -57,9 +57,9 @@ class CustomerController extends Controller
             $customer->email = $request->input('email');
             $customer->mobile1 = $request->input('mobile1');
             $customer->mobile2 = $request->input('mobile2');
-            $customer->branch = $request->input('branch');
-            $customer->account_number = $request->input('account_number');
-            $customer->ifsc = $request->input('ifsc');
+//            $customer->branch = $request->input('branch');
+//            $customer->account_number = $request->input('account_number');
+//            $customer->ifsc = $request->input('ifsc');
             $customer->address1 = $request->input('address1');
             $customer->address2 = $request->input('address2');
             $customer->state_id = $request->input('state_id');
@@ -132,9 +132,9 @@ class CustomerController extends Controller
             $customer->email = $request->input('email');
             $customer->mobile1 = $request->input('mobile1');
             $customer->mobile2 = $request->input('mobile2');
-            $customer->branch = $request->input('branch');
-            $customer->account_number = $request->input('account_number');
-            $customer->ifsc = $request->input('ifsc');
+//            $customer->branch = $request->input('branch');
+//            $customer->account_number = $request->input('account_number');
+//            $customer->ifsc = $request->input('ifsc');
             $customer->address1 = $request->input('address1');
             $customer->address2 = $request->input('address2');
             $customer->state_id = $request->input('state_id');

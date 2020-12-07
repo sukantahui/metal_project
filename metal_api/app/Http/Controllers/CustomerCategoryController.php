@@ -15,6 +15,9 @@ class CustomerCategoryController extends Controller
     public function index()
     {
         //
+        $customerCategories = CustomerCategory::get();
+        return response()->json(['success'=>1,'data'=>$customerCategories], 200,[],JSON_NUMERIC_CHECK);
+
     }
 
     /**

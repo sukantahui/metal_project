@@ -8,6 +8,9 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\CustomerCategoryController;
+use App\Http\Controllers\StateController;
+use App\Http\Controllers\TransactionTypeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -56,8 +59,13 @@ Route::group(array('prefix' => 'dev'), function() {
     Route::post("customers",[CustomerController::class,'store']);
     Route::patch("customers",[CustomerController::class,'update']);
     Route::delete("customers/{id}",[CustomerController::class,'destroy']);
+    Route::get("customerCategories",[CustomerCategoryController::class,'index']);
 
     //vendors
     Route::post("vendors",[VendorController::class,'store']);
+
+    //others
+    Route::get("states",[StateController::class,'index']);
+    Route::get("transactionTypes",[TransactionTypeController::class,'index']);
 });
 
