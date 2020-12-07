@@ -64,4 +64,7 @@ export class CustomerComponent implements OnInit {
     });
   }
 
+  saveCustomer() {
+    console.log('Saving customer');
+  }
 }
