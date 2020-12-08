@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { GlobalVariable } from '../shared/global';
-import {Customer} from "../models/customer.model";
-import {Subject, throwError} from "rxjs";
-import {catchError, tap} from "rxjs/operators";
+import {Customer} from '../models/customer.model';
+import {Subject, throwError} from 'rxjs';
+import {catchError, tap} from 'rxjs/operators';
 export interface CustomerResponseData {
   success: number;
   data: Customer[];
@@ -21,6 +21,7 @@ export class CustomerService {
     this.http.get(GlobalVariable.BASE_API_URL_DEV + '/customers')
       .subscribe((response: CustomerResponseData) => {
           this.customers = response.data;
+          console.log(this.customers);
           this.customerSubject.next([...this.customers]);
     });
   }
@@ -32,7 +33,7 @@ export class CustomerService {
     return this.customerSubject.asObservable();
   }
   saveCustomer(customer){
-    return this.http.post(GlobalVariable.BASE_API_URL_DEV + '/customers',customer)
+    return this.http.post(GlobalVariable.BASE_API_URL_DEV + '/customers', customer)
       .pipe(catchError(this.serverError), tap((response: {success: number, data: Customer}) => {
         if (response.success === 1){
           this.customers.unshift(response.data);

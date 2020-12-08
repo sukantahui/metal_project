@@ -74,7 +74,7 @@ export class CustomerComponent implements OnInit {
   }
 
   saveCustomer() {
-    this.customerService.saveCustomer(this.customerForm.value).subscribe(response=> {
+    this.customerService.saveCustomer(this.customerForm.value).subscribe(response => {
       console.log(response);
     });
   }
