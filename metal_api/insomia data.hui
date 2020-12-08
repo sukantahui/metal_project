@@ -1,0 +1,17 @@
+//vendors post
+{
+    "ledger_name" : "Ashok Sinha Behala",
+    "billing_name" : "Ashok Sinha",
+    "email" : "ashoksinha@gmail.com",
+    "mobile1": "9865789543" ,
+    "address1": "Behala" ,
+    "address2": "Behala" ,
+    "state_id": "2" ,
+    "address1": "Behala" ,
+    "po": "Behala" ,
+    "area": "Kolkata" ,
+    "city": "Kolkata" ,
+    "pin": "700002" ,
+    "transaction_type_id": "2" ,
+    "opening_balance": "200"
+}

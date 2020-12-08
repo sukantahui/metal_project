@@ -62,7 +62,10 @@ Route::group(array('prefix' => 'dev'), function() {
     Route::get("customerCategories",[CustomerCategoryController::class,'index']);
 
     //vendors
+    Route::get("vendors",[VendorController::class,'index']);
     Route::post("vendors",[VendorController::class,'store']);
+    Route::patch("vendors",[VendorController::class,'updateVendor']);
+    Route::patch("vendors/{id}",[VendorController::class,'updateVendorById']);
 
     //others
     Route::get("states",[StateController::class,'index']);

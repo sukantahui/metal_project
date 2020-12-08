@@ -27,4 +27,8 @@ class Ledger extends Model
     private $pin;
     private $transaction_type_id;
     private $opening_balance;
+    protected $hidden = [
+        "inforce","created_at","updated_at",'password', 'remember_token',
+    ];
+    protected $guarded = ['id'];
 }
