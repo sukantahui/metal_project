@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
+import {CustomerService} from "../../services/customer.service";
+import {Customer} from "../../models/customer.model";
 
 
 export interface CustomerCategory {
@@ -27,9 +29,10 @@ export class CustomerComponent implements OnInit {
 
   customerForm: FormGroup;
   customerCategories: CustomerCategory[]=[];
+  customers: Customer[]=[];
   states: State[]=[];
   transactionTypes: TransactionType[]=[];
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private customerService: CustomerService) {
     this.customerForm = new FormGroup({
       id: new FormControl(null),
       ledger_name: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.minLength(4)]),
@@ -62,9 +65,17 @@ export class CustomerComponent implements OnInit {
     this.http.get('http://127.0.0.1:8000/api/dev/transactionTypes').subscribe((response: {success: number,data: TransactionType[]}) => {
       this.transactionTypes = response.data;
     });
+
+    this.customerService.getCustomerServiceListener().subscribe(response =>{
+      console.log(response)
+      this.customers = response;
+    });
+    this.customers = this.customerService.getCustomers();
   }
 
   saveCustomer() {
-    console.log('Saving customer');
+    this.customerService.saveCustomer(this.customerForm.value).subscribe(response=> {
+      console.log(response);
+    });
   }
 }
