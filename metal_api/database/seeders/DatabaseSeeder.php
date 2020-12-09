@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Unit;
+use App\Models\VoucherType;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\UserType;
@@ -122,6 +123,17 @@ class DatabaseSeeder extends Seeder
             ['state_code'=>34,'state_name'=>'Pondicherry'],
             ['state_code'=>35,'state_name'=>'Andaman & Nicobar Islands'],
             ['state_code'=>36,'state_name'=>'Telangana']
+        ]);
+
+        VoucherType::insert([
+            ['voucher_type_name'=>'Sales Voucher'],              //1
+            ['voucher_type_name'=>'Purchase Voucher'],           //2
+            ['voucher_type_name'=>'Payment Voucher'],            //3
+            ['voucher_type_name'=>'Receipt Voucher'],            //4
+            ['voucher_type_name'=>'Contra Voucher'],             //5
+            ['voucher_type_name'=>'Journal Voucher'],            //6
+            ['voucher_type_name'=>'Credit Note Voucher'],        //7
+            ['voucher_type_name'=>'Debit Note Voucher']          //8
         ]);
     }
 }
