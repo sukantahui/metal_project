@@ -134,11 +134,19 @@
     <div id="customer-list-div">
       <table class="table table-responsive">
         <thead>
-
+          <tr>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>Address</th>
+            <th>opening Balance</th>
+          </tr>
         </thead>
         <tbody>
-          <tr>
-            <td></td>
+          <tr *ngFor="let customer of customers">
+            <td>{{customer.ledger_name}}</td>
+            <td>{{customer.mobile1}}</td>
+            <td>{{customer.address1}}</td>
+            <td>{{customer.opening_balance}}</td>
           </tr>
         </tbody>
       </table>
