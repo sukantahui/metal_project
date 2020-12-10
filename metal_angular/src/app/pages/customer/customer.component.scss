@@ -22,7 +22,7 @@ mat-card-content{
   background: linear-gradient(90deg, rgba(247, 253, 228, 0.9) 0%, rgba(251, 254, 255, 0.7) 35%, rgba(247, 253, 228, 0.6) 100%);
 }
 
-#customer-table-div{
+#customer-list{
   padding: 5px;
   border: 2px solid wheat;
   border-radius: 5px;
@@ -34,4 +34,20 @@ mat-card-content{
 
 table td, table th{
   vertical-align: middle !important;
+}
+
+.delete {
+  color: darkred;
+  &:hover {
+    color: #183860;
+    cursor: pointer;
+  }
+}
+
+.edit {
+  color: blue;
+  &:hover {
+    color: #e2008f;
+    cursor: pointer;
+  }
 }

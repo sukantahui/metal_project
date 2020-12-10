@@ -10,7 +10,7 @@
           <!--          product name-->
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <mat-form-field fxFlex="50">
-              <mat-label>Customer Name</mat-label>
+              <mat-label><fa-icon [icon]="faUserAlt"></fa-icon>&nbsp;Customer Name</mat-label>
               <input type="text" matInput formControlName="ledger_name" placeholder="Customer Name">
               <mat-hint>Enter any unique customer name</mat-hint>
 <!--              <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0"
@@ -42,17 +42,17 @@
           </div>
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <mat-form-field fxFlex="30">
-              <mat-label>Email</mat-label>
+              <mat-label><fa-icon [icon]="faEnvelope"></fa-icon>&nbsp;Email</mat-label>
               <input type="email" matInput formControlName="email" placeholder="Email">
             </mat-form-field>
 
             <mat-form-field fxFlex="30">
-              <mat-label>Mobile1</mat-label>
+              <mat-label><fa-icon [icon]="faMobileAlt"></fa-icon>&nbsp;Mobile1</mat-label>
               <input type="text" matInput formControlName="mobile1" placeholder="mobile1">
             </mat-form-field>
 
             <mat-form-field fxFlex="30">
-              <mat-label>Mobile2</mat-label>
+              <mat-label><fa-icon [icon]="faMobile"></fa-icon>&nbsp;Mobile2</mat-label>
               <input type="text" matInput formControlName="mobile2" placeholder="mobile2">
             </mat-form-field>
           </div>
@@ -135,16 +135,15 @@
   <div fxFlex="50" id="right-div">
     <mat-card class="example-card">
       <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Shiba Inu</mat-card-title>
-        <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+        <mat-card-title><fa-icon [icon]="faUserAlt"></fa-icon>&nbsp;Customer List</mat-card-title>
+        <mat-card-subtitle></mat-card-subtitle>
       </mat-card-header>
-          Customers
+
       <mat-card-content>
-        <div id="customer-table-div">
-          <table class="table table-bordered table-responsive customer-list" width="100%">
+        <table class="table table-bordered table-responsive" id="customer-list" width="100%">
             <thead>
             <tr>
+              <th>SL</th>
               <th>Name</th>
               <th>Mobile</th>
               <th>Address</th>
@@ -153,25 +152,36 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let customer of customers">
+            <tr *ngFor="let customer of customers | paginate: { itemsPerPage: pageSize, currentPage: p };let indexOfElement=index">
+              <td>{{(p-1)*10+indexOfElement+1}}</td>
               <td>{{customer.ledger_name}}</td>
               <td>{{customer.mobile1}}</td>
               <td>{{customer.address1}}</td>
               <td style="white-space: nowrap;" class="text-right">{{customer.opening_balance | currency:"&#8377; "}}</td>
               <td>
-                <a [routerLink]=""><mat-icon (click)="populateCustomerForm(customer)">edit</mat-icon></a>
+                <span  (click)="populateCustomerForm(customer)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
               </td>
               <td>
-                <a [routerLink]=""><mat-icon (click)="deleteCustomer(customer.id)">delete</mat-icon></a>
+                <span (click)="deleteCustomer(customer.id)"><fa-icon class="delete" [icon]="faTrashAlt"></fa-icon></span>
               </td>
             </tr>
             </tbody>
           </table>
-        </div>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
+        <div fxLayout.xs="column" fxLayout="column" fxFlexFill>
+          <!--    https://www.npmjs.com/package/ngx-pagination-->
+          <!--    npm i ngx-pagination-->
+          <pagination-controls (pageChange)="p = $event"
+                               responsive="true"
+                               autoHide="true"
+                               previousLabel="আগে"
+                               nextLabel="পরে"
+                               screenReaderPaginationLabel="Pagination"
+                               screenReaderPageLabel="page"
+                               directionLinks="true">
+          </pagination-controls>
+        </div>
       </mat-card-actions>
     </mat-card>
 

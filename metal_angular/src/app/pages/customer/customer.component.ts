@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
-import {CustomerService} from "../../services/customer.service";
-import {Customer} from "../../models/customer.model";
-import Swal from "sweetalert2";
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
+import {CustomerService} from '../../services/customer.service';
+import {Customer} from '../../models/customer.model';
+import Swal from 'sweetalert2';
+import { faTrashAlt} from '@fortawesome/free-regular-svg-icons';
+import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUserAlt, faEnvelope, faMobileAlt, faMobile } from '@fortawesome/free-solid-svg-icons';
+
 
 
 export interface CustomerCategory {
@@ -27,12 +32,25 @@ export interface TransactionType {
   styleUrls: ['./customer.component.scss']
 })
 export class CustomerComponent implements OnInit {
+  faTrashAlt = faTrashAlt;
+  faUserEdit = faUserEdit;
+  faUserCircle = faUserCircle;
+  faUserAlt = faUserAlt;
+  faEnvelope = faEnvelope;
+  faMobileAlt = faMobileAlt;
+  faMobile = faMobile;
+
+  page: number;
+  pageSize = 10;
+  p = 1;
+  currentPage = 1;
+  searchTerm: any;
 
   customerForm: FormGroup;
-  customerCategories: CustomerCategory[]=[];
-  customers: Customer[]=[];
-  states: State[]=[];
-  transactionTypes: TransactionType[]=[];
+  customerCategories: CustomerCategory[] = [];
+  customers: Customer[] = [];
+  states: State[] = [];
+  transactionTypes: TransactionType[] = [];
   validatorError: any = null;
   constructor(private http: HttpClient, private customerService: CustomerService) {
     this.customerForm = new FormGroup({
