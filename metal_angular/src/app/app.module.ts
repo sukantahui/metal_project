@@ -50,6 +50,7 @@ import { ProductComponent } from './pages/product/product.component';
 import {ShowHidePasswordModule} from 'ngx-show-hide-password';
 import { CustomerComponent } from './pages/customer/customer.component';
 import {EditInputComponent} from './pages/product/edit-input/edit-input.component';
+import { VendorComponent } from './pages/vendor/vendor.component';
 
 
 
@@ -81,7 +82,8 @@ import {EditInputComponent} from './pages/product/edit-input/edit-input.componen
     CashBookHomeComponent,
     ProductComponent,
     CustomerComponent,
-    EditInputComponent
+    EditInputComponent,
+    VendorComponent
   ],
     imports: [
         BrowserModule,

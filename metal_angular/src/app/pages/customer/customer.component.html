@@ -13,11 +13,12 @@
               <mat-label>Customer Name</mat-label>
               <input type="text" matInput formControlName="ledger_name" placeholder="Customer Name">
               <mat-hint>Enter any unique customer name</mat-hint>
-<!--              <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" *ngIf="!productForm.get('product_name').valid && productForm.get('product_name').touched">-->
+<!--              <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0"
+*ngIf="!customerForm.get('ledger_name').valid && customerForm.get('ledger_name').touched">-->
 <!--                <mat-error *ngIf="productForm.get('product_name').errors['required']">Product is required</mat-error>-->
 <!--                <mat-error *ngIf="productForm.get('product_name').errors['minlength']">Minimum length of product is {{productForm.get('product_name').errors.minlength.requiredLength}}</mat-error>-->
 <!--                <mat-error *ngIf="productForm.get('product_name').errors['maxlength']">Maximum length of product is {{productForm.get('product_name').errors.maxlength.requiredLength}}</mat-error>-->
-<!--                <mat-error *ngIf="validatorError!=null && validatorError.product_name">{{validatorError.product_name}}</mat-error>-->
+<!--                <mat-error *ngIf="validatorError!=null && validatorError.ledger_name">{{validatorError.ledger_name[0]}}</mat-error>-->
 <!--              </div>-->
             </mat-form-field>
           </div>
@@ -123,11 +124,13 @@
         </form>
       </mat-card-content>
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
-        <button (click)="saveCustomer()" mat-button>Save</button>
-        <button >Update</button>
+        <button (click)="onSubmit()" mat-button>Save</button>
+        <button (click)="onUpdate()">Update</button>
         <button mat-stroked-button>clear</button>
       </div>
     </mat-card>
+
+<!--    <pre>validatorError = {{validatorError | json}}</pre>-->
   </div>
   <div fxFlex="50" id="right-div">
     <H2>This is right div</H2>
@@ -139,6 +142,7 @@
             <th>Mobile</th>
             <th>Address</th>
             <th>opening Balance</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -147,6 +151,10 @@
             <td>{{customer.mobile1}}</td>
             <td>{{customer.address1}}</td>
             <td>{{customer.opening_balance}}</td>
+            <td>
+              <a [routerLink]=""><mat-icon (click)="populateCustomerForm(customer)">edit</mat-icon></a>
+              <a [routerLink]=""><mat-icon (click)="deleteCustomer(customer.id)">delete</mat-icon></a>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -4,9 +4,17 @@ import { GlobalVariable } from '../shared/global';
 import {Customer} from '../models/customer.model';
 import {Subject, throwError} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
+
+export interface ValidatorErrorResponse {
+  ledger_name?: string[];
+  billing_name?: string[];
+  email?: string[];
+}
+
 export interface CustomerResponseData {
   success: number;
-  data: Customer[];
+  data: Customer;
+  error: ValidatorErrorResponse;
 }
 
 @Injectable({
@@ -19,9 +27,8 @@ export class CustomerService {
 
   constructor(private http: HttpClient) {
     this.http.get(GlobalVariable.BASE_API_URL_DEV + '/customers')
-      .subscribe((response: CustomerResponseData) => {
+      .subscribe((response: {success:number,data:Customer[]}) => {
           this.customers = response.data;
-          console.log(this.customers);
           this.customerSubject.next([...this.customers]);
     });
   }
@@ -34,13 +41,34 @@ export class CustomerService {
   }
   saveCustomer(customer){
     return this.http.post(GlobalVariable.BASE_API_URL_DEV + '/customers', customer)
-      .pipe(catchError(this.serverError), tap((response: {success: number, data: Customer}) => {
+      .pipe(catchError(this.serverError), tap((response: CustomerResponseData) => {
         if (response.success === 1){
           this.customers.unshift(response.data);
           this.customerSubject.next([...this.customers]);
         }
       }));
+  }
 
+  updateCustomer(customer){
+    return this.http.patch(GlobalVariable.BASE_API_URL_DEV + '/customers', customer)
+      .pipe(catchError(this.serverError), tap((response: CustomerResponseData) => {
+        if (response.success === 1){
+          const index = this.customers.findIndex(x => x.id === customer.id);
+          this.customers[index] = response.data;
+          this.customerSubject.next([...this.customers]);
+        }
+      }));
+  }
+
+  deleteCustomer(CustomerId){
+    return this.http.delete(GlobalVariable.BASE_API_URL_DEV + '/customers/'+CustomerId)
+      .pipe(catchError(this.serverError), tap((response: {success:boolean, id:number}) => {
+        if (response.success){
+          const index = this.customers.findIndex(x => x.id === CustomerId);
+          this.customers.splice(index,1);
+          this.customerSubject.next([...this.customers]);
+        }
+      }));
   }
 
   private serverError(err: any) {

@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {CustomerService} from "../../services/customer.service";
 import {Customer} from "../../models/customer.model";
+import Swal from "sweetalert2";
 
 
 export interface CustomerCategory {
@@ -32,6 +33,7 @@ export class CustomerComponent implements OnInit {
   customers: Customer[]=[];
   states: State[]=[];
   transactionTypes: TransactionType[]=[];
+  validatorError: any = null;
   constructor(private http: HttpClient, private customerService: CustomerService) {
     this.customerForm = new FormGroup({
       id: new FormControl(null),
@@ -67,15 +69,116 @@ export class CustomerComponent implements OnInit {
     });
 
     this.customerService.getCustomerServiceListener().subscribe(response =>{
-      console.log(response)
       this.customers = response;
     });
     this.customers = this.customerService.getCustomers();
   }
 
-  saveCustomer() {
-    this.customerService.saveCustomer(this.customerForm.value).subscribe(response => {
-      console.log(response);
+  onSubmit() {
+    this.validatorError = null;
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Do you sure to add this customer',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Create It!'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.customerService.saveCustomer(this.customerForm.value).subscribe(response => {
+          if(response.success==1){
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Product saved',
+              showConfirmButton: false,
+              timer: 1000
+            });
+          }else{
+            this.validatorError = response.error;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Validation error',
+              showConfirmButton: false,
+              timer: 3000
+            });
+          }
+        });
+      }
+    })
+  }
+
+
+  populateCustomerForm(customer: Customer) {
+    this.customerForm.patchValue(customer);
+  }
+
+  onUpdate() {
+    this.validatorError = null;
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Do you sure to update this customer',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Create It!'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.customerService.updateCustomer(this.customerForm.value).subscribe(response => {
+          if(response.success==1){
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Customer updated',
+              showConfirmButton: false,
+              timer: 1000
+            });
+          }else{
+            this.validatorError = response.error;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Validation error',
+              showConfirmButton: false,
+              timer: 3000
+            });
+          }
+        });
+      }
+    })
+  }
+
+  deleteCustomer(CustomerId) {
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Are you sure to delete this customer',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Create It!'
+    }).then((result) => {
+      if (result.isConfirmed){
+        this.customerService.deleteCustomer(CustomerId)
+          .subscribe(response  => {
+            if (response.success){
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Customer deleted',
+                showConfirmButton: false,
+                timer: 1000
+              });
+            }
+
+          }, (error) => {
+            // when error occured
+            console.log(error);
+          });
+      }
     });
   }
 }
