@@ -133,35 +133,48 @@
 <!--    <pre>validatorError = {{validatorError | json}}</pre>-->
   </div>
   <div fxFlex="50" id="right-div">
-    <H2>This is right div</H2>
-    <div id="customer-list-div">
-      <table class="table table-responsive">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Mobile</th>
-            <th>Address</th>
-            <th>opening Balance</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let customer of customers">
-            <td>{{customer.ledger_name}}</td>
-            <td>{{customer.mobile1}}</td>
-            <td>{{customer.address1}}</td>
-            <td>{{customer.opening_balance}}</td>
-            <td>
-              <a [routerLink]=""><mat-icon (click)="populateCustomerForm(customer)">edit</mat-icon></a>
-              <a [routerLink]=""><mat-icon (click)="deleteCustomer(customer.id)">delete</mat-icon></a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <pre>
-      customers = {{customers|json}}
-<!--      {{customerForm.value | json}}-->
-    </pre>
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>Shiba Inu</mat-card-title>
+        <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+      </mat-card-header>
+          Customers
+      <mat-card-content>
+        <div id="customer-table-div">
+          <table class="table table-bordered table-responsive customer-list" width="100%">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>Mobile</th>
+              <th>Address</th>
+              <th>Opening</th>
+              <th class="text-center" colspan="2">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let customer of customers">
+              <td>{{customer.ledger_name}}</td>
+              <td>{{customer.mobile1}}</td>
+              <td>{{customer.address1}}</td>
+              <td style="white-space: nowrap;" class="text-right">{{customer.opening_balance | currency:"&#8377; "}}</td>
+              <td>
+                <a [routerLink]=""><mat-icon (click)="populateCustomerForm(customer)">edit</mat-icon></a>
+              </td>
+              <td>
+                <a [routerLink]=""><mat-icon (click)="deleteCustomer(customer.id)">delete</mat-icon></a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button>LIKE</button>
+        <button mat-button>SHARE</button>
+      </mat-card-actions>
+    </mat-card>
+
+
   </div>
 </div>
