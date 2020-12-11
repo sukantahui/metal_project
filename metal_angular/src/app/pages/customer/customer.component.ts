@@ -41,7 +41,7 @@ export class CustomerComponent implements OnInit {
   faMobile = faMobile;
 
   page: number;
-  pageSize = 10;
+  pageSize = 15;
   p = 1;
   currentPage = 1;
   searchTerm: any;
@@ -198,5 +198,11 @@ export class CustomerComponent implements OnInit {
           });
       }
     });
+  }
+  clearCustomerForm() {
+    this.customerForm.reset();
+    this.customerForm.patchValue({customer_category_id: 2, state_id: 20, transaction_type_id: 1, opening_balance: 0});
+    this.validatorError = null;
+
   }
 }

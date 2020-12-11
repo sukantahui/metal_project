@@ -107,8 +107,7 @@ class CustomerController extends Controller
         $ledger_id = $request->input('id');
         $validator = Validator::make($request->all(),[
             'ledger_name' => 'required|unique:ledgers,ledger_name,'.$ledger_id,
-            'billing_name' => 'required',
-            'email' => 'email',
+            'billing_name' => 'required'
         ]);
         if($validator->fails()){
             return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);

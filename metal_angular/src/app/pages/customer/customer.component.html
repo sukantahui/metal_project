@@ -116,7 +116,7 @@
 
             <mat-form-field fxFlex="20">
               <mat-label>Opening balance</mat-label>
-              <input type="text" matInput formControlName="opening_balance" placeholder="Opening balance">
+              <input type="text" class="text-right" matInput formControlName="opening_balance" placeholder="Opening balance">
             </mat-form-field>
           </div>
 
@@ -124,9 +124,9 @@
         </form>
       </mat-card-content>
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
-        <button (click)="onSubmit()" mat-button>Save</button>
-        <button (click)="onUpdate()">Update</button>
-        <button mat-stroked-button>clear</button>
+        <button  (click)="onSubmit()" mat-button>Save</button>
+        <button (click)="onUpdate()" mat-button>Update</button>
+        <button (click)="clearCustomerForm()" mat-stroked-button>clear</button>
       </div>
     </mat-card>
 
@@ -140,6 +140,9 @@
       </mat-card-header>
 
       <mat-card-content>
+        <pre>
+          {{customerForm.valid | json}}
+        </pre>
         <table class="table table-bordered table-responsive" id="customer-list" width="100%">
             <thead>
             <tr>
