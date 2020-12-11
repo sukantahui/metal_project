@@ -3,6 +3,8 @@ import {AuthService} from '../../services/auth.service';
 import {Subscription} from 'rxjs';
 import {User} from '../../models/user.model';
 import {Router} from '@angular/router';
+import { faUserEdit, faUserAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-header',
@@ -17,6 +19,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isManager = false;
   isWorker = false;
   router: Router;
+  faUserEdit = faUserEdit;
+  faUserAlt = faUserAlt;
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {

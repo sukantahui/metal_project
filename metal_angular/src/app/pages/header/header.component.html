@@ -39,9 +39,8 @@
         <button mat-menu-item [matMenuTriggerFor]="menuLedger">Master</button>
       </mat-list-item>
       <mat-menu #menuLedger="matMenu" [overlapTrigger]="false">
-        <button mat-menu-item [routerLink]="['/ledger']" routerLinkActive="MyActiveMenu"><mat-icon>send</mat-icon>Ledger</button>
-        <button mat-menu-item [routerLink]="['/customer']" routerLinkActive="MyActiveMenu"><mat-icon>send</mat-icon>Customer</button>
-        <button mat-menu-item [routerLink]="['/vendor']" routerLinkActive="MyActiveMenu"><mat-icon>send</mat-icon>Vendor</button>
+        <button mat-menu-item [routerLink]="['/customer']" routerLinkActive="MyActiveMenu"><fa-icon class="delete" [icon]="faUserEdit"></fa-icon>&nbsp;Customer</button>
+        <button mat-menu-item [routerLink]="['/vendor']" routerLinkActive="MyActiveMenu"><fa-icon class="delete" [icon]="faUserAlt"></fa-icon>&nbsp;Vendor</button>
         <button mat-menu-item [routerLink]="['/products']" routerLinkActive="MyActiveMenu"><mat-icon>send</mat-icon>Products</button>
       </mat-menu>
 
