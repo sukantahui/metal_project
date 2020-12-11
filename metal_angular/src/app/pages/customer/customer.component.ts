@@ -52,10 +52,12 @@ export class CustomerComponent implements OnInit {
   states: State[] = [];
   transactionTypes: TransactionType[] = [];
   validatorError: any = null;
+  updateableCustomerID = 0;
+
   constructor(private http: HttpClient, private customerService: CustomerService) {
     this.customerForm = new FormGroup({
       id: new FormControl(null),
-      ledger_name: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.minLength(4)]),
+      ledger_name: new FormControl(null, [Validators.required, Validators.maxLength(25), Validators.minLength(4)]),
       billing_name: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.minLength(4)]),
       customer_category_id: new FormControl(2),
       email: new FormControl(null),
@@ -103,9 +105,9 @@ export class CustomerComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, Create It!'
     }).then((result) => {
-      if(result.isConfirmed){
+      if (result.isConfirmed){
         this.customerService.saveCustomer(this.customerForm.value).subscribe(response => {
-          if(response.success==1){
+          if (response.success === 1){
             Swal.fire({
               position: 'top-end',
               icon: 'success',
@@ -125,12 +127,13 @@ export class CustomerComponent implements OnInit {
           }
         });
       }
-    })
+    });
   }
 
 
   populateCustomerForm(customer: Customer) {
     this.customerForm.patchValue(customer);
+    this.updateableCustomerID = customer.id;
   }
 
   onUpdate() {
@@ -144,9 +147,10 @@ export class CustomerComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, Create It!'
     }).then((result) => {
-      if(result.isConfirmed){
+      if (result.isConfirmed){
         this.customerService.updateCustomer(this.customerForm.value).subscribe(response => {
-          if(response.success==1){
+          if (response.success === 1){
+            this.updateableCustomerID = 0;
             Swal.fire({
               position: 'top-end',
               icon: 'success',
@@ -166,7 +170,7 @@ export class CustomerComponent implements OnInit {
           }
         });
       }
-    })
+    });
   }
 
   deleteCustomer(CustomerId) {
@@ -203,6 +207,6 @@ export class CustomerComponent implements OnInit {
     this.customerForm.reset();
     this.customerForm.patchValue({customer_category_id: 2, state_id: 20, transaction_type_id: 1, opening_balance: 0});
     this.validatorError = null;
-
+    this.updateableCustomerID = 0;
   }
 }

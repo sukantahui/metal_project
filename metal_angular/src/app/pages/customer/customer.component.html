@@ -116,7 +116,7 @@
 
             <mat-form-field fxFlex="20">
               <mat-label>Opening balance</mat-label>
-              <input type="text" class="text-right" matInput formControlName="opening_balance" placeholder="Opening balance">
+              <input type="text" (click)="$event.target.select()" class="text-right" matInput formControlName="opening_balance" placeholder="Opening balance">
             </mat-form-field>
           </div>
 
@@ -140,9 +140,7 @@
       </mat-card-header>
 
       <mat-card-content>
-        <pre>
-          {{customerForm.valid | json}}
-        </pre>
+
         <table class="table table-bordered table-responsive" id="customer-list" width="100%">
             <thead>
             <tr>
@@ -155,7 +153,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let customer of customers | paginate: { itemsPerPage: pageSize, currentPage: p };let indexOfElement=index">
+            <tr [class.editable-row]="updateableCustomerID === customer.id" *ngFor="let customer of customers | paginate: { itemsPerPage: pageSize, currentPage: p };let indexOfElement=index">
               <td>{{(p-1)*10+indexOfElement+1}}</td>
               <td>{{customer.ledger_name}}</td>
               <td>{{customer.mobile1}}</td>
@@ -188,6 +186,38 @@
       </mat-card-actions>
     </mat-card>
 
+
+  </div>
+</div>
+<div fxLayout.xs="column" fxLayout="row" fxFlexFill *ngIf="true">
+  <div fxFlex="50">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+      </mat-card-header>
+      <mat-card-content>
+        <pre>
+          valid = {{customerForm.valid | json}}
+          invalid = {{customerForm.invalid | json}}
+          dirty = {{customerForm.dirty | json}}
+          enabled = {{customerForm.enabled | json}}
+          disabled = {{customerForm.disabled | json}}
+          touched = {{customerForm.touched | json}}
+          untouched = {{customerForm.untouched | json}}
+          errors = {{customerForm.errors | json}}
+          status = {{customerForm.status | json}}
+
+
+
+        </pre>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button>LIKE</button>
+        <button mat-button>SHARE</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div fxFlex="50">
 
   </div>
 </div>
