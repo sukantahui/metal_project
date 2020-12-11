@@ -77,18 +77,18 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get('http://127.0.0.1:8000/api/dev/customerCategories').subscribe((response: {success: number,data: CustomerCategory[]}) => {
+    this.http.get('http://127.0.0.1:8000/api/dev/customerCategories').subscribe((response: {success: number, data: CustomerCategory[]}) => {
       this.customerCategories = response.data;
     });
 
-    this.http.get('http://127.0.0.1:8000/api/dev/states').subscribe((response: {success: number,data: State[]}) => {
+    this.http.get('http://127.0.0.1:8000/api/dev/states').subscribe((response: {success: number, data: State[]}) => {
       this.states = response.data;
     });
-    this.http.get('http://127.0.0.1:8000/api/dev/transactionTypes').subscribe((response: {success: number,data: TransactionType[]}) => {
+    this.http.get('http://127.0.0.1:8000/api/dev/transactionTypes').subscribe((response: {success: number, data: TransactionType[]}) => {
       this.transactionTypes = response.data;
     });
 
-    this.customerService.getCustomerServiceListener().subscribe(response =>{
+    this.customerService.getCustomerServiceListener().subscribe(response => {
       this.customers = response;
     });
     this.customers = this.customerService.getCustomers();

@@ -213,8 +213,16 @@ class VendorController extends Controller
      * @param  \App\Models\Vendor  $vendor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Vendor $vendor)
+    public function destroy($id)
     {
         //
+        $vendor = Ledger::find($id);
+        if(!empty($vendor)){
+            $result = $vendor->delete();
+        }else{
+            $result = false;
+        }
+        return response()->json(['success'=>$result,'id'=>$id], 200);
+
     }
 }

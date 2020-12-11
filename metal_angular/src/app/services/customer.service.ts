@@ -27,7 +27,7 @@ export class CustomerService {
 
   constructor(private http: HttpClient) {
     this.http.get(GlobalVariable.BASE_API_URL_DEV + '/customers')
-      .subscribe((response: {success:number,data:Customer[]}) => {
+      .subscribe((response: {success: number, data: Customer[]}) => {
           this.customers = response.data;
           this.customerSubject.next([...this.customers]);
     });
@@ -61,8 +61,8 @@ export class CustomerService {
   }
 
   deleteCustomer(CustomerId){
-    return this.http.delete(GlobalVariable.BASE_API_URL_DEV + '/customers/'+CustomerId)
-      .pipe(catchError(this.serverError), tap((response: {success:boolean, id:number}) => {
+    return this.http.delete(GlobalVariable.BASE_API_URL_DEV + '/customers/' + CustomerId)
+      .pipe(catchError(this.serverError), tap((response: {success: boolean, id: number}) => {
         if (response.success){
           const index = this.customers.findIndex(x => x.id === CustomerId);
           this.customers.splice(index,1);
