@@ -46,8 +46,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // return {'background-color': '#e83d44'};
     return {
       // 'background-color': 'rgba(255,0,0,' + (10 / 100) + ')',
-      'background-color': 'rgba(147,112,219,.3)',
-      color : 'white'
+      'color': 'white !important',
+      'background-color': 'rgba(251,254,255,0.8)'
     };
   }
 }
