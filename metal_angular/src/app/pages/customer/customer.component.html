@@ -124,8 +124,8 @@
         </form>
       </mat-card-content>
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
-        <button  (click)="onSubmit()" mat-button>Save</button>
-        <button (click)="onUpdate()" mat-button>Update</button>
+        <button [disabled]="customerForm.invalid" *ngIf="!customerForm.value.id"  (click)="onSubmit()" mat-button>Save</button>
+        <button (click)="onUpdate()" [disabled]="customerForm.invalid || customerForm.dirty==false" *ngIf="customerForm.value.id" mat-button>Update</button>
         <button (click)="clearCustomerForm()" mat-stroked-button>clear</button>
       </div>
     </mat-card>
@@ -212,7 +212,16 @@
     </mat-card>
   </div>
   <div fxFlex="50">
-
+    <mat-card class="example-card">
+      <mat-card-header>
+        <h2 style="color: #c4c6ca;">Developer Area</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <pre>
+          customerForm = {{customerForm.value | json}}
+        </pre>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>
 
