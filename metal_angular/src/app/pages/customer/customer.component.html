@@ -11,7 +11,7 @@
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <mat-form-field fxFlex="50">
               <mat-label><fa-icon [icon]="faUserAlt"></fa-icon>&nbsp;Customer Name</mat-label>
-              <input type="text" matInput formControlName="ledger_name" placeholder="Customer Name">
+              <input type="text" (blur)="copyLedgerNameToBillingName()" matInput formControlName="ledger_name" placeholder="Customer Name">
               <mat-hint>Enter any unique customer name</mat-hint>
 <!--              <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0"
 *ngIf="!customerForm.get('ledger_name').valid && customerForm.get('ledger_name').touched">-->
@@ -26,7 +26,7 @@
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <mat-form-field fxFlex="50">
               <mat-label>Billing Name</mat-label>
-              <input type="text" matInput formControlName="billing_name" placeholder="Billing Name">
+              <input type="text" (click)="$event.target.select()" matInput formControlName="billing_name" placeholder="Billing Name">
             </mat-form-field>
           </div>
 
@@ -126,7 +126,7 @@
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
         <button [disabled]="customerForm.invalid" *ngIf="!customerForm.value.id"  (click)="onSubmit()" mat-button>Save</button>
         <button (click)="onUpdate()" [disabled]="customerForm.invalid || customerForm.dirty==false" *ngIf="customerForm.value.id" mat-button>Update</button>
-        <button (click)="clearCustomerForm()" mat-stroked-button>clear</button>
+        <button [disabled]="!customerForm.dirty"  (click)="clearCustomerForm()" mat-stroked-button>clear</button>
       </div>
     </mat-card>
 
@@ -218,7 +218,9 @@
       </mat-card-header>
       <mat-card-content>
         <pre>
+          isCustomerFormValue= {{isCustomerFormEmpty()}}
           customerForm = {{customerForm.value | json}}
+          defaultCustomerFormValue = {{defaultCustomerFormValue | json}}
         </pre>
       </mat-card-content>
     </mat-card>

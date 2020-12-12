@@ -8,7 +8,7 @@ import { faTrashAlt} from '@fortawesome/free-regular-svg-icons';
 import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { faUserAlt, faEnvelope, faMobileAlt, faMobile } from '@fortawesome/free-solid-svg-icons';
-
+import * as deepEqual from 'fast-deep-equal';
 
 
 export interface CustomerCategory {
@@ -53,6 +53,8 @@ export class CustomerComponent implements OnInit {
   transactionTypes: TransactionType[] = [];
   validatorError: any = null;
   updateableCustomerID = 0;
+  defaultCustomerFormValue: any;
+  private letname: any;
 
   constructor(private http: HttpClient, private customerService: CustomerService) {
     this.customerForm = new FormGroup({
@@ -74,6 +76,7 @@ export class CustomerComponent implements OnInit {
       opening_balance: new FormControl(0),
 
     });
+    this.defaultCustomerFormValue = this.customerForm.value;
   }
 
   ngOnInit(): void {
@@ -208,5 +211,14 @@ export class CustomerComponent implements OnInit {
     this.customerForm.patchValue({customer_category_id: 2, state_id: 20, transaction_type_id: 1, opening_balance: 0});
     this.validatorError = null;
     this.updateableCustomerID = 0;
+  }
+  isCustomerFormEmpty(){
+    return deepEqual(this.defaultCustomerFormValue, this.customerForm.value);
+  }
+
+  copyLedgerNameToBillingName() {
+    const name = this.customerForm.value.ledger_name;
+    this.customerForm.patchValue({billing_name: name});
+
   }
 }
