@@ -126,7 +126,7 @@
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
         <button [disabled]="customerForm.invalid" *ngIf="!customerForm.value.id"  (click)="onSubmit()" mat-button>Save</button>
         <button (click)="onUpdate()" [disabled]="customerForm.invalid || customerForm.dirty==false" *ngIf="customerForm.value.id" mat-button>Update</button>
-        <button [disabled]="!customerForm.dirty"  (click)="clearCustomerForm()" mat-stroked-button>clear</button>
+        <button [disabled]="!customerForm.dirty && !customerForm.value.id"  (click)="clearCustomerForm()" mat-stroked-button>clear</button>
       </div>
     </mat-card>
 
