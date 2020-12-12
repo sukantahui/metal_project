@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ExtraItem;
 use App\Models\Unit;
 use App\Models\VoucherType;
 use Illuminate\Database\Seeder;
@@ -134,6 +135,13 @@ class DatabaseSeeder extends Seeder
             ['voucher_type_name'=>'Journal Voucher'],            //6
             ['voucher_type_name'=>'Credit Note Voucher'],        //7
             ['voucher_type_name'=>'Debit Note Voucher']          //8
+        ]);
+
+        ExtraItem::insert([
+            ['item_name' => 'Rounded off'],
+            ['item_name' => 'Discount allowed'],
+            ['item_name' => 'Loading expenditure'],
+            ['item_name' => 'Unloading expenditure']
         ]);
     }
 }

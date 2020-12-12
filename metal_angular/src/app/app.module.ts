@@ -51,6 +51,7 @@ import {ShowHidePasswordModule} from 'ngx-show-hide-password';
 import { CustomerComponent } from './pages/customer/customer.component';
 import {EditInputComponent} from './pages/product/edit-input/edit-input.component';
 import { VendorComponent } from './pages/vendor/vendor.component';
+import { PurchaseComponent } from './pages/purchase/purchase.component';
 
 
 
@@ -83,7 +84,8 @@ import { VendorComponent } from './pages/vendor/vendor.component';
     ProductComponent,
     CustomerComponent,
     EditInputComponent,
-    VendorComponent
+    VendorComponent,
+    PurchaseComponent
   ],
     imports: [
         BrowserModule,

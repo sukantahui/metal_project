@@ -17,6 +17,7 @@ import {CashBookHomeComponent} from "./pages/cash-book/cash-book-home/cash-book-
 import {ProductComponent} from "./pages/product/product.component";
 import {CustomerComponent} from "./pages/customer/customer.component";
 import {VendorComponent} from "./pages/vendor/vendor.component";
+import {PurchaseComponent} from "./pages/purchase/purchase.component";
 
 
 // @ts-ignore
@@ -28,7 +29,7 @@ const routes: Routes = [
   {path: 'customer', canActivate:  [AuthGuardService], component: CustomerComponent},
   {path: 'vendor', canActivate:  [AuthGuardService], component: VendorComponent},
   {path: 'products', canActivate:  [AuthGuardService], component: ProductComponent},
-  {path: 'transactions', canActivate:  [AuthGuardService], component: TransactionReportComponent},
+  {path: 'purchase', canActivate:  [AuthGuardService], component: PurchaseComponent},
   {path: 'incomeAndExpenditure', canActivate:  [AuthGuardService], component: IncomeExpenditureComponent,
     children: [
       {path: '', component: IncomeExpenditureHomeComponent, pathMatch: 'full'},
