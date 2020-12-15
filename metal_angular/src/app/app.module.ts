@@ -52,6 +52,7 @@ import { CustomerComponent } from './pages/customer/customer.component';
 import {EditInputComponent} from './pages/product/edit-input/edit-input.component';
 import { VendorComponent } from './pages/vendor/vendor.component';
 import { PurchaseComponent } from './pages/purchase/purchase.component';
+import {PopoverModule} from "ngx-smart-popover";
 
 
 
@@ -103,7 +104,8 @@ import { PurchaseComponent } from './pages/purchase/purchase.component';
         Ng2SearchPipeModule,
         NgxPaginationModule,
         NgSelectModule,
-        ShowHidePasswordModule
+        ShowHidePasswordModule,
+        PopoverModule
     ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorInterceptor, multi: true},
               {provide: DateAdapter, useClass: DateFormat} ],

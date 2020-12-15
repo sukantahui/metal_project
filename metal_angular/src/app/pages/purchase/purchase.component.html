@@ -1,1 +1,215 @@
-<p>purchase works!</p>
+<div fxLayout.xs="column" fxLayout="row" fxFlexFill>
+  <div fxFlex="50" id="left-div">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>Purchase Form</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="purchaseForm">
+
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field fxFlex="40">
+              <mat-label>Vendor</mat-label>
+              <mat-select  formControlName="ledger_id" placeholder="Vendor name" (ngModelChange)="onSelectedVendor($event)" >
+                <mat-option *ngFor="let vendor of vendors" [value]="vendor">
+                  {{vendor.ledger_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div fxFlex="30" *ngIf="selectedLedger">
+              <popover-content #myPopover
+                               title="{{selectedLedger.ledger_name}}"
+                               placement="right"
+                               [animation]="true"
+                               [closeOnClickOutside]="true" >
+                <b>{{selectedLedger.address1 + ' | ' + selectedLedger.address2}}</b> <span style="color: #C21F39">Dynamic</span> <span style="color: #00b3ee">Reusable</span>
+                <b><i><span style="color: #ffc520">Popover With</span></i></b> <small>Html support</small>.
+              </popover-content>
+
+              <a [routerLink]="" [popover]="myPopover">Vendor info</a>
+            </div>
+          </div>
+          <hr size="10">
+
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field fxFlex="30">
+              <mat-label>Invoice number</mat-label>
+              <input type="text" matInput formControlName="invoice_number" placeholder="Invoice number">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="30">
+              <mat-label>Reference number</mat-label>
+              <input type="text" matInput formControlName="reference_number" placeholder="Reference number">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="30">
+              <mat-label>Challan number</mat-label>
+              <input type="text" matInput formControlName="challan_number" placeholder="Challan number">
+            </mat-form-field>
+          </div>
+
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+
+
+            <mat-form-field fxFlex="30">
+              <mat-label>Order number</mat-label>
+              <input type="text" matInput formControlName="order_number" placeholder="Order number">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="30">
+              <mat-label>Case number</mat-label>
+              <input type="text" matInput formControlName="order_number" placeholder="Order number">
+            </mat-form-field>
+          </div>
+
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field class="example-full-width" fxFlex="30">
+              <mat-label>Purchase date (dd/mm/yyyy)</mat-label>
+              <input matInput [matDatepicker]="purchaseDatePicker" formControlName="purchase_date" placeholder="dd/mm/yyyy">
+              <mat-datepicker-toggle matSuffix [for]="purchaseDatePicker">
+                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #purchaseDatePicker ></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width" fxFlex="30">
+              <mat-label>Order date (dd/mm/yyyy)</mat-label>
+              <input matInput [matDatepicker]="orderDatePicker" formControlName="order_date" placeholder="dd/mm/yyyy">
+              <mat-datepicker-toggle matSuffix [for]="orderDatePicker">
+                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #orderDatePicker ></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <hr size="20">
+
+
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field fxFlex="40">
+              <mat-label>Product category</mat-label>
+              <mat-select  formControlName="product_category_id" placeholder="Product category" >
+                <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.id">
+                  {{productCategory.category_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="40">
+              <mat-label>Product</mat-label>
+              <mat-select  formControlName="product_id" placeholder="Product" >
+                <mat-option *ngFor="let product of products" [value]="product.id">
+                  {{product.product_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+        </form>
+      </mat-card-content>
+      <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
+        <button mat-button>Save</button>
+        <button >Update</button>
+        <button  mat-stroked-button>clear</button>
+      </div>
+    </mat-card>
+
+    <!--    <pre>validatorError = {{validatorError | json}}</pre>-->
+  </div>
+  <div fxFlex="50" id="right-div">
+<!--    <mat-card class="example-card">-->
+<!--      <mat-card-header>-->
+<!--        <mat-card-title><fa-icon [icon]="faUserAlt"></fa-icon>&nbsp;Customer List</mat-card-title>-->
+<!--        <mat-card-subtitle></mat-card-subtitle>-->
+<!--      </mat-card-header>-->
+
+<!--      <mat-card-content>-->
+
+<!--        <table class="table table-bordered table-responsive" id="customer-list" width="100%">-->
+<!--          <thead>-->
+<!--          <tr>-->
+<!--            <th>SL</th>-->
+<!--            <th>Name</th>-->
+<!--            <th>Mobile</th>-->
+<!--            <th>Address</th>-->
+<!--            <th>Opening</th>-->
+<!--            <th class="text-center" colspan="2">Action</th>-->
+<!--          </tr>-->
+<!--          </thead>-->
+<!--          <tbody>-->
+<!--          <tr [class.editable-row]="updateableCustomerID === customer.id" *ngFor="let customer of customers | paginate: { itemsPerPage: pageSize, currentPage: p };let indexOfElement=index">-->
+<!--            <td>{{(p-1)*10+indexOfElement+1}}</td>-->
+<!--            <td>{{customer.ledger_name}}</td>-->
+<!--            <td>{{customer.mobile1}}</td>-->
+<!--            <td>{{customer.address1}}</td>-->
+<!--            <td style="white-space: nowrap;" class="text-right">{{customer.opening_balance | currency:"&#8377; "}}</td>-->
+<!--            <td>-->
+<!--              <span  (click)="populateCustomerForm(customer)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <span (click)="deleteCustomer(customer.id)"><fa-icon class="delete" [icon]="faTrashAlt"></fa-icon></span>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+<!--      </mat-card-content>-->
+<!--      <mat-card-actions>-->
+<!--        <div fxLayout.xs="column" fxLayout="column" fxFlexFill>-->
+<!--          &lt;!&ndash;    https://www.npmjs.com/package/ngx-pagination&ndash;&gt;-->
+<!--          &lt;!&ndash;    npm i ngx-pagination&ndash;&gt;-->
+<!--          <pagination-controls (pageChange)="p = $event"-->
+<!--                               responsive="true"-->
+<!--                               autoHide="true"-->
+<!--                               previousLabel="আগে"-->
+<!--                               nextLabel="পরে"-->
+<!--                               screenReaderPaginationLabel="Pagination"-->
+<!--                               screenReaderPageLabel="page"-->
+<!--                               directionLinks="true">-->
+<!--          </pagination-controls>-->
+<!--        </div>-->
+<!--      </mat-card-actions>-->
+<!--    </mat-card>-->
+
+
+  </div>
+</div>
+<div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="true">
+
+  <div fxFlex="50">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <h2 style="color: #c4c6ca;">Developer Area</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <pre>
+<!--          valid = {{customerForm.valid | json}}-->
+<!--          invalid = {{customerForm.invalid | json}}-->
+<!--          dirty = {{customerForm.dirty | json}}-->
+<!--          enabled = {{customerForm.enabled | json}}-->
+<!--          disabled = {{customerForm.disabled | json}}-->
+<!--          touched = {{customerForm.touched | json}}-->
+<!--          untouched = {{customerForm.untouched | json}}-->
+<!--          errors = {{customerForm.errors | json}}-->
+<!--          status = {{customerForm.status | json}}-->
+        </pre>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="50">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <h2 style="color: #c4c6ca;">Developer Area</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <pre>
+<!--          isCustomerFormValue= {{isCustomerFormEmpty()}}-->
+<!--          customerForm = {{customerForm.value | json}}-->
+<!--          defaultCustomerFormValue = {{defaultCustomerFormValue | json}}-->
+        </pre>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+
