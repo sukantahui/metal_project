@@ -6,6 +6,8 @@ import {ProductCategory} from "../product/product.component";
 import {HttpClient} from "@angular/common/http";
 import {ProductService} from "../../services/product.service";
 import {Product} from "../../models/product.model";
+import {PurchaseMaster} from "../../models/purchase-master.model";
+import {PurchaseDetails} from "../../models/purchase-details.model";
 
 @Component({
   selector: 'app-purchase',
@@ -14,14 +16,22 @@ import {Product} from "../../models/product.model";
 })
 export class PurchaseComponent implements OnInit {
   p: number;
-  purchaseForm: FormGroup;
+  purchaseMasterForm: FormGroup;
+  purchaseDetailsForm: FormGroup;
   vendors: Vendor[] = [];
   productCategories: ProductCategory[] = [];
   products: Product[] = [];
+  productsByCategory: Product[] = [];
   selectedLedger: Vendor = null;
+  selectedProduct: Product = null;
+
+  purchaseMaster: PurchaseMaster = null;
+  purchaseDetails: PurchaseDetails[] = [];
+
+  selectedProductCategoryId = 1;
   constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService) {
 
-    this.purchaseForm = new FormGroup({
+    this.purchaseMasterForm = new FormGroup({
       id: new FormControl(null),
       ledger_id: new FormControl(null),
       invoice_number: new FormControl(null),
@@ -29,11 +39,22 @@ export class PurchaseComponent implements OnInit {
       challan_number: new FormControl(null),
       order_number: new FormControl(null),
       purchase_date: new FormControl(null),
-      order_date: new FormControl(null),
-      product_category_id: new FormControl(null),
-      product_id: new FormControl(null),
+      order_date: new FormControl(null)
 
     });
+
+    this.purchaseDetailsForm = new FormGroup({
+      id: new FormControl(null),
+      product_category_id: new FormControl(1),
+      product_id: new FormControl(null),
+      rate: new FormControl(null),
+      purchase_quantity: new FormControl(null),
+      stock_quantity: new FormControl(null),
+      comment: new FormControl(null),
+
+    });
+
+
   }
 
   ngOnInit(): void {
@@ -49,8 +70,10 @@ export class PurchaseComponent implements OnInit {
       });
 
     this.products = this.productService.getProducts();
+    this.productsByCategory = this.products.filter(item => item.product_category_id === this.selectedProductCategoryId);
     this.productService.getProductServiceListener().subscribe(response => {
       this.products = response;
+      this.productsByCategory = this.products.filter(item => item.product_category_id === this.selectedProductCategoryId);
     });
   }
 
@@ -58,4 +81,16 @@ export class PurchaseComponent implements OnInit {
     this.selectedLedger = value;
   }
 
+  onProductCategorySelected(value){
+    this.selectedProductCategoryId = value;
+    this.productsByCategory = this.products.filter(item => item.product_category_id === this.selectedProductCategoryId);
+  }
+
+  onSelectedProduct(value) {
+    this.selectedProduct = value;
+  }
+
+  addItem(){
+    this.purchaseDetails.unshift(this.purchaseDetailsForm.value);
+  }
 }

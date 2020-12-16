@@ -6,17 +6,9 @@
         <mat-card-title>Purchase Form</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <form [formGroup]="purchaseForm">
+        <form [formGroup]="purchaseMasterForm">
 
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-<!--            <mat-form-field fxFlex="40">-->
-<!--              <mat-label>Vendor</mat-label>-->
-<!--              <mat-select  formControlName="ledger_id" placeholder="Vendor name" (ngModelChange)="onSelectedVendor($event)" >-->
-<!--                <mat-option *ngFor="let vendor of vendors" [value]="vendor">-->
-<!--                  {{vendor.ledger_name}}-->
-<!--                </mat-option>-->
-<!--              </mat-select>-->
-<!--            </mat-form-field>-->
             <ng-select [items]="vendors" fxFlex="50" (change)="onSelectedVendor($event)"
                        bindLabel="ledger_name"
                        class="custom"
@@ -91,28 +83,21 @@
           </div>
 
           <hr size="20">
+        </form>
 
+        <form [formGroup]="purchaseDetailsForm">
 
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <mat-form-field fxFlex="30">
               <mat-label>Product category</mat-label>
-              <mat-select  formControlName="product_category_id" placeholder="Product category" >
+              <mat-select  formControlName="product_category_id" placeholder="Product category" (ngModelChange)="onProductCategorySelected($event)">
                 <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.id">
                   {{productCategory.category_name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
 
-<!--            <mat-form-field fxFlex="40">-->
-<!--              <mat-label>Product</mat-label>-->
-<!--              <mat-select  formControlName="product_id" placeholder="Product" >-->
-<!--                <mat-option *ngFor="let product of products" [value]="product.id">-->
-<!--                  {{product.product_name}}-->
-<!--                </mat-option>-->
-<!--              </mat-select>-->
-<!--            </mat-form-field>-->
-
-            <ng-select [items]="products" fxFlex="30" (click)="$event.target.select()"
+            <ng-select [items]="productsByCategory" fxFlex="30" (click)="$event.target.select()" (change)="onSelectedProduct($event)"
                        bindLabel="product_name"
                        class="custom"
                        bindValue="id"
@@ -122,11 +107,39 @@
 
           </div>
 
+
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field fxFlex="30">
+              <mat-label>Rate</mat-label>
+              <input type="text" matInput formControlName="rate" placeholder="Rate">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="30">
+              <mat-label>Quantity</mat-label>
+              <input type="text" matInput formControlName="purchase_quantity" placeholder="Quantity">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="30" *ngIf="selectedProduct && selectedProduct.purchase_unit_id!=selectedProduct.sale_unit_id">
+              <mat-label>Stock quantity</mat-label>
+              <input type="text" matInput formControlName="stock_quantity" placeholder="Stock quantity">
+            </mat-form-field>
+          </div>
         </form>
+
+        <hr size="20">
+        <form [formGroup]="purchaseMasterForm">
+
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field fxFlex="30">
+              <mat-label>Comment</mat-label>
+              <input type="textarea" matInput formControlName="comment" placeholder="Comment">
+            </mat-form-field>
+          </div>
+        </form>
+
       </mat-card-content>
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
-        <button mat-button>Save</button>
-        <button >Update</button>
+        <button mat-button (click)="addItem()">Add</button>
         <button  mat-stroked-button>clear</button>
       </div>
     </mat-card>
@@ -199,6 +212,8 @@
       </mat-card-header>
       <mat-card-content>
         <pre>
+         purchaseDetails = {{purchaseDetails | json}}
+          productsByCategory = {{productsByCategory | json}}
           Vendors = {{vendors | json}}
         </pre>
         <pre>
@@ -223,7 +238,7 @@
       <mat-card-content>
         <pre>
 <!--          isCustomerFormValue= {{isCustomerFormEmpty()}}-->
-          purchaseForm = {{purchaseForm.value | json}}
+          purchaseMasterForm = {{purchaseMasterForm.value | json}}
 <!--          defaultCustomerFormValue = {{defaultCustomerFormValue | json}}-->
         </pre>
       </mat-card-content>
