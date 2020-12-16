@@ -6,7 +6,7 @@
         <mat-card-title>Purchase Form</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <form [formGroup]="purchaseMasterForm">
+        <form [formGroup]="purchaseMasterForm" class="purchase-master">
 
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <ng-select [items]="vendors" fxFlex="50" (change)="onSelectedVendor($event)"
@@ -85,7 +85,7 @@
           <hr size="20">
         </form>
 
-        <form [formGroup]="purchaseDetailsForm">
+        <form [formGroup]="purchaseDetailsForm" class="purchase-details">
 
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <mat-form-field fxFlex="30">
@@ -127,7 +127,7 @@
         </form>
 
         <hr size="20">
-        <form [formGroup]="purchaseMasterForm">
+        <form [formGroup]="purchaseMasterForm" class="purchase-master">
 
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <mat-form-field fxFlex="30">

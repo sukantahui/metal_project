@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Vendor} from "../../models/vendor.model";
-import {VendorService} from "../../services/vendor.service";
-import {ProductCategory} from "../product/product.component";
-import {HttpClient} from "@angular/common/http";
-import {ProductService} from "../../services/product.service";
-import {Product} from "../../models/product.model";
-import {PurchaseMaster} from "../../models/purchase-master.model";
-import {PurchaseDetails} from "../../models/purchase-details.model";
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Vendor} from '../../models/vendor.model';
+import {VendorService} from '../../services/vendor.service';
+import {ProductCategory} from '../product/product.component';
+import {HttpClient} from '@angular/common/http';
+import {ProductService} from '../../services/product.service';
+import {Product} from '../../models/product.model';
+import {PurchaseMaster} from '../../models/purchase-master.model';
+import {PurchaseDetails} from '../../models/purchase-details.model';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-purchase',
@@ -29,8 +30,11 @@ export class PurchaseComponent implements OnInit {
   purchaseDetails: PurchaseDetails[] = [];
 
   selectedProductCategoryId = 1;
-  constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService) {
+  private formattedMessage: string;
 
+  constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService) {
+    const now = new Date();
+    const val = formatDate(now, 'yyyy-MM-dd', 'en');
     this.purchaseMasterForm = new FormGroup({
       id: new FormControl(null),
       ledger_id: new FormControl(null),
@@ -38,8 +42,8 @@ export class PurchaseComponent implements OnInit {
       reference_number: new FormControl(null),
       challan_number: new FormControl(null),
       order_number: new FormControl(null),
-      purchase_date: new FormControl(null),
-      order_date: new FormControl(null)
+      purchase_date: new FormControl(val),
+      order_date: new FormControl(val)
 
     });
 
@@ -58,6 +62,9 @@ export class PurchaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.purchaseMasterForm.valueChanges.subscribe(val => {
+      console.log(val);
+    });
 
     this.vendors = this.vendorService.getVendors();
     this.vendorService.getVendorServiceListener().subscribe(response => {
