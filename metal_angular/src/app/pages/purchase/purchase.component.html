@@ -20,9 +20,9 @@
             <ng-select [items]="vendors" fxFlex="50" (change)="onSelectedVendor($event)"
                        bindLabel="ledger_name"
                        class="custom"
-                       bindValue="ledger_id"
+                       bindValue="id"
                        formControlName="ledger_id"
-                       placeholder="Select">
+                       placeholder="Select Vendor">
             </ng-select>
             <div fxFlex="30" *ngIf="selectedLedger">
               <popover-content #myPopover
@@ -94,7 +94,7 @@
 
 
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field fxFlex="40">
+            <mat-form-field fxFlex="30">
               <mat-label>Product category</mat-label>
               <mat-select  formControlName="product_category_id" placeholder="Product category" >
                 <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.id">
@@ -103,14 +103,23 @@
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field fxFlex="40">
-              <mat-label>Product</mat-label>
-              <mat-select  formControlName="product_id" placeholder="Product" >
-                <mat-option *ngFor="let product of products" [value]="product.id">
-                  {{product.product_name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+<!--            <mat-form-field fxFlex="40">-->
+<!--              <mat-label>Product</mat-label>-->
+<!--              <mat-select  formControlName="product_id" placeholder="Product" >-->
+<!--                <mat-option *ngFor="let product of products" [value]="product.id">-->
+<!--                  {{product.product_name}}-->
+<!--                </mat-option>-->
+<!--              </mat-select>-->
+<!--            </mat-form-field>-->
+
+            <ng-select [items]="products" fxFlex="30" (click)="$event.target.select()"
+                       bindLabel="product_name"
+                       class="custom"
+                       bindValue="id"
+                       formControlName="product_id"
+                       placeholder="Product">
+            </ng-select>
+
           </div>
 
         </form>
@@ -190,6 +199,9 @@
       </mat-card-header>
       <mat-card-content>
         <pre>
+          Vendors = {{vendors | json}}
+        </pre>
+        <pre>
 <!--          valid = {{customerForm.valid | json}}-->
 <!--          invalid = {{customerForm.invalid | json}}-->
 <!--          dirty = {{customerForm.dirty | json}}-->
@@ -211,7 +223,7 @@
       <mat-card-content>
         <pre>
 <!--          isCustomerFormValue= {{isCustomerFormEmpty()}}-->
-<!--          customerForm = {{customerForm.value | json}}-->
+          purchaseForm = {{purchaseForm.value | json}}
 <!--          defaultCustomerFormValue = {{defaultCustomerFormValue | json}}-->
         </pre>
       </mat-card-content>
