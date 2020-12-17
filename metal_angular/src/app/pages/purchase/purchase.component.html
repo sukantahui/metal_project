@@ -111,17 +111,17 @@
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <mat-form-field fxFlex="30">
               <mat-label>Rate</mat-label>
-              <input type="text" matInput formControlName="rate" placeholder="Rate">
+              <input type="number" class="text-right" matInput formControlName="rate" placeholder="Rate">
             </mat-form-field>
 
             <mat-form-field fxFlex="30">
               <mat-label>Quantity</mat-label>
-              <input type="text" matInput formControlName="purchase_quantity" placeholder="Quantity">
+              <input type="number" class="text-right" matInput formControlName="purchase_quantity" placeholder="Quantity">
             </mat-form-field>
 
             <mat-form-field fxFlex="30" *ngIf="selectedProduct && selectedProduct.purchase_unit_id!=selectedProduct.sale_unit_id">
               <mat-label>Stock quantity</mat-label>
-              <input type="text" matInput formControlName="stock_quantity" placeholder="Stock quantity">
+              <input type="number" class="text-right" matInput formControlName="stock_quantity" placeholder="Stock quantity">
             </mat-form-field>
           </div>
         </form>
