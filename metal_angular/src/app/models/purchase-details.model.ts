@@ -1,3 +1,5 @@
+import {Product} from "./product.model";
+import {Unit} from "../pages/product/product.component";
 
 
 export class PurchaseDetails{
@@ -7,4 +9,6 @@ export class PurchaseDetails{
   purchase_quantity?: number;
   stock_quantity?: number
   rate?: number;
+  product: Product;
+  unit: Unit
 }

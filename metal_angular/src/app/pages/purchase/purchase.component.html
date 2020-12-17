@@ -50,7 +50,6 @@
 
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
 
-
             <mat-form-field fxFlex="30">
               <mat-label>Order number</mat-label>
               <input type="text" matInput formControlName="order_number" placeholder="Order number">
@@ -97,7 +96,7 @@
               </mat-select>
             </mat-form-field>
 
-            <ng-select [items]="productsByCategory" fxFlex="30" (click)="$event.target.select()" (change)="onSelectedProduct($event)"
+            <ng-select [items]="productsByCategory" fxFlex="30" (change)="onSelectedProduct($event)"
                        bindLabel="product_name"
                        class="custom"
                        bindValue="id"
@@ -140,65 +139,49 @@
       </mat-card-content>
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
         <button mat-button (click)="addItem()">Add</button>
-        <button  mat-stroked-button>clear</button>
+        <button  mat-stroked-button (click)="clearPurchaseForm()">clear</button>
       </div>
     </mat-card>
 
     <!--    <pre>validatorError = {{validatorError | json}}</pre>-->
   </div>
   <div fxFlex="50" id="right-div">
-<!--    <mat-card class="example-card">-->
-<!--      <mat-card-header>-->
-<!--        <mat-card-title><fa-icon [icon]="faUserAlt"></fa-icon>&nbsp;Customer List</mat-card-title>-->
-<!--        <mat-card-subtitle></mat-card-subtitle>-->
-<!--      </mat-card-header>-->
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-title><fa-icon></fa-icon>&nbsp;Purchase details</mat-card-title>
+        <mat-card-subtitle></mat-card-subtitle>
+      </mat-card-header>
 
-<!--      <mat-card-content>-->
-
-<!--        <table class="table table-bordered table-responsive" id="customer-list" width="100%">-->
-<!--          <thead>-->
-<!--          <tr>-->
-<!--            <th>SL</th>-->
-<!--            <th>Name</th>-->
-<!--            <th>Mobile</th>-->
-<!--            <th>Address</th>-->
-<!--            <th>Opening</th>-->
-<!--            <th class="text-center" colspan="2">Action</th>-->
-<!--          </tr>-->
-<!--          </thead>-->
-<!--          <tbody>-->
-<!--          <tr [class.editable-row]="updateableCustomerID === customer.id" *ngFor="let customer of customers | paginate: { itemsPerPage: pageSize, currentPage: p };let indexOfElement=index">-->
-<!--            <td>{{(p-1)*10+indexOfElement+1}}</td>-->
-<!--            <td>{{customer.ledger_name}}</td>-->
-<!--            <td>{{customer.mobile1}}</td>-->
-<!--            <td>{{customer.address1}}</td>-->
-<!--            <td style="white-space: nowrap;" class="text-right">{{customer.opening_balance | currency:"&#8377; "}}</td>-->
-<!--            <td>-->
-<!--              <span  (click)="populateCustomerForm(customer)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>-->
-<!--            </td>-->
-<!--            <td>-->
-<!--              <span (click)="deleteCustomer(customer.id)"><fa-icon class="delete" [icon]="faTrashAlt"></fa-icon></span>-->
-<!--            </td>-->
-<!--          </tr>-->
-<!--          </tbody>-->
-<!--        </table>-->
-<!--      </mat-card-content>-->
-<!--      <mat-card-actions>-->
-<!--        <div fxLayout.xs="column" fxLayout="column" fxFlexFill>-->
-<!--          &lt;!&ndash;    https://www.npmjs.com/package/ngx-pagination&ndash;&gt;-->
-<!--          &lt;!&ndash;    npm i ngx-pagination&ndash;&gt;-->
-<!--          <pagination-controls (pageChange)="p = $event"-->
-<!--                               responsive="true"-->
-<!--                               autoHide="true"-->
-<!--                               previousLabel="আগে"-->
-<!--                               nextLabel="পরে"-->
-<!--                               screenReaderPaginationLabel="Pagination"-->
-<!--                               screenReaderPageLabel="page"-->
-<!--                               directionLinks="true">-->
-<!--          </pagination-controls>-->
-<!--        </div>-->
-<!--      </mat-card-actions>-->
-<!--    </mat-card>-->
+      <mat-card-content>
+        <table class="table table-bordered table-responsive" id="purchase-detail-list" width="100%">
+          <thead>
+          <tr>
+            <th>SL</th>
+            <th>Product</th>
+            <th>Rate</th>
+            <th>Qty</th>
+            <th>Amount</th>
+            <th class="text-center" colspan="2">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let purchaseDetail of purchaseDetails;let indexOfElement=index">
+            <td>{{indexOfElement+1}}</td>
+            <td>{{purchaseDetail.product.product_name}}</td>
+            <td>{{purchaseDetail.rate}}</td>
+            <td>{{purchaseDetail.purchase_quantity + ' (' + purchaseDetail.unit.unit_name + ')'}}</td>
+            <td>{{purchaseDetail.rate * purchaseDetail.purchase_quantity}}</td>
+            <td>
+              <span  (click)="itemToEdit(purchaseDetail)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
+            </td>
+            <td>
+              <span  (click)="deleteItem(purchaseDetail)"><fa-icon class="edit" [icon]="faTrashAlt"></fa-icon></span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
 
 
   </div>
@@ -238,7 +221,8 @@
       <mat-card-content>
         <pre>
 <!--          isCustomerFormValue= {{isCustomerFormEmpty()}}-->
-          purchaseMasterForm = {{purchaseMasterForm.value | json}}
+          purchaseMaster = {{purchaseMaster | json}}
+          purchaseDetails = {{purchaseDetails | json}}
 <!--          defaultCustomerFormValue = {{defaultCustomerFormValue | json}}-->
         </pre>
       </mat-card-content>

@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Vendor} from '../../models/vendor.model';
 import {VendorService} from '../../services/vendor.service';
-import {ProductCategory} from '../product/product.component';
+import {ProductCategory, Unit} from '../product/product.component';
 import {HttpClient} from '@angular/common/http';
 import {ProductService} from '../../services/product.service';
 import {Product} from '../../models/product.model';
 import {PurchaseMaster} from '../../models/purchase-master.model';
 import {PurchaseDetails} from '../../models/purchase-details.model';
 import {formatDate} from '@angular/common';
+import { faUserEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-purchase',
@@ -22,6 +23,7 @@ export class PurchaseComponent implements OnInit {
   vendors: Vendor[] = [];
   productCategories: ProductCategory[] = [];
   products: Product[] = [];
+  units: Unit[] = [];
   productsByCategory: Product[] = [];
   selectedLedger: Vendor = null;
   selectedProduct: Product = null;
@@ -31,6 +33,10 @@ export class PurchaseComponent implements OnInit {
 
   selectedProductCategoryId = 1;
   private formattedMessage: string;
+  pageSize: string | number;
+
+  faUserEdit = faUserEdit;
+  faTrashAlt = faTrashAlt;
 
   constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService) {
     const now = new Date();
@@ -43,7 +49,8 @@ export class PurchaseComponent implements OnInit {
       challan_number: new FormControl(null),
       order_number: new FormControl(null),
       purchase_date: new FormControl(val),
-      order_date: new FormControl(val)
+      order_date: new FormControl(val),
+      comment: new FormControl(null),
 
     });
 
@@ -54,7 +61,6 @@ export class PurchaseComponent implements OnInit {
       rate: new FormControl(null),
       purchase_quantity: new FormControl(null),
       stock_quantity: new FormControl(null),
-      comment: new FormControl(null),
 
     });
 
@@ -62,9 +68,9 @@ export class PurchaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.purchaseMasterForm.valueChanges.subscribe(val => {
-      console.log(val);
-    });
+    // this.purchaseMasterForm.valueChanges.subscribe(val => {
+    //   console.log(val);
+    // });
 
     this.vendors = this.vendorService.getVendors();
     this.vendorService.getVendorServiceListener().subscribe(response => {
@@ -74,6 +80,11 @@ export class PurchaseComponent implements OnInit {
     this.http.get('http://127.0.0.1:8000/api/dev/productCategories')
       .subscribe((response: {success: number, data: ProductCategory[]}) => {
         this.productCategories = response.data;
+      });
+
+    this.http.get('http://127.0.0.1:8000/api/dev/units')
+      .subscribe((response: {success: number, data: Unit[]}) => {
+        this.units = response.data;
       });
 
     this.products = this.productService.getProducts();
@@ -91,6 +102,7 @@ export class PurchaseComponent implements OnInit {
   onProductCategorySelected(value){
     this.selectedProductCategoryId = value;
     this.productsByCategory = this.products.filter(item => item.product_category_id === this.selectedProductCategoryId);
+    this.purchaseDetailsForm.patchValue({product_id: null});
   }
 
   onSelectedProduct(value) {
@@ -98,6 +110,28 @@ export class PurchaseComponent implements OnInit {
   }
 
   addItem(){
-    this.purchaseDetails.unshift(this.purchaseDetailsForm.value);
+    const tempPurchaseMasterObj = this.purchaseMasterForm.value;
+    const tempPurchaseDetailObj = this.purchaseDetailsForm.value;
+    let index = this.products.findIndex(x => x.id == tempPurchaseDetailObj.product_id);
+    tempPurchaseDetailObj.product = this.products[index];
+
+    tempPurchaseDetailObj.unit = this.units.find(x => x.id === tempPurchaseDetailObj.product.purchase_unit_id);
+    tempPurchaseMasterObj.ledger = this.vendors.find(x => x.id === tempPurchaseMasterObj.ledger_id);
+
+    this.purchaseDetails.unshift(tempPurchaseDetailObj);
+    this.purchaseMaster = tempPurchaseMasterObj;
+  }
+
+  clearPurchaseForm() {
+    this.purchaseMasterForm.reset();
+    this.purchaseDetailsForm.reset();
+  }
+
+  itemToEdit(purchaseDetail: PurchaseDetails) {
+
+  }
+
+  deleteItem(purchaseDetail: PurchaseDetails) {
+
   }
 }
