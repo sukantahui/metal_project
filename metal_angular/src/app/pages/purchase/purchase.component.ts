@@ -7,9 +7,10 @@ import {HttpClient} from '@angular/common/http';
 import {ProductService} from '../../services/product.service';
 import {Product} from '../../models/product.model';
 import {PurchaseMaster} from '../../models/purchase-master.model';
-import {PurchaseDetails} from '../../models/purchase-details.model';
+import {PurchaseDetail} from '../../models/purchase-detail.model';
 import {formatDate} from '@angular/common';
 import { faUserEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
+import {StorageMap} from '@ngx-pwa/local-storage';
 
 @Component({
   selector: 'app-purchase',
@@ -29,7 +30,7 @@ export class PurchaseComponent implements OnInit {
   selectedProduct: Product = null;
 
   purchaseMaster: PurchaseMaster = null;
-  purchaseDetails: PurchaseDetails[] = [];
+  purchaseDetails: PurchaseDetail[] = [];
 
   selectedProductCategoryId = 1;
   private formattedMessage: string;
@@ -37,8 +38,10 @@ export class PurchaseComponent implements OnInit {
 
   faUserEdit = faUserEdit;
   faTrashAlt = faTrashAlt;
+  saveablePurchaseDetails: { rate: number; id: number }[];
+  purchaseContainer: {pm: PurchaseMaster, pd: PurchaseDetail[]};
 
-  constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService) {
+  constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService, private storage: StorageMap) {
     const now = new Date();
     const val = formatDate(now, 'yyyy-MM-dd', 'en');
     this.purchaseMasterForm = new FormGroup({
@@ -92,7 +95,18 @@ export class PurchaseComponent implements OnInit {
     this.productService.getProductServiceListener().subscribe(response => {
       this.products = response;
       this.productsByCategory = this.products.filter(item => item.product_category_id === this.selectedProductCategoryId);
+
     });
+
+    this.storage.get('purchaseContainer').subscribe((purchaseContainer: any) => {
+      if (purchaseContainer){
+        this.purchaseContainer = purchaseContainer;
+        this.purchaseMaster = purchaseContainer.pm;
+        this.purchaseDetails = purchaseContainer.pd;
+        this.purchaseMasterForm.patchValue(purchaseContainer.pm);
+        this.purchaseDetailsForm.patchValue(purchaseContainer.pd);
+      }
+    }, (error) => {});
   }
 
   onSelectedVendor(value){
@@ -120,6 +134,13 @@ export class PurchaseComponent implements OnInit {
 
     this.purchaseDetails.unshift(tempPurchaseDetailObj);
     this.purchaseMaster = tempPurchaseMasterObj;
+
+    this.purchaseContainer = {
+      pm: this.purchaseMaster,
+      pd: this.purchaseDetails
+    };
+
+    this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
   }
 
   clearPurchaseForm() {
@@ -133,5 +154,10 @@ export class PurchaseComponent implements OnInit {
 
   deleteItem(purchaseDetail: PurchaseDetails) {
 
+  }
+
+  savePurchase() {
+    /* This way we will fetch particular fields to save */
+    this.saveablePurchaseDetails = this.purchaseDetails.map(({ id, rate }) => ({ id, rate }));
   }
 }

@@ -1,8 +1,8 @@
-import {Product} from "./product.model";
-import {Unit} from "../pages/product/product.component";
+import {Product} from './product.model';
+import {Unit} from '../pages/product/product.component';
 
 
-export class PurchaseDetails{
+export class PurchaseDetail{
   id?: number;
   purchase_master_id?: number;
   product_id: number;

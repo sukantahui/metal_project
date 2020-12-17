@@ -140,6 +140,7 @@
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
         <button mat-button (click)="addItem()">Add</button>
         <button  mat-stroked-button (click)="clearPurchaseForm()">clear</button>
+        <button  mat-stroked-button (click)="savePurchase()">Save Purchase</button>
       </div>
     </mat-card>
 
@@ -195,6 +196,7 @@
       </mat-card-header>
       <mat-card-content>
         <pre>
+          saveablePurchaseDetails = {{saveablePurchaseDetails | json}}
          purchaseDetails = {{purchaseDetails | json}}
           productsByCategory = {{productsByCategory | json}}
           Vendors = {{vendors | json}}
