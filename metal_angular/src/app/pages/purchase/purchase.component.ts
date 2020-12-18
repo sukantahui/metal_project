@@ -11,6 +11,8 @@ import {PurchaseDetail} from '../../models/purchase-detail.model';
 import {formatDate} from '@angular/common';
 import { faUserEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {StorageMap} from '@ngx-pwa/local-storage';
+import {TransactionMaster} from "../../models/transaction-master.model";
+import {TransactionDetail} from "../../models/transaction-detail.model";
 
 @Component({
   selector: 'app-purchase',
@@ -21,6 +23,8 @@ export class PurchaseComponent implements OnInit {
   p: number;
   purchaseMasterForm: FormGroup;
   purchaseDetailsForm: FormGroup;
+  transactionMasterForm: FormGroup;
+  transactionDetailsForm: FormGroup;
   vendors: Vendor[] = [];
   productCategories: ProductCategory[] = [];
   products: Product[] = [];
@@ -31,6 +35,10 @@ export class PurchaseComponent implements OnInit {
 
   purchaseMaster: PurchaseMaster = null;
   purchaseDetails: PurchaseDetail[] = [];
+
+  transactionMaster: TransactionMaster = null;
+  transactionDetails: TransactionDetail[]=[];
+
 
   selectedProductCategoryId = 1;
   private formattedMessage: string;
@@ -64,9 +72,21 @@ export class PurchaseComponent implements OnInit {
       rate: new FormControl(null),
       purchase_quantity: new FormControl(null),
       stock_quantity: new FormControl(null),
-
     });
 
+    this.transactionMasterForm = new FormGroup({
+      id: new FormControl(null),
+      transaction_number: new FormControl(null),
+      user_id: new FormControl(null),
+      transaction_date: new FormControl(null),
+    });
+
+    this.transactionDetailsForm = new FormGroup({
+      id: new FormControl(null),
+      ledger_id: new FormControl(null),
+      transaction_type_id: new FormControl(2),
+      amount: new FormControl(null),
+    });
 
   }
 
@@ -126,6 +146,7 @@ export class PurchaseComponent implements OnInit {
   addItem(){
     const tempPurchaseMasterObj = this.purchaseMasterForm.value;
     const tempPurchaseDetailObj = this.purchaseDetailsForm.value;
+
     let index = this.products.findIndex(x => x.id == tempPurchaseDetailObj.product_id);
     tempPurchaseDetailObj.product = this.products[index];
 
@@ -148,11 +169,11 @@ export class PurchaseComponent implements OnInit {
     this.purchaseDetailsForm.reset();
   }
 
-  itemToEdit(purchaseDetail: PurchaseDetails) {
+  itemToEdit(item) {
 
   }
 
-  deleteItem(purchaseDetail: PurchaseDetails) {
+  deleteItem(item) {
 
   }
 

@@ -6,8 +6,7 @@
         <mat-card-title>Purchase Form</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <form [formGroup]="purchaseMasterForm" class="purchase-master">
-
+        <form [formGroup]="transactionDetailsForm" class="transaction-detail">
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <ng-select [items]="vendors" fxFlex="50" (change)="onSelectedVendor($event)"
                        bindLabel="ledger_name"
@@ -30,6 +29,10 @@
             </div>
           </div>
           <hr size="10">
+        </form>
+
+
+        <form [formGroup]="purchaseMasterForm" class="purchase-master">
 
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
             <mat-form-field fxFlex="30">
@@ -150,7 +153,14 @@
     <mat-card class="example-card">
       <mat-card-header>
         <mat-card-title><fa-icon></fa-icon>&nbsp;Purchase details</mat-card-title>
-        <mat-card-subtitle></mat-card-subtitle>
+        <mat-card-subtitle>
+<!--          <span *ngIf="purchaseMaster.ledger"><h3>{{purchaseMaster.ledger.billing_name}}</h3></span>-->
+<!--          <span >Address: {{purchaseMaster.ledger.address1}},Mob: {{purchaseMaster.ledger.mobile1}}</span><br>-->
+<!--          <span >Invoice: {{purchaseMaster.invoice_number}},Ref no: {{purchaseMaster.reference_number}}</span><br>-->
+<!--          <span >Order no: {{purchaseMaster.order_number}},Challan no: {{purchaseMaster.challan_number}}</span><br>-->
+<!--          <span>Purchase Date: {{purchaseMaster.purchase_date}} , Order date: {{purchaseMaster.order_date}}</span>-->
+        </mat-card-subtitle>
+
       </mat-card-header>
 
       <mat-card-content>
@@ -189,17 +199,14 @@
 </div>
 <div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="true">
 
-  <div fxFlex="50">
+  <div fxFlex="25">
     <mat-card class="example-card">
       <mat-card-header>
         <h2 style="color: #c4c6ca;">Developer Area</h2>
       </mat-card-header>
       <mat-card-content>
         <pre>
-          saveablePurchaseDetails = {{saveablePurchaseDetails | json}}
-         purchaseDetails = {{purchaseDetails | json}}
-          productsByCategory = {{productsByCategory | json}}
-          Vendors = {{vendors | json}}
+         purchaseMaster = {{purchaseMaster | json}}
         </pre>
         <pre>
 <!--          valid = {{customerForm.valid | json}}-->
@@ -215,17 +222,40 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div fxFlex="50">
+  <div fxFlex="25">
     <mat-card class="example-card">
       <mat-card-header>
         <h2 style="color: #c4c6ca;">Developer Area</h2>
       </mat-card-header>
       <mat-card-content>
         <pre>
-<!--          isCustomerFormValue= {{isCustomerFormEmpty()}}-->
-          purchaseMaster = {{purchaseMaster | json}}
           purchaseDetails = {{purchaseDetails | json}}
-<!--          defaultCustomerFormValue = {{defaultCustomerFormValue | json}}-->
+        </pre>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="25">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <h2 style="color: #c4c6ca;">Developer Area</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <pre>
+          transactionMasterForm = {{transactionMasterForm.value | json}}
+          transactionMaster = {{transactionMaster | json}}
+        </pre>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="25">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <h2 style="color: #c4c6ca;">Developer Area</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <pre>
+          transactionDetailsForm = {{transactionDetailsForm.value | json}}
+          transactionDetails = {{transactionDetails | json}}
         </pre>
       </mat-card-content>
     </mat-card>

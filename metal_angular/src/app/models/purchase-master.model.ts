@@ -1,3 +1,4 @@
+import {Vendor} from "./vendor.model";
 
 
 export class PurchaseMaster{
@@ -9,4 +10,5 @@ export class PurchaseMaster{
   order_number?: string;
   order_date: string;
   comment?: string;
+  ledger: Vendor;
 }
