@@ -11,6 +11,7 @@ import {formatDate} from '@angular/common';
 import { faUserEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {StorageMap} from '@ngx-pwa/local-storage';
 import {TransactionDetail, TransactionMaster} from '../../models/transaction.model';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-purchase',
@@ -49,6 +50,7 @@ export class PurchaseComponent implements OnInit {
 
   // tslint:disable-next-line:max-line-length
   currentItemAmount: number;
+  // tslint:disable-next-line:max-line-length
   constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService, private storage: StorageMap) {
     const now = new Date();
     const val = formatDate(now, 'yyyy-MM-dd', 'en');
@@ -97,6 +99,8 @@ export class PurchaseComponent implements OnInit {
     // Transaction master will be updated
 
     this.transactionMasterForm.valueChanges.subscribe( val => {
+      const x = val.transaction_date;
+      val.transaction_date =  formatDate(x, 'yyyy-MM-dd', 'en');
       this.transactionMaster = val;
     });
 
@@ -116,6 +120,8 @@ export class PurchaseComponent implements OnInit {
     });
 
     this.purchaseMasterForm.valueChanges.subscribe(val => {
+      const x = val.order_date;
+      val.order_date =  formatDate(x, 'yyyy-MM-dd', 'en');
       this.purchaseMaster = val;
     });
     this.purchaseDetailsForm.valueChanges.subscribe(val => {
@@ -180,7 +186,7 @@ export class PurchaseComponent implements OnInit {
     const tempPurchaseMasterObj = this.purchaseMasterForm.value;
     const tempPurchaseDetailObj = this.purchaseDetailsForm.value;
 
-    let index = this.products.findIndex(x => x.id == tempPurchaseDetailObj.product_id);
+    const index = this.products.findIndex(x => x.id === tempPurchaseDetailObj.product_id);
     tempPurchaseDetailObj.product = this.products[index];
 
     tempPurchaseDetailObj.unit = this.units.find(x => x.id === tempPurchaseDetailObj.product.purchase_unit_id);
@@ -215,5 +221,11 @@ export class PurchaseComponent implements OnInit {
   savePurchase() {
     /* This way we will fetch particular fields to save */
     this.saveablePurchaseDetails = this.purchaseDetails.map(({ id, rate }) => ({ id, rate }));
+  }
+
+  handleTransactionMasterDateChange($event: MatDatepickerInputEvent<unknown>) {
+    let val = this.transactionMasterForm.value.transaction_date;
+    val = formatDate(val, 'yyyy-MM-dd', 'en');
+    this.transactionMasterForm.patchValue({transaction_date: val});
   }
 }
