@@ -16,7 +16,6 @@ class CreatePurchaseMastersTable extends Migration
         Schema::create('purchase_masters', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_number',20)->unique()->nullable(false);
-            $table->date('purchase_date');
             $table->string('reference_number',20)->nullable(true);
             $table->string('challan_number',20)->nullable(true);
             $table->string('order_number',20)->nullable(true);

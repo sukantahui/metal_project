@@ -6,13 +6,11 @@ import {ProductCategory, Unit} from '../product/product.component';
 import {HttpClient} from '@angular/common/http';
 import {ProductService} from '../../services/product.service';
 import {Product} from '../../models/product.model';
-import {PurchaseMaster} from '../../models/purchase-master.model';
-import {PurchaseDetail} from '../../models/purchase-detail.model';
+import {PurchaseDetail, PurchaseMaster} from '../../models/purchase.model';
 import {formatDate} from '@angular/common';
 import { faUserEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {StorageMap} from '@ngx-pwa/local-storage';
-import {TransactionMaster} from '../../models/transaction-master.model';
-import {TransactionDetail} from '../../models/transaction-detail.model';
+import {TransactionDetail, TransactionMaster} from '../../models/transaction.model';
 
 @Component({
   selector: 'app-purchase',
@@ -39,6 +37,7 @@ export class PurchaseComponent implements OnInit {
   transactionMaster: TransactionMaster = null;
   transactionDetails: TransactionDetail[] = [];
 
+  purchaseContainer: {tm: TransactionMaster, td: TransactionDetail[], pm: PurchaseMaster, pd: PurchaseDetail[]};
 
   selectedProductCategoryId = 1;
   private formattedMessage: string;
@@ -47,9 +46,9 @@ export class PurchaseComponent implements OnInit {
   faUserEdit = faUserEdit;
   faTrashAlt = faTrashAlt;
   saveablePurchaseDetails: { rate: number; id: number }[];
-  purchaseContainer: {pm: PurchaseMaster, pd: PurchaseDetail[]};
 
   // tslint:disable-next-line:max-line-length
+  currentItemAmount: number;
   constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService, private storage: StorageMap) {
     const now = new Date();
     const val = formatDate(now, 'yyyy-MM-dd', 'en');
@@ -59,7 +58,6 @@ export class PurchaseComponent implements OnInit {
       reference_number: new FormControl(null),
       challan_number: new FormControl(null),
       order_number: new FormControl(null),
-      purchase_date: new FormControl(val),
       order_date: new FormControl(val),
       comment: new FormControl(null),
 
@@ -73,16 +71,17 @@ export class PurchaseComponent implements OnInit {
       purchase_quantity: new FormControl(null),
       stock_quantity: new FormControl(null),
     });
-
+    const userData: {id: number, personName: string, _authKey: string, personTypeId: number} = JSON.parse(localStorage.getItem('user'));
     this.transactionMasterForm = new FormGroup({
       id: new FormControl(null),
       transaction_number: new FormControl(null),
-      user_id: new FormControl(null),
+      user_id: new FormControl(userData.id),
       transaction_date: new FormControl(null),
     });
 
     this.transactionDetailsForm = new FormGroup({
       id: new FormControl(null),
+      transaction_master_id: new FormControl(null),
       ledger_id: new FormControl(null),
       transaction_type_id: new FormControl(2),
       amount: new FormControl(null),
@@ -95,10 +94,16 @@ export class PurchaseComponent implements OnInit {
     //   console.log(val);
     // });
 
+    // Transaction master will be updated
+
+    this.transactionMasterForm.valueChanges.subscribe( val => {
+      this.transactionMaster = val;
+    });
+
     /* Transaction detail will be updated if vendor is selected */
     this.transactionDetailsForm.valueChanges.subscribe(val => {
       /* first it will erase all previous data, then it will first push the purchase ledger, its id is 5 and it is  permanent */
-      /* in step2 i am pushing the customer ledger */
+      /* in step2 i am pushing the vendor ledger */
       /*
       * In purchase Journal is:-
       * Purchase account Dr.
@@ -106,12 +111,15 @@ export class PurchaseComponent implements OnInit {
       * Amount to be adjusted latter
       */
       this.transactionDetails = [];
-      this.transactionDetails.push({id: null, ledger_id: 5, transaction_type_id: 1, amount: 0});
+      this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 5, transaction_type_id: 1, amount: 0});
       this.transactionDetails.push(val);
     });
 
     this.purchaseMasterForm.valueChanges.subscribe(val => {
       this.purchaseMaster = val;
+    });
+    this.purchaseDetailsForm.valueChanges.subscribe(val => {
+      this.currentItemAmount = val.rate * val.purchase_quantity;
     });
 
 
@@ -146,7 +154,10 @@ export class PurchaseComponent implements OnInit {
         this.purchaseMaster = purchaseContainer.pm;
         this.purchaseDetails = purchaseContainer.pd;
         this.purchaseMasterForm.patchValue(purchaseContainer.pm);
-        this.purchaseDetailsForm.patchValue(purchaseContainer.pd);
+        this.transactionMaster = purchaseContainer.tm;
+        this.transactionDetails = purchaseContainer.td;
+        this.transactionMasterForm.patchValue(purchaseContainer.tm);
+        this.transactionDetailsForm.patchValue(purchaseContainer.td[1]);
       }
     }, (error) => {});
   }
@@ -179,8 +190,10 @@ export class PurchaseComponent implements OnInit {
     this.purchaseMaster = tempPurchaseMasterObj;
 
     this.purchaseContainer = {
+      tm: this.transactionMaster,
+      td: this.transactionDetails,
       pm: this.purchaseMaster,
-      pd: this.purchaseDetails
+      pd: this.purchaseDetails,
     };
 
     this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});

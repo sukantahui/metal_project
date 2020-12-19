@@ -30,7 +30,7 @@ class VendorController extends Controller
             'pin',
             'transaction_type_id',
             'opening_balance'
-            )->get();
+            )->where('ledger_group_id',15)->get();
 
         return response()->json(['success'=>1,'data'=>$vendor,'error'=>null], 200,[],JSON_NUMERIC_CHECK);
 

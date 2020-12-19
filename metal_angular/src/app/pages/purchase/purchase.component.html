@@ -28,9 +28,20 @@
               <a [routerLink]="" [popover]="myPopover">Vendor info</a>
             </div>
           </div>
-          <hr size="10">
         </form>
-
+        <form [formGroup]="transactionMasterForm">
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field class="example-full-width" fxFlex="30">
+              <mat-label>Purchase date (dd/mm/yyyy)</mat-label>
+              <input matInput [matDatepicker]="purchaseDatePicker" formControlName="transaction_date" placeholder="dd/mm/yyyy">
+              <mat-datepicker-toggle matSuffix [for]="purchaseDatePicker">
+                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #purchaseDatePicker ></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </form>
+        <hr size="10">
 
         <form [formGroup]="purchaseMasterForm" class="purchase-master">
 
@@ -65,15 +76,6 @@
           </div>
 
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field class="example-full-width" fxFlex="30">
-              <mat-label>Purchase date (dd/mm/yyyy)</mat-label>
-              <input matInput [matDatepicker]="purchaseDatePicker" formControlName="purchase_date" placeholder="dd/mm/yyyy">
-              <mat-datepicker-toggle matSuffix [for]="purchaseDatePicker">
-                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-              </mat-datepicker-toggle>
-              <mat-datepicker #purchaseDatePicker ></mat-datepicker>
-            </mat-form-field>
-
             <mat-form-field class="example-full-width" fxFlex="30">
               <mat-label>Order date (dd/mm/yyyy)</mat-label>
               <input matInput [matDatepicker]="orderDatePicker" formControlName="order_date" placeholder="dd/mm/yyyy">
@@ -111,20 +113,24 @@
 
 
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field fxFlex="30">
+            <mat-form-field fxFlex="20">
               <mat-label>Rate</mat-label>
               <input type="number" class="text-right" matInput formControlName="rate" placeholder="Rate">
             </mat-form-field>
 
-            <mat-form-field fxFlex="30">
+            <mat-form-field fxFlex="20">
               <mat-label>Quantity</mat-label>
               <input type="number" class="text-right" matInput formControlName="purchase_quantity" placeholder="Quantity">
             </mat-form-field>
+            Amount: {{currentItemAmount}}
 
-            <mat-form-field fxFlex="30" *ngIf="selectedProduct && selectedProduct.purchase_unit_id!=selectedProduct.sale_unit_id">
+            <mat-form-field fxFlex="20" *ngIf="selectedProduct && selectedProduct.purchase_unit_id!=selectedProduct.sale_unit_id">
               <mat-label>Stock quantity</mat-label>
               <input type="number" class="text-right" matInput formControlName="stock_quantity" placeholder="Stock quantity">
+
             </mat-form-field>
+
+
           </div>
         </form>
 
