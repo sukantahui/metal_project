@@ -55,7 +55,6 @@ export class PurchaseComponent implements OnInit {
     const val = formatDate(now, 'yyyy-MM-dd', 'en');
     this.purchaseMasterForm = new FormGroup({
       id: new FormControl(null),
-      ledger_id: new FormControl(null),
       invoice_number: new FormControl(null),
       reference_number: new FormControl(null),
       challan_number: new FormControl(null),
@@ -104,11 +103,19 @@ export class PurchaseComponent implements OnInit {
       * In purchase Journal is:-
       * Purchase account Dr.
       * Vendor/Cash/Bank A/C Cr.
+      * Amount to be adjusted latter
       */
       this.transactionDetails = [];
       this.transactionDetails.push({id: null, ledger_id: 5, transaction_type_id: 1, amount: 0});
       this.transactionDetails.push(val);
     });
+
+    this.purchaseMasterForm.valueChanges.subscribe(val => {
+      this.purchaseMaster = val;
+    });
+
+
+
 
     this.vendors = this.vendorService.getVendors();
     this.vendorService.getVendorServiceListener().subscribe(response => {
