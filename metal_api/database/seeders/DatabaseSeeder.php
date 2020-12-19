@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\ExtraItem;
+use App\Models\Ledger;
 use App\Models\Unit;
 use App\Models\VoucherType;
 use Illuminate\Database\Seeder;
@@ -142,6 +143,21 @@ class DatabaseSeeder extends Seeder
             ['item_name' => 'Discount allowed'],
             ['item_name' => 'Loading expenditure'],
             ['item_name' => 'Unloading expenditure']
+        ]);
+
+        Ledger::insert([
+            //1
+            ['ledger_name'=>'Cash in Hand','billing_name'=>'Cash in Hand','ledger_group_id'=>13,'state_id'=>1,'transaction_type_id'=>1,'opening_balance'=>0,'customer_category_id'=>1],
+            //2
+            ['ledger_name'=>'Bank Account','billing_name'=>'Bank Account','ledger_group_id'=>7,'state_id'=>1,'transaction_type_id'=>1,'opening_balance'=>0,'customer_category_id'=>1],
+            //3
+            ['ledger_name'=>'Bank Account 1','billing_name'=>'Bank Account 1','ledger_group_id'=>7,'state_id'=>1,'transaction_type_id'=>1,'opening_balance'=>0,'customer_category_id'=>1],
+            //4
+            ['ledger_name'=>'Bank Account 2','billing_name'=>'Bank Account 2','ledger_group_id'=>7,'state_id'=>1,'transaction_type_id'=>1,'opening_balance'=>0,'customer_category_id'=>1],
+            //5
+            ['ledger_name'=>'Purchase','billing_name'=>'Purchase','ledger_group_id'=>16,'state_id'=>1,'transaction_type_id'=>1,'opening_balance'=>0,'customer_category_id'=>1],
+            //6
+            ['ledger_name'=>'Sale','billing_name'=>'Sale','ledger_group_id'=>15,'state_id'=>1,'transaction_type_id'=>2,'opening_balance'=>0,'customer_category_id'=>1],
         ]);
     }
 }

@@ -11,8 +11,8 @@ import {PurchaseDetail} from '../../models/purchase-detail.model';
 import {formatDate} from '@angular/common';
 import { faUserEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {StorageMap} from '@ngx-pwa/local-storage';
-import {TransactionMaster} from "../../models/transaction-master.model";
-import {TransactionDetail} from "../../models/transaction-detail.model";
+import {TransactionMaster} from '../../models/transaction-master.model';
+import {TransactionDetail} from '../../models/transaction-detail.model';
 
 @Component({
   selector: 'app-purchase',
@@ -37,7 +37,7 @@ export class PurchaseComponent implements OnInit {
   purchaseDetails: PurchaseDetail[] = [];
 
   transactionMaster: TransactionMaster = null;
-  transactionDetails: TransactionDetail[]=[];
+  transactionDetails: TransactionDetail[] = [];
 
 
   selectedProductCategoryId = 1;
@@ -49,6 +49,7 @@ export class PurchaseComponent implements OnInit {
   saveablePurchaseDetails: { rate: number; id: number }[];
   purchaseContainer: {pm: PurchaseMaster, pd: PurchaseDetail[]};
 
+  // tslint:disable-next-line:max-line-length
   constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService, private storage: StorageMap) {
     const now = new Date();
     const val = formatDate(now, 'yyyy-MM-dd', 'en');
@@ -94,6 +95,20 @@ export class PurchaseComponent implements OnInit {
     // this.purchaseMasterForm.valueChanges.subscribe(val => {
     //   console.log(val);
     // });
+
+    /* Transaction detail will be updated if vendor is selected */
+    this.transactionDetailsForm.valueChanges.subscribe(val => {
+      /* first it will erase all previous data, then it will first push the purchase ledger, its id is 5 and it is  permanent */
+      /* in step2 i am pushing the customer ledger */
+      /*
+      * In purchase Journal is:-
+      * Purchase account Dr.
+      * Vendor/Cash/Bank A/C Cr.
+      */
+      this.transactionDetails = [];
+      this.transactionDetails.push({id: null, ledger_id: 5, transaction_type_id: 1, amount: 0});
+      this.transactionDetails.push(val);
+    });
 
     this.vendors = this.vendorService.getVendors();
     this.vendorService.getVendorServiceListener().subscribe(response => {

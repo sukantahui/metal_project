@@ -1,9 +1,11 @@
-import {Vendor} from "./vendor.model";
+import {Vendor} from './vendor.model';
 
 
 export class TransactionDetail{
   id?: number;
+  transaction_type_id?: number;
   transaction_master_id?: number;
   ledger_id?: number;
-  ledger: Vendor
+  ledger?: Vendor;
+  amount: number;
 }
