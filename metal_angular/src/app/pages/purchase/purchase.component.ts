@@ -53,14 +53,14 @@ export class PurchaseComponent implements OnInit {
   // tslint:disable-next-line:max-line-length
   constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService, private storage: StorageMap) {
     const now = new Date();
-    const val = formatDate(now, 'yyyy-MM-dd', 'en');
+    const currentSQLDate = formatDate(now, 'yyyy-MM-dd', 'en');
     this.purchaseMasterForm = new FormGroup({
       id: new FormControl(null),
       invoice_number: new FormControl(null),
       reference_number: new FormControl(null),
       challan_number: new FormControl(null),
       order_number: new FormControl(null),
-      order_date: new FormControl(val),
+      order_date: new FormControl(currentSQLDate),
       comment: new FormControl(null),
 
     });
@@ -78,7 +78,7 @@ export class PurchaseComponent implements OnInit {
       id: new FormControl(null),
       transaction_number: new FormControl(null),
       user_id: new FormControl(userData.id),
-      transaction_date: new FormControl(null),
+      transaction_date: new FormControl(currentSQLDate),
     });
 
     this.transactionDetailsForm = new FormGroup({

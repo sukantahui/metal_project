@@ -1,4 +1,6 @@
 <div fxLayout.xs="column" fxLayout="row" fxFlexFill>
+
+
   <div fxFlex="50" id="left-div">
     <mat-card class="example-card">
       <mat-card-header>
@@ -6,41 +8,62 @@
         <mat-card-title>Purchase Form</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <form [formGroup]="transactionDetailsForm" class="transaction-detail">
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <ng-select [items]="vendors" fxFlex="50" (change)="onSelectedVendor($event)"
-                       bindLabel="ledger_name"
-                       class="custom"
-                       bindValue="id"
-                       formControlName="ledger_id"
-                       placeholder="Select Vendor">
-            </ng-select>
-            <div fxFlex="30" *ngIf="selectedLedger">
-              <popover-content #myPopover
-                               title="{{selectedLedger.ledger_name}}"
-                               placement="right"
-                               [animation]="true"
-                               [closeOnClickOutside]="true" >
-                <b>{{selectedLedger.address1 + ' | ' + selectedLedger.address2}}</b> <span style="color: #C21F39">Dynamic</span> <span style="color: #00b3ee">Reusable</span>
-                <b><i><span style="color: #ffc520">Popover With</span></i></b> <small>Html support</small>.
-              </popover-content>
+        <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+          <div fxFlex="50">
+            <form [formGroup]="transactionDetailsForm" class="transaction-detail">
+              <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                <ng-select [items]="vendors" fxFlex="80" (change)="onSelectedVendor($event)"
+                           bindLabel="ledger_name"
+                           class="custom"
+                           bindValue="id"
+                           formControlName="ledger_id"
+                           placeholder="Select Vendor">
+                </ng-select>
+                <div fxFlex="20" *ngIf="selectedLedger">
+                  <popover-content #myPopover
+                                   title="{{selectedLedger.ledger_name}}"
+                                   placement="right"
+                                   [animation]="true"
+                                   [closeOnClickOutside]="true" >
+                    <b>{{selectedLedger.address1 + ' | ' + selectedLedger.address2}}</b> <span style="color: #C21F39">Dynamic</span> <span style="color: #00b3ee">Reusable</span>
+                    <b><i><span style="color: #ffc520">Popover With</span></i></b> <small>Html support</small>.
+                  </popover-content>
 
-              <a [routerLink]="" [popover]="myPopover">Vendor info</a>
-            </div>
+                  <a [routerLink]="" [popover]="myPopover">Vendor info</a>
+                </div>
+              </div>
+            </form>
           </div>
-        </form>
-        <form [formGroup]="transactionMasterForm">
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field class="example-full-width" fxFlex="30">
-              <mat-label>Purchase date (dd/mm/yyyy)</mat-label>
-              <input matInput [matDatepicker]="purchaseDatePicker"  formControlName="transaction_date" placeholder="dd/mm/yyyy">
-              <mat-datepicker-toggle matSuffix [for]="purchaseDatePicker">
-                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-              </mat-datepicker-toggle>
-              <mat-datepicker #purchaseDatePicker ></mat-datepicker>
-            </mat-form-field>
+          <div fxFlex="25">
+            <form [formGroup]="transactionMasterForm">
+              <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                <mat-form-field class="example-full-width" fxFlex="90">
+                  <mat-label>Purchase date (dd/mm/yyyy)</mat-label>
+                  <input matInput [matDatepicker]="purchaseDatePicker"  formControlName="transaction_date" placeholder="dd/mm/yyyy">
+                  <mat-datepicker-toggle matSuffix [for]="purchaseDatePicker">
+                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #purchaseDatePicker ></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </form>
           </div>
-        </form>
+          <div fxFlex="25">
+            <form [formGroup]="purchaseMasterForm" class="purchase-master">
+              <mat-form-field class="example-full-width" fxFlex="90">
+                <mat-label>Order date (dd/mm/yyyy)</mat-label>
+                <input matInput [matDatepicker]="orderDatePicker" formControlName="order_date" placeholder="dd/mm/yyyy">
+                <mat-datepicker-toggle matSuffix [for]="orderDatePicker">
+                  <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #orderDatePicker ></mat-datepicker>
+              </mat-form-field>
+            </form>
+          </div>
+        </div>
+
+
+
         <hr size="10">
 
         <form [formGroup]="purchaseMasterForm" class="purchase-master">
@@ -74,18 +97,6 @@
               <input type="text" matInput formControlName="order_number" placeholder="Order number">
             </mat-form-field>
           </div>
-
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field class="example-full-width" fxFlex="30">
-              <mat-label>Order date (dd/mm/yyyy)</mat-label>
-              <input matInput [matDatepicker]="orderDatePicker" formControlName="order_date" placeholder="dd/mm/yyyy">
-              <mat-datepicker-toggle matSuffix [for]="orderDatePicker">
-                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-              </mat-datepicker-toggle>
-              <mat-datepicker #orderDatePicker ></mat-datepicker>
-            </mat-form-field>
-          </div>
-
           <hr size="20">
         </form>
 
