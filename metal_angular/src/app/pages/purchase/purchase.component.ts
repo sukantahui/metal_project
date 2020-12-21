@@ -37,8 +37,9 @@ export class PurchaseComponent implements OnInit {
 
   transactionMaster: TransactionMaster = null;
   transactionDetails: TransactionDetail[] = [];
-
-  purchaseContainer: {tm: TransactionMaster, td: TransactionDetail[], pm: PurchaseMaster, pd: PurchaseDetail[]};
+  currentPurchaseTotal = 0;
+  roundedOff = 0;
+  purchaseContainer: {tm: TransactionMaster, td: TransactionDetail[], pm: PurchaseMaster, pd: PurchaseDetail[], currentPurchaseTotal: number, roundedOff: number};
 
   selectedProductCategoryId = 1;
   private formattedMessage: string;
@@ -130,7 +131,6 @@ export class PurchaseComponent implements OnInit {
 
 
 
-
     this.vendors = this.vendorService.getVendors();
     this.vendorService.getVendorServiceListener().subscribe(response => {
       this.vendors = response;
@@ -164,8 +164,12 @@ export class PurchaseComponent implements OnInit {
         this.transactionDetails = purchaseContainer.td;
         this.transactionMasterForm.patchValue(purchaseContainer.tm);
         this.transactionDetailsForm.patchValue(purchaseContainer.td[1]);
+        this.currentPurchaseTotal = this.purchaseContainer.currentPurchaseTotal;
+        this.roundedOff = this.purchaseContainer.roundedOff;
       }
     }, (error) => {});
+
+    // console.log('on load purchaseContainer ', this.purchaseContainer);
   }
 
   onSelectedVendor(value){
@@ -185,24 +189,40 @@ export class PurchaseComponent implements OnInit {
   addItem(){
     const tempPurchaseMasterObj = this.purchaseMasterForm.value;
     const tempPurchaseDetailObj = this.purchaseDetailsForm.value;
-
     const index = this.products.findIndex(x => x.id === tempPurchaseDetailObj.product_id);
     tempPurchaseDetailObj.product = this.products[index];
 
+    console.log('tempPurchaseDetailObj',tempPurchaseDetailObj);
     tempPurchaseDetailObj.unit = this.units.find(x => x.id === tempPurchaseDetailObj.product.purchase_unit_id);
     tempPurchaseMasterObj.ledger = this.vendors.find(x => x.id === tempPurchaseMasterObj.ledger_id);
 
     this.purchaseDetails.unshift(tempPurchaseDetailObj);
     this.purchaseMaster = tempPurchaseMasterObj;
 
+    let tempPurchaseTotal = this.purchaseDetails.reduce( (total, record) => {
+      // @ts-ignore
+      return total + (record.rate * record.purchase_quantity);
+    }, 0);
+    this.currentPurchaseTotal = tempPurchaseTotal;
+    this.currentPurchaseTotal = parseFloat(this.currentPurchaseTotal.toFixed(2));
+    const round =  Math.round(this.currentPurchaseTotal) - this.currentPurchaseTotal;
+    this.roundedOff = parseFloat(round.toFixed(2));
+
+    this.transactionMaster = this.transactionMasterForm.value;
+    this.transactionDetails[0].amount = this.currentPurchaseTotal+this.roundedOff;
+    this.transactionDetails[1].amount = this.currentPurchaseTotal+this.roundedOff;
+
+
     this.purchaseContainer = {
       tm: this.transactionMaster,
       td: this.transactionDetails,
       pm: this.purchaseMaster,
       pd: this.purchaseDetails,
+      currentPurchaseTotal: this.currentPurchaseTotal,
+      roundedOff: this.roundedOff
     };
-
     this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
+
   }
 
   clearPurchaseForm() {
