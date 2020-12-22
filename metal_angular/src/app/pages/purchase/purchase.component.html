@@ -135,7 +135,7 @@
               <mat-label>Quantity</mat-label>
               <input type="number" class="text-right" matInput formControlName="purchase_quantity" placeholder="Quantity">
             </mat-form-field>
-            Amount: {{currentItemAmount}}
+            Amount: {{currentItemAmount | number: '1.2'}}
 
             <mat-form-field fxFlex="20" *ngIf="selectedProduct && selectedProduct.purchase_unit_id!=selectedProduct.sale_unit_id">
               <mat-label>Stock quantity</mat-label>
@@ -144,17 +144,6 @@
             </mat-form-field>
 
 
-          </div>
-        </form>
-
-        <hr size="20">
-        <form [formGroup]="purchaseMasterForm" class="purchase-master">
-
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field fxFlex="30">
-              <mat-label>Comment</mat-label>
-              <input type="textarea" matInput formControlName="comment" placeholder="Comment">
-            </mat-form-field>
           </div>
         </form>
 
@@ -199,7 +188,7 @@
             <td>{{purchaseDetail.product.product_name}}</td>
             <td>{{purchaseDetail.rate}}</td>
             <td>{{purchaseDetail.purchase_quantity + ' (' + purchaseDetail.unit.unit_name + ')'}}</td>
-            <td>{{purchaseDetail.rate * purchaseDetail.purchase_quantity}}</td>
+            <td class="text-right">{{(purchaseDetail.rate * purchaseDetail.purchase_quantity) | number: '1.0-2'}}</td>
             <td>
               <span  (click)="itemToEdit(purchaseDetail)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
             </td>
@@ -212,24 +201,59 @@
           <tfoot>
           <tr>
             <td colspan="4">Total</td>
-            <td>{{currentPurchaseTotal}}</td>
+            <td class="text-right">{{currentPurchaseTotal}}</td>
             <td colspan="2"></td>
           </tr>
 
           <tr>
             <td colspan="4">Round off</td>
-            <td>{{roundedOff}}</td>
+            <td class="text-right">{{roundedOff}}</td>
             <td colspan="2"></td>
           </tr>
 
           <tr>
             <td colspan="4">Gross amount</td>
-            <td>{{currentPurchaseTotal + roundedOff}}</td>
+            <td class="text-right">{{currentPurchaseTotal + roundedOff}}</td>
             <td colspan="2"></td>
           </tr>
+<!--          <form [formGroup]="purchaseMasterForm" class="purchase-master">-->
+<!--            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">-->
+<!--              <mat-form-field fxFlex="60">-->
+<!--                <mat-label>Comment</mat-label>-->
+<!--                <input type="textarea" matInput formControlName="comment" placeholder="Comment">-->
+<!--              </mat-form-field>-->
+<!--            </div>-->
+<!--          </form>-->
 
           </tfoot>
         </table>
+        <h3>Extra item</h3>
+        <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+          <form [formGroup]="extraItemsForm">
+            <mat-form-field fxFlex="40">
+            <mat-label>Extra item</mat-label>
+              <mat-select  formControlName="extra_item_id" placeholder="Extra item">
+                <mat-option *ngFor="let extraItem of extraItems" [value]="extraItem.id">
+                  {{extraItem.item_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex="20">
+              <mat-label>Amount</mat-label>
+              <input type="number" class="text-right" matInput formControlName="amount" placeholder="Extra amount">
+            </mat-form-field>
+            <mat-form-field fxFlex="40">
+              <mat-label>Type</mat-label>
+              <mat-select  formControlName="item_type" placeholder="Extra item">
+                <mat-option *ngFor="let extraItemType of extraItemTypes" [value]="extraItemType.value">
+                  {{extraItemType.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button  mat-stroked-button (click)="addExtraItemForPurchase()">Add</button>
+          </form>
+        </div>
+
       </mat-card-content>
     </mat-card>
 
@@ -245,8 +269,8 @@
       </mat-card-header>
       <mat-card-content>
         <pre>
-          currentPurchaseTotal = {{currentPurchaseTotal}}
-         purchaseMaster = {{purchaseMaster | json}}
+          extraItemsForm = {{extraItemsForm.value | json}}
+          extraItemDetails = {{extraItemDetails | json}}
         </pre>
         <pre>
 <!--          valid = {{customerForm.valid | json}}-->

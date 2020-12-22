@@ -11,6 +11,7 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\CustomerCategoryController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\TransactionTypeController;
+use App\Http\Controllers\ExtraItemController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -71,5 +72,7 @@ Route::group(array('prefix' => 'dev'), function() {
     //others
     Route::get("states",[StateController::class,'index']);
     Route::get("transactionTypes",[TransactionTypeController::class,'index']);
+
+    Route::get("extraItems",[ExtraItemController::class,'index']);
 });
 

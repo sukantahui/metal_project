@@ -12,6 +12,17 @@ import { faUserEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {StorageMap} from '@ngx-pwa/local-storage';
 import {TransactionDetail, TransactionMaster} from '../../models/transaction.model';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
+import {State} from "../vendor/vendor.component";
+
+export interface ExtraItem {
+  id: number;
+  item_name: string;
+}
+export interface ExtraItemDetails{
+  extra_item_id: number;
+  amount: number;
+  item_type: number;
+}
 
 @Component({
   selector: 'app-purchase',
@@ -24,6 +35,7 @@ export class PurchaseComponent implements OnInit {
   purchaseDetailsForm: FormGroup;
   transactionMasterForm: FormGroup;
   transactionDetailsForm: FormGroup;
+  extraItemsForm: FormGroup;
   vendors: Vendor[] = [];
   productCategories: ProductCategory[] = [];
   products: Product[] = [];
@@ -31,6 +43,9 @@ export class PurchaseComponent implements OnInit {
   productsByCategory: Product[] = [];
   selectedLedger: Vendor = null;
   selectedProduct: Product = null;
+  extraItems: ExtraItem[] = [];
+  extraItemDetails: ExtraItemDetails[] = [];
+  extraItemTypes = [{"value": 1, "name": "Add"},{"value": -1, name: "Less"}];
 
   purchaseMaster: PurchaseMaster = null;
   purchaseDetails: PurchaseDetail[] = [];
@@ -89,6 +104,12 @@ export class PurchaseComponent implements OnInit {
       transaction_type_id: new FormControl(2),
       amount: new FormControl(null),
     });
+    this.extraItemsForm = new FormGroup({
+      id: new FormControl(null),
+      extra_item_id: new FormControl(null),
+      amount: new FormControl(null),
+      item_type: new FormControl(1),
+    });
 
   }
 
@@ -98,6 +119,11 @@ export class PurchaseComponent implements OnInit {
     // });
 
     // Transaction master will be updated
+    this.http.get('http://127.0.0.1:8000/api/dev/extraItems').subscribe((response: {success: number, data: ExtraItem[]}) => {
+      this.extraItems = response.data;
+      console.log(this.extraItems);
+    });
+
 
     this.transactionMasterForm.valueChanges.subscribe( val => {
       const x = val.transaction_date;
@@ -126,9 +152,9 @@ export class PurchaseComponent implements OnInit {
       this.purchaseMaster = val;
     });
     this.purchaseDetailsForm.valueChanges.subscribe(val => {
+      console.log(val.rate, val.purchase_quantity);
       this.currentItemAmount = val.rate * val.purchase_quantity;
     });
-
 
 
     this.vendors = this.vendorService.getVendors();
@@ -247,5 +273,10 @@ export class PurchaseComponent implements OnInit {
     let val = this.transactionMasterForm.value.transaction_date;
     val = formatDate(val, 'yyyy-MM-dd', 'en');
     this.transactionMasterForm.patchValue({transaction_date: val});
+  }
+
+  addExtraItemForPurchase() {
+      let extraItem = this.extraItemsForm.value;
+      this.extraItemDetails.unshift(extraItem);
   }
 }
