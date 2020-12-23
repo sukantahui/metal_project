@@ -22,6 +22,7 @@ export interface ExtraItemDetails{
   extra_item_id: number;
   amount: number;
   item_type: number;
+  item_name?: string;
 }
 
 @Component({
@@ -54,7 +55,9 @@ export class PurchaseComponent implements OnInit {
   transactionDetails: TransactionDetail[] = [];
   currentPurchaseTotal = 0;
   roundedOff = 0;
-  purchaseContainer: {tm: TransactionMaster, td: TransactionDetail[], pm: PurchaseMaster, pd: PurchaseDetail[], currentPurchaseTotal: number, roundedOff: number};
+  grossTotal = 0;
+  purchaseContainer: {tm: TransactionMaster, td: TransactionDetail[], pm: PurchaseMaster, pd: PurchaseDetail[],
+    currentPurchaseTotal: number, roundedOff: number, extraItems: ExtraItemDetails[]};
 
   selectedProductCategoryId = 1;
   private formattedMessage: string;
@@ -156,7 +159,6 @@ export class PurchaseComponent implements OnInit {
       this.currentItemAmount = val.rate * val.purchase_quantity;
     });
 
-
     this.vendors = this.vendorService.getVendors();
     this.vendorService.getVendorServiceListener().subscribe(response => {
       this.vendors = response;
@@ -190,9 +192,16 @@ export class PurchaseComponent implements OnInit {
         this.transactionDetails = purchaseContainer.td;
         this.transactionMasterForm.patchValue(purchaseContainer.tm);
         this.transactionDetailsForm.patchValue(purchaseContainer.td[1]);
+        if(!purchaseContainer.extraItems){
+          this.purchaseContainer.extraItems = [];
+        }else{
+          this.extraItemDetails = purchaseContainer.extraItems;
+        }
         this.currentPurchaseTotal = this.purchaseContainer.currentPurchaseTotal;
         this.roundedOff = this.purchaseContainer.roundedOff;
+        this.grossTotal = this.currentPurchaseTotal + this.roundedOff;
       }
+      console.log('purchaseContainer storage',purchaseContainer);
     }, (error) => {});
 
     // console.log('on load purchaseContainer ', this.purchaseContainer);
@@ -233,11 +242,11 @@ export class PurchaseComponent implements OnInit {
     this.currentPurchaseTotal = parseFloat(this.currentPurchaseTotal.toFixed(2));
     const round =  Math.round(this.currentPurchaseTotal) - this.currentPurchaseTotal;
     this.roundedOff = parseFloat(round.toFixed(2));
-
+    this.grossTotal = this.currentPurchaseTotal + this.roundedOff;
     this.transactionMaster = this.transactionMasterForm.value;
-    this.transactionDetails[0].amount = this.currentPurchaseTotal+this.roundedOff;
-    this.transactionDetails[1].amount = this.currentPurchaseTotal+this.roundedOff;
-
+    this.transactionDetails[0].amount = this.grossTotal;
+    this.transactionDetails[1].amount = this.grossTotal;
+    this.extraItemDetails.push({"extra_item_id": 1, "amount": this.roundedOff, "item_type": 1, "item_name": "Rounded off"});
 
     this.purchaseContainer = {
       tm: this.transactionMaster,
@@ -245,7 +254,8 @@ export class PurchaseComponent implements OnInit {
       pm: this.purchaseMaster,
       pd: this.purchaseDetails,
       currentPurchaseTotal: this.currentPurchaseTotal,
-      roundedOff: this.roundedOff
+      roundedOff: this.roundedOff,
+      extraItems: this.extraItemDetails
     };
     this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
 
@@ -276,7 +286,14 @@ export class PurchaseComponent implements OnInit {
   }
 
   addExtraItemForPurchase() {
+      console.log(this.extraItemDetails);
       let extraItem = this.extraItemsForm.value;
-      this.extraItemDetails.unshift(extraItem);
+      let extraItemObj =  this.extraItems.find(x => x.id === extraItem.extra_item_id);
+      extraItem.item_name = extraItemObj.item_name;
+      console.log(extraItemObj,this.extraItemDetails);
+      this.extraItemDetails.push(extraItem);
+      this.grossTotal+= extraItem.amount * extraItem.item_type;
+      this.purchaseContainer.extraItems = this.extraItemDetails;
+      this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
   }
 }
