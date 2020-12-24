@@ -14,7 +14,7 @@ class ExtraItemController extends Controller
      */
     public function index()
     {
-        $items = ExtraItem::get();
+        $items = ExtraItem::where('inforce',1)->get();
         return response()->json(['success'=>1,'data'=>$items], 200,[],JSON_NUMERIC_CHECK);
     }
 

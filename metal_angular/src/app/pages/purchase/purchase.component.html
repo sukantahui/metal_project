@@ -150,7 +150,6 @@
       </mat-card-content>
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
         <button  mat-stroked-button (click)="clearPurchaseForm()">clear</button>
-        <button  mat-stroked-button (click)="savePurchase()">Save Purchase</button>
       </div>
     </mat-card>
 
@@ -204,7 +203,7 @@
             <td class="text-right">{{currentPurchaseTotal}}</td>
             <td colspan="2"></td>
           </tr>
-          
+
           <tr *ngFor="let extraItem of extraItemDetails">
             <td colspan="4"><b>{{extraItem.item_type==1?'Add: ' : 'Less: '}}</b>{{extraItem.item_name}}</td>
             <td class="text-right">{{extraItem.amount}}</td>
@@ -252,6 +251,10 @@
             </mat-form-field>
             <button  mat-stroked-button (click)="addExtraItemForPurchase()" [disabled]="extraItemsForm.invalid">Add</button>
           </form>
+        </div>
+
+        <div class="container mt-3" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
+          <button mat-stroked-button color="primary"  mat-stroked-button (click)="onSubmit()">Save Purchase</button>
         </div>
 
       </mat-card-content>

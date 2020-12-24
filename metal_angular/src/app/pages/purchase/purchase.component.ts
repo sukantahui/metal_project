@@ -246,7 +246,8 @@ export class PurchaseComponent implements OnInit {
     this.transactionMaster = this.transactionMasterForm.value;
     this.transactionDetails[0].amount = this.grossTotal;
     this.transactionDetails[1].amount = this.grossTotal;
-    this.extraItemDetails.push({"extra_item_id": 1, "amount": this.roundedOff, "item_type": 1, "item_name": "Rounded off"});
+
+    this.extraItemDetails[0] = {"extra_item_id": 1, "amount": this.roundedOff, "item_type": 1, "item_name": "Rounded off"};
 
     this.purchaseContainer = {
       tm: this.transactionMaster,
@@ -264,6 +265,7 @@ export class PurchaseComponent implements OnInit {
   clearPurchaseForm() {
     this.purchaseMasterForm.reset();
     this.purchaseDetailsForm.reset();
+    this.storage.delete('purchaseContainer').subscribe(() => {});
   }
 
   itemToEdit(item) {
@@ -274,9 +276,24 @@ export class PurchaseComponent implements OnInit {
 
   }
 
-  savePurchase() {
+  onSubmit() {
+
     /* This way we will fetch particular fields to save */
-    this.saveablePurchaseDetails = this.purchaseDetails.map(({ id, rate }) => ({ id, rate }));
+    let tempPurchaseDetails = this.purchaseContainer.pd.map(
+      ({id , product_id , rate
+      , purchase_quantity , stock_quantity}) => ({id, product_id, rate, purchase_quantity, stock_quantity})
+    );
+
+    let masterData = {
+      transactionMaster: this.purchaseContainer.tm,
+      transactionDetails: this.purchaseContainer.td,
+      purchaseMaster: this.purchaseContainer.pm,
+      purchaseDetails: tempPurchaseDetails,
+      extraItems: this.purchaseContainer.extraItems
+    };
+    console.log(masterData);
+
+
   }
 
   handleTransactionMasterDateChange($event: MatDatepickerInputEvent<unknown>) {

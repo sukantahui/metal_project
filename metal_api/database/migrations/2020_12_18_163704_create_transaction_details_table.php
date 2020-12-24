@@ -17,7 +17,7 @@ class CreateTransactionDetailsTable extends Migration
             $table->id();
 
             $table->bigInteger('transaction_master_id')->unsigned();
-            $table ->foreign('transaction_master_id')->references('id')->on('purchase_masters');
+            $table ->foreign('transaction_master_id')->references('id')->on('transaction_masters');
 
             $table->bigInteger('ledger_id')->unsigned();
             $table ->foreign('ledger_id')->references('id')->on('ledgers');
