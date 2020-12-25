@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PurchaseExtra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseMaster;
@@ -11,13 +12,13 @@ use App\Models\TransactionDetail;
 
 class PurchaseController extends Controller
 {
-    public function  PurchaseController(Request $request){
+    public function  savePurchase(Request $request){
         $input=($request->json()->all());
         $inputPurchaseMaster=(object)($input['purchase_master']);
         $inputPurchaseDetails=($input['purchase_details']);
         $inputTransactionMaster=(object)($input['transaction_master']);
         $inputTransactionDetails=($input['transaction_details']);
-        $inputExtraItems=($input['extraItems']);
+        $inputExtraItems=($input['extra_items']);
 
         DB::beginTransaction();
         try{
@@ -57,12 +58,32 @@ class PurchaseController extends Controller
                 $transactionDetail->amount = $inputTransactionDetail['amount'];
                 $transactionDetail->save();
             }
+
+            //save data into purchase_extras
+            foreach($inputExtraItems as $inputExtraItem){
+                $purchaseExtraDetail = new PurchaseExtra();
+                $purchaseExtraDetail->purchase_master_id = $purchaseMaster->id;
+                $purchaseExtraDetail->extra_item_id = $inputExtraItem['extra_item_id'];
+                $purchaseExtraDetail->amount = $inputExtraItem['amount'];
+                $purchaseExtraDetail->item_type = $inputExtraItem['item_type'];
+                $purchaseExtraDetail->save();
+            }
+
             DB::commit();
         }
         catch(\Exception $e){
             DB::rollBack();
             return response()->json(['success'=>0,'exception'=>$e->getMessage()], 401);
         }
-        return response()->json(['success'=>1,'data'=>$purchaseMaster], 200);
+
+        $purchaseInfo = TransactionMaster::select('transaction_masters.id','transaction_masters.transaction_number','transaction_details.amount'
+        ,'ledgers.ledger_name','ledgers.billing_name')
+            ->join('transaction_details','transaction_masters.id','transaction_details.transaction_master_id')
+            ->join('ledgers','ledgers.id','transaction_details.ledger_id')
+            ->where('transaction_masters.id',$transactionMaster->id)
+            ->where('transaction_details.transaction_type_id',2)
+            ->first();
+
+        return response()->json(['success'=>1,'data'=>$purchaseInfo], 200);
     }
 }

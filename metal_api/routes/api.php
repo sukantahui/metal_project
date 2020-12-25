@@ -77,7 +77,7 @@ Route::group(array('prefix' => 'dev'), function() {
     Route::get("extraItems",[ExtraItemController::class,'index']);
 
     //purchase
-    Route::post("purchases",[PurchaseController::class,'PurchaseController']);
+    Route::post("purchases",[PurchaseController::class,'savePurchase']);
 
 });
 

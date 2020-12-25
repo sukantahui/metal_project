@@ -23,3 +23,14 @@ export class PurchaseDetail{
   product?: Product;
   unit?: Unit
 }
+
+export class PurchaseResponse{
+  success: number;
+  data: {
+    "id": number,
+    "transaction_number": string,
+    "amount": number,
+    "ledger_name": string,
+    "billing_name": string
+  }
+}

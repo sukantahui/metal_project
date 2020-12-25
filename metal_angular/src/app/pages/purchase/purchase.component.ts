@@ -13,6 +13,8 @@ import {StorageMap} from '@ngx-pwa/local-storage';
 import {TransactionDetail, TransactionMaster} from '../../models/transaction.model';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 import {State} from "../vendor/vendor.component";
+import Swal from "sweetalert2";
+import {PurchaseService} from "../../services/purchase.service";
 
 export interface ExtraItem {
   id: number;
@@ -70,7 +72,8 @@ export class PurchaseComponent implements OnInit {
   // tslint:disable-next-line:max-line-length
   currentItemAmount: number;
   // tslint:disable-next-line:max-line-length
-  constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService, private storage: StorageMap) {
+  constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService,
+              private purchaseService: PurchaseService, private storage: StorageMap) {
     const now = new Date();
     const currentSQLDate = formatDate(now, 'yyyy-MM-dd', 'en');
     this.purchaseMasterForm = new FormGroup({
@@ -285,13 +288,48 @@ export class PurchaseComponent implements OnInit {
     );
 
     let masterData = {
-      transactionMaster: this.purchaseContainer.tm,
-      transactionDetails: this.purchaseContainer.td,
-      purchaseMaster: this.purchaseContainer.pm,
-      purchaseDetails: tempPurchaseDetails,
-      extraItems: this.purchaseContainer.extraItems
+      transaction_master: this.purchaseContainer.tm,
+      transaction_details: this.purchaseContainer.td,
+      purchase_master: this.purchaseContainer.pm,
+      purchase_details: tempPurchaseDetails,
+      extra_items: this.purchaseContainer.extraItems
     };
-    console.log(masterData);
+    this.purchaseService.savePurchase(masterData).subscribe(response => {
+      console.log(response);
+    });
+    // Swal.fire({
+    //   title: 'Confirmation',
+    //   text: 'Do you sure to save this purchase',
+    //   icon: 'info',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Yes, Save It!'
+    // }).then((result) => {
+    //   console.log(result);
+    //   if (result.isConfirmed){
+    //     this.purchaseService.savePurchase(masterData).subscribe(response => {
+    //       if (response.success === 1){
+    //         Swal.fire({
+    //           position: 'top-end',
+    //           icon: 'success',
+    //           title: 'Vendor saved',
+    //           showConfirmButton: false,
+    //           timer: 1000
+    //         });
+    //       }else{
+    //         Swal.fire({
+    //           position: 'top-end',
+    //           icon: 'error',
+    //           title: 'Validation error',
+    //           showConfirmButton: false,
+    //           timer: 3000
+    //         });
+    //       }
+    //     });
+    //   }
+    // });
+
 
 
   }
