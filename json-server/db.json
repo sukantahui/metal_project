@@ -23,6 +23,12 @@
       "first_name": "Sukanta",
       "last_name": "Hui",
       "email": "sukantahui@gmail.com"
+    },
+    {
+      "id": 5,
+      "first_name": "Sreeparna",
+      "last_name": "Das",
+      "email": "sebastian@codingthesmartway.com"
     }
   ]
 }

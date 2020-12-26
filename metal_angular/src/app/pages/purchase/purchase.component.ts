@@ -204,7 +204,7 @@ export class PurchaseComponent implements OnInit {
         this.roundedOff = this.purchaseContainer.roundedOff;
         this.grossTotal = this.currentPurchaseTotal + this.roundedOff;
       }
-      console.log('purchaseContainer storage',purchaseContainer);
+      console.log('purchaseContainer storage', purchaseContainer);
     }, (error) => {});
 
     // console.log('on load purchaseContainer ', this.purchaseContainer);
@@ -351,4 +351,8 @@ export class PurchaseComponent implements OnInit {
       this.purchaseContainer.extraItems = this.extraItemDetails;
       this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
   }
+
+  setStockQuantity() {
+    this.purchaseDetailsForm.patchValue({stock_quantity: this.purchaseDetailsForm.value.purchase_quantity});
+  };
 }

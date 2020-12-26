@@ -133,7 +133,7 @@
 
             <mat-form-field fxFlex="20">
               <mat-label>Quantity</mat-label>
-              <input type="number" class="text-right" matInput formControlName="purchase_quantity" placeholder="Quantity">
+              <input type="number" class="text-right" matInput formControlName="purchase_quantity" (change)="setStockQuantity()" placeholder="Quantity">
             </mat-form-field>
             Amount: {{currentItemAmount | number: '1.2'}}
 

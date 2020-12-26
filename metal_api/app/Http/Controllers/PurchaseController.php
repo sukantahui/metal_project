@@ -14,6 +14,7 @@ class PurchaseController extends Controller
 {
     public function  savePurchase(Request $request){
         $input=($request->json()->all());
+        return response()->json(['success'=>1,'data'=>$input], 200);
         $inputPurchaseMaster=(object)($input['purchase_master']);
         $inputPurchaseDetails=($input['purchase_details']);
         $inputTransactionMaster=(object)($input['transaction_master']);
