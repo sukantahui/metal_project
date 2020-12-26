@@ -18,7 +18,7 @@ export class PurchaseService {
 
   savePurchase(purchase){
     console.log(GlobalVariable.BASE_API_URL_DEV);
-    return this.http.post(GlobalVariable.BASE_API_URL_DEV+'/purchases', purchase);
+    return this.http.post(GlobalVariable.BASE_API_URL_DEV + '/purchases', purchase);
 
   }
 
