@@ -5,6 +5,7 @@ import {VendorService} from '../../services/vendor.service';
 import {Vendor} from '../../models/vendor.model';
 import Swal from 'sweetalert2';
 import { faUserEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
+import * as deepEqual from 'fast-deep-equal';
 
 export interface State {
   id: number;
@@ -42,6 +43,7 @@ export class VendorComponent implements OnInit {
 
   faUserEdit = faUserEdit;
   faTrashAlt = faTrashAlt;
+  private defaultVendorFormValue: any;
   constructor(private http: HttpClient, private vendorService: VendorService) {
     this.vendorForm = new FormGroup({
       id: new FormControl(null),
@@ -58,7 +60,7 @@ export class VendorComponent implements OnInit {
       area: new FormControl(null),
       city: new FormControl(null),
       pin: new FormControl(null),
-      transaction_type_id: new FormControl(2,[Validators.required]),
+      an: new FormControl(2,[Validators.required]),
       opening_balance: new FormControl(0),
 
     });
@@ -186,5 +188,10 @@ export class VendorComponent implements OnInit {
           });
       }
     });
+  }
+
+  isVendorFormEmpty() {
+    return deepEqual(this.defaultVendorFormValue, this.vendorForm.value);
+
   }
 }

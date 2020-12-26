@@ -110,7 +110,7 @@
         <!--        End of Vendor form-->
       </mat-card-content>
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
-        <button (click)="onSubmit()" mat-button>Save</button>
+        <button [disabled]="vendorForm.invalid" *ngIf="!vendorForm.value.id" (click)="onSubmit()" mat-button>Save</button>
         <button (click)="onUpdate()">Update</button>
         <button mat-stroked-button>clear</button>
       </div>
@@ -210,3 +210,43 @@
     </mat-card>
   </div>
 </div>
+
+
+<div fxLayout.xs="column" class="developer-area" fxLayout="row" fxFlexFill *ngIf="true">
+
+  <div fxFlex="50">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <h2 style="color: #c4c6ca;">Developer Area</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <pre>
+          valid = {{vendorForm.valid | json}}
+          invalid = {{vendorForm.invalid | json}}
+          dirty = {{vendorForm.dirty | json}}
+          enabled = {{vendorForm.enabled | json}}
+          disabled = {{vendorForm.disabled | json}}
+          touched = {{vendorForm.touched | json}}
+          untouched = {{vendorForm.untouched | json}}
+          errors = {{vendorForm.errors | json}}
+          status = {{vendorForm.status | json}}
+        </pre>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="50">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <h2 style="color: #c4c6ca;">Developer Area</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <pre>
+          isVendorFormValue= {{isVendorFormEmpty()}}
+          VendorForm = {{vendorForm.value | json}}
+          defaultVendorFormValue = {{defaultVendorFormValue | json}}
+        </pre>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
