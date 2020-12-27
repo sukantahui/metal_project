@@ -336,6 +336,7 @@ export class PurchaseComponent implements OnInit {
           showConfirmButton: false,
           timer: 1000
         });
+        this.clearPurchaseForm();
       }else{
         this.validatorError = response.error;
         Swal.fire({
@@ -346,8 +347,6 @@ export class PurchaseComponent implements OnInit {
           timer: 3000
         });
       }
-
-      this.clearPurchaseForm();
     });
 
   }
