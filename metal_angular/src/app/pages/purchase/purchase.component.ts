@@ -60,6 +60,8 @@ export class PurchaseComponent implements OnInit {
   grossTotal = 0;
   purchaseContainer: {tm: TransactionMaster, td: TransactionDetail[], pm: PurchaseMaster, pd: PurchaseDetail[],
     currentPurchaseTotal: number, roundedOff: number, extraItems: ExtraItemDetails[]};
+  private defaultValues: any;
+  validatorError: any = null;
 
   selectedProductCategoryId = 1;
   private formattedMessage: string;
@@ -123,6 +125,13 @@ export class PurchaseComponent implements OnInit {
     // this.purchaseMasterForm.valueChanges.subscribe(val => {
     //   console.log(val);
     // });
+    this.defaultValues = {
+      transactionMasterForm: this.transactionMasterForm.value,
+      transactionDetailsForm: this.transactionDetailsForm.value,
+      purchaseMasterForm: this.purchaseMasterForm.value,
+      purchaseDetailsForm: this.purchaseDetailsForm.value,
+      extraItemsForm: this.extraItemsForm.value
+    };
 
     // Transaction master will be updated
     this.http.get('http://127.0.0.1:8000/api/dev/extraItems').subscribe((response: {success: number, data: ExtraItem[]}) => {
@@ -158,7 +167,6 @@ export class PurchaseComponent implements OnInit {
       this.purchaseMaster = val;
     });
     this.purchaseDetailsForm.valueChanges.subscribe(val => {
-      console.log(val.rate, val.purchase_quantity);
       this.currentItemAmount = val.rate * val.purchase_quantity;
     });
 
@@ -189,22 +197,32 @@ export class PurchaseComponent implements OnInit {
       if (purchaseContainer){
         this.purchaseContainer = purchaseContainer;
         this.purchaseMaster = purchaseContainer.pm;
-        this.purchaseDetails = purchaseContainer.pd;
-        this.purchaseMasterForm.patchValue(purchaseContainer.pm);
+        if(!purchaseContainer.pd){
+          this.purchaseDetails = [];
+        }else{
+          this.purchaseDetails = purchaseContainer.pd;
+        }
         this.transactionMaster = purchaseContainer.tm;
-        this.transactionDetails = purchaseContainer.td;
-        this.transactionMasterForm.patchValue(purchaseContainer.tm);
-        this.transactionDetailsForm.patchValue(purchaseContainer.td[1]);
+        if(!purchaseContainer.td){
+          this.transactionDetails = [];
+        }else{
+          this.transactionDetails = purchaseContainer.td;
+        }
         if(!purchaseContainer.extraItems){
-          this.purchaseContainer.extraItems = [];
+          this.extraItemDetails = [];
         }else{
           this.extraItemDetails = purchaseContainer.extraItems;
         }
+
+
+        this.purchaseMasterForm.setValue(purchaseContainer.pm);
+        this.transactionMasterForm.setValue(purchaseContainer.tm);
+        this.transactionDetailsForm.setValue(purchaseContainer.td[1]);
+
         this.currentPurchaseTotal = this.purchaseContainer.currentPurchaseTotal;
         this.roundedOff = this.purchaseContainer.roundedOff;
         this.grossTotal = this.currentPurchaseTotal + this.roundedOff;
       }
-      console.log('purchaseContainer storage', purchaseContainer);
     }, (error) => {});
 
     // console.log('on load purchaseContainer ', this.purchaseContainer);
@@ -230,9 +248,8 @@ export class PurchaseComponent implements OnInit {
     const index = this.products.findIndex(x => x.id === tempPurchaseDetailObj.product_id);
     tempPurchaseDetailObj.product = this.products[index];
 
-    console.log('tempPurchaseDetailObj',tempPurchaseDetailObj);
     tempPurchaseDetailObj.unit = this.units.find(x => x.id === tempPurchaseDetailObj.product.purchase_unit_id);
-    tempPurchaseMasterObj.ledger = this.vendors.find(x => x.id === tempPurchaseMasterObj.ledger_id);
+    // tempPurchaseMasterObj.ledger = this.vendors.find(x => x.id === tempPurchaseMasterObj.ledger_id);
 
     this.purchaseDetails.unshift(tempPurchaseDetailObj);
     this.purchaseMaster = tempPurchaseMasterObj;
@@ -247,9 +264,12 @@ export class PurchaseComponent implements OnInit {
     this.roundedOff = parseFloat(round.toFixed(2));
     this.grossTotal = this.currentPurchaseTotal + this.roundedOff;
     this.transactionMaster = this.transactionMasterForm.value;
-    this.transactionDetails[0].amount = this.grossTotal;
-    this.transactionDetails[1].amount = this.grossTotal;
 
+    this.transactionDetails = [];
+    this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 5, transaction_type_id: 1, amount: this.grossTotal});
+    this.transactionDetailsForm.patchValue({amount: this.grossTotal});
+    this.transactionDetails[1] = this.transactionDetailsForm.value;
+    console.log(this.transactionDetails);
     this.extraItemDetails[0] = {"extra_item_id": 1, "amount": this.roundedOff, "item_type": 1, "item_name": "Rounded off"};
 
     this.purchaseContainer = {
@@ -266,8 +286,20 @@ export class PurchaseComponent implements OnInit {
   }
 
   clearPurchaseForm() {
-    this.purchaseMasterForm.reset();
-    this.purchaseDetailsForm.reset();
+    this.purchaseMasterForm.reset(this.defaultValues.purchaseMasterForm);
+    this.purchaseDetailsForm.reset(this.defaultValues.purchaseDetailsForm);
+    this.transactionMasterForm.reset(this.defaultValues.transactionMasterForm);
+    this.transactionDetailsForm.reset(this.defaultValues.transactionDetailsForm);
+    this.extraItemsForm.reset(this.defaultValues.extraItemsForm);
+
+    this.purchaseMaster = null;
+    this.purchaseDetails = [];
+    this.transactionMaster = null;
+    this.transactionDetails = [];
+    this.extraItemDetails = [];
+    this.currentPurchaseTotal = 0;
+    this.roundedOff = 0;
+    this.grossTotal = 0;
     this.storage.delete('purchaseContainer').subscribe(() => {});
   }
 
@@ -296,41 +328,27 @@ export class PurchaseComponent implements OnInit {
     };
     this.purchaseService.savePurchase(masterData).subscribe(response => {
       console.log(response);
+      if (response.success === 1){
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Purchase successful',
+          showConfirmButton: false,
+          timer: 1000
+        });
+      }else{
+        this.validatorError = response.error;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Validation error',
+          showConfirmButton: false,
+          timer: 3000
+        });
+      }
+
+      this.clearPurchaseForm();
     });
-    // Swal.fire({
-    //   title: 'Confirmation',
-    //   text: 'Do you sure to save this purchase',
-    //   icon: 'info',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#3085d6',
-    //   cancelButtonColor: '#d33',
-    //   confirmButtonText: 'Yes, Save It!'
-    // }).then((result) => {
-    //   console.log(result);
-    //   if (result.isConfirmed){
-    //     this.purchaseService.savePurchase(masterData).subscribe(response => {
-    //       if (response.success === 1){
-    //         Swal.fire({
-    //           position: 'top-end',
-    //           icon: 'success',
-    //           title: 'Vendor saved',
-    //           showConfirmButton: false,
-    //           timer: 1000
-    //         });
-    //       }else{
-    //         Swal.fire({
-    //           position: 'top-end',
-    //           icon: 'error',
-    //           title: 'Validation error',
-    //           showConfirmButton: false,
-    //           timer: 3000
-    //         });
-    //       }
-    //     });
-    //   }
-    // });
-
-
 
   }
 

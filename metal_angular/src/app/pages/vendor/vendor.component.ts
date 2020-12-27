@@ -43,7 +43,7 @@ export class VendorComponent implements OnInit {
 
   faUserEdit = faUserEdit;
   faTrashAlt = faTrashAlt;
-  private defaultVendorFormValue: any;
+  defaultVendorFormValue: any;
   constructor(private http: HttpClient, private vendorService: VendorService) {
     this.vendorForm = new FormGroup({
       id: new FormControl(null),

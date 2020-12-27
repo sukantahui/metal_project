@@ -20,6 +20,9 @@ class CreateTransactionMastersTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table ->foreign('user_id')->references('id')->on('ledgers');
 
+            $table->bigInteger('voucher_type_id')->unsigned();
+            $table ->foreign('voucher_type_id')->references('id')->on('voucher_types');
+
             $table->bigInteger('purchase_master_id')->unsigned();
             $table ->foreign('purchase_master_id')->references('id')->on('purchase_masters');
 

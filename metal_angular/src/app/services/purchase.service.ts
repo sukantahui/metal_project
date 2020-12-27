@@ -4,6 +4,7 @@ import {GlobalVariable} from '../shared/global';
 import {VendorResponseData} from './vendor.service';
 import {throwError} from 'rxjs';
 import {PurchaseResponse} from '../models/purchase.model';
+import {catchError, tap} from "rxjs/operators";
 
 
 @Injectable({
@@ -18,7 +19,12 @@ export class PurchaseService {
 
   savePurchase(purchase){
     console.log(GlobalVariable.BASE_API_URL_DEV);
-    return this.http.post(GlobalVariable.BASE_API_URL_DEV + '/purchases', purchase);
+    return this.http.post(GlobalVariable.BASE_API_URL_DEV + '/purchases', purchase)
+      .pipe(catchError(this.serverError), tap((response: PurchaseResponse) => {
+        if (response.success === 1){
+
+        }
+      }));
 
   }
 

@@ -32,5 +32,6 @@ export class PurchaseResponse{
     "amount": number,
     "ledger_name": string,
     "billing_name": string
-  }
+  };
+  error: any
 }
