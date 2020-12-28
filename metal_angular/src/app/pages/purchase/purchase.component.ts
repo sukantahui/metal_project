@@ -165,6 +165,7 @@ export class PurchaseComponent implements OnInit {
       const x = val.order_date;
       val.order_date =  formatDate(x, 'yyyy-MM-dd', 'en');
       this.purchaseMaster = val;
+      this.purchaseContainer.pm.comment = val.comment;
     });
     this.purchaseDetailsForm.valueChanges.subscribe(val => {
       this.currentItemAmount = val.rate * val.purchase_quantity;
@@ -230,6 +231,7 @@ export class PurchaseComponent implements OnInit {
 
   onSelectedVendor(value){
     this.selectedLedger = value;
+    console.log(this.selectedLedger);
   }
 
   onProductCategorySelected(value){

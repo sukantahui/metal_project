@@ -156,15 +156,17 @@
     <!--    <pre>validatorError = {{validatorError | json}}</pre>-->
   </div>
   <div fxFlex="50" id="right-div">
-    <mat-card class="example-card">
+    <mat-card class="example-card" *ngIf="purchaseDetails.length">
       <mat-card-header>
         <mat-card-title><fa-icon></fa-icon>&nbsp;Purchase details</mat-card-title>
         <mat-card-subtitle>
-<!--          <span *ngIf="purchaseMaster.ledger"><h3>{{purchaseMaster.ledger.billing_name}}</h3></span>-->
-<!--          <span >Address: {{purchaseMaster.ledger.address1}},Mob: {{purchaseMaster.ledger.mobile1}}</span><br>-->
-<!--          <span >Invoice: {{purchaseMaster.invoice_number}},Ref no: {{purchaseMaster.reference_number}}</span><br>-->
-<!--          <span >Order no: {{purchaseMaster.order_number}},Challan no: {{purchaseMaster.challan_number}}</span><br>-->
-<!--          <span>Purchase Date: {{purchaseMaster.purchase_date}} , Order date: {{purchaseMaster.order_date}}</span>-->
+          <div>
+            <span *ngIf="selectedLedger"><h3>{{selectedLedger.billing_name}}</h3></span>
+            <span >Address: {{selectedLedger.address1}},Mob: {{selectedLedger.mobile1}}</span><br>
+            <span >Invoice: {{purchaseMaster.invoice_number}},Ref no: {{purchaseMaster.reference_number}}</span><br>
+            <span >Order no: {{purchaseMaster.order_number}},Challan no: {{purchaseMaster.challan_number}}</span><br>
+            <span>Order date: {{purchaseMaster.order_date}}</span>
+          </div>
         </mat-card-subtitle>
 
       </mat-card-header>
@@ -215,14 +217,7 @@
             <td class="text-right">{{grossTotal}}</td>
             <td colspan="2"></td>
           </tr>
-<!--          <form [formGroup]="purchaseMasterForm" class="purchase-master">-->
-<!--            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">-->
-<!--              <mat-form-field fxFlex="60">-->
-<!--                <mat-label>Comment</mat-label>-->
-<!--                <input type="textarea" matInput formControlName="comment" placeholder="Comment">-->
-<!--              </mat-form-field>-->
-<!--            </div>-->
-<!--          </form>-->
+
 
           </tfoot>
         </table>
@@ -252,6 +247,15 @@
             <button  mat-stroked-button (click)="addExtraItemForPurchase()" [disabled]="extraItemsForm.invalid">Add</button>
           </form>
         </div>
+
+        <form [formGroup]="purchaseMasterForm" class="">
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <mat-form-field fxFlex="60">
+              <mat-label>Comment</mat-label>
+              <input type="textarea" matInput formControlName="comment" placeholder="Comment">
+            </mat-form-field>
+          </div>
+        </form>
 
         <div class="container mt-3" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
           <button mat-stroked-button color="primary"  mat-stroked-button (click)="onSubmit()">Save Purchase</button>
