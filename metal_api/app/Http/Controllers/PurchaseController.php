@@ -9,6 +9,7 @@ use App\Models\PurchaseMaster;
 use App\Models\PurchaseDetail;
 use App\Models\TransactionMaster;
 use App\Models\TransactionDetail;
+use App\Models\CustomVoucher;
 use Illuminate\Support\Facades\Validator;
 
 class PurchaseController extends Controller
@@ -56,8 +57,33 @@ class PurchaseController extends Controller
                 $purchaseDetail->save();
             }
             //save data into transaction_masters
+
+            $temp_date = explode("-",$inputTransactionMaster->transaction_date);
+            $accounting_year="";
+            if($temp_date[1]>3){
+                $x = $temp_date[0]%100;
+                $accounting_year = $x*100 + ($x+1);
+            }else{
+                $x = $temp_date[0]%100;
+                $accounting_year =($x-1)*100+$x;
+            }
+            $customVoucher=CustomVoucher::where('voucher_name','=',"Purchase")->where('accounting_year',"=",$accounting_year)->first();
+            if($customVoucher) {
+                $customVoucher->last_counter = $customVoucher->last_counter + 1;
+                $customVoucher->save();
+            }else{
+                $customVoucher= new CustomVoucher();
+                $customVoucher->voucher_name="Purchase";
+                $customVoucher->accounting_year= $accounting_year;
+                $customVoucher->last_counter=1;
+                $customVoucher->delimiter='-';
+                $customVoucher->prefix='MT';
+                $customVoucher->save();
+            }
+            $voucher_number = $customVoucher->prefix.'-'.$customVoucher->last_counter."-".$accounting_year;
+
             $transactionMaster = new TransactionMaster();
-            $transactionMaster->transaction_number = mt_rand();
+            $transactionMaster->transaction_number = $voucher_number;
             $transactionMaster->user_id = $inputTransactionMaster->user_id;
             $transactionMaster->voucher_type_id = 2;
             $transactionMaster->purchase_master_id = $purchaseMaster->id;
