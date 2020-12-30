@@ -111,8 +111,8 @@
       </mat-card-content>
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
         <button [disabled]="vendorForm.invalid" *ngIf="!vendorForm.value.id" (click)="onSubmit()" mat-button>Save</button>
-        <button (click)="onUpdate()"[disabled]="vendorForm.invalid || vendorForm.dirty==false">Update</button>
-        <button mat-stroked-button>clear</button>
+        <button (click)="onUpdate()" [disabled]="vendorForm.invalid || vendorForm.dirty==false">Update</button>
+        <button [disabled]="!vendorForm.dirty && !vendorForm.value.id" (click)="clearVendorForm()" mat-stroked-button>clear</button>
       </div>
     </mat-card>
 

@@ -189,6 +189,12 @@ export class VendorComponent implements OnInit {
       }
     });
   }
+  clearVendorForm() {
+    this.vendorForm.reset();
+    // this.vendorForm.patchValue({customer_category_id: 2, state_id: 20, transaction_type_id: 1, opening_balance: 0});
+    this.validatorError = null;
+    this.updateableVendorID = 0;
+  }
 
   isVendorFormEmpty() {
     return deepEqual(this.defaultVendorFormValue, this.vendorForm.value);
