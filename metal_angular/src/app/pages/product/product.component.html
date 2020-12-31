@@ -99,9 +99,9 @@
         </form>
       </mat-card-content>
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
-        <button mat-button (click)="onSubmit()" *ngIf="!isProductUpdateAble" mat-stroked-button [disabled]="!productForm.valid">Save</button>
+        <button mat-button (click)="onSubmit()" *ngIf="!productForm.value.id" mat-stroked-button [disabled]="!productForm.valid">Save</button>
         <button mat-button (click)="updateProduct()" *ngIf="isProductUpdateAble" [disabled]="!productForm.valid" mat-stroked-button>Update</button>
-        <button mat-button (click)="clearProductForm()" mat-stroked-button>clear</button>
+        <button mat-button [disabled]="!productForm.dirty && !productForm.value.id" (click)="clearProductForm()" mat-stroked-button>clear</button>
       </div>
     </mat-card>
 
@@ -190,4 +190,66 @@
 
   </div>
 
+</div>
+<div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="true">
+
+  <div fxFlex="25">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <h2 style="color: #c4c6ca;">Developer Area</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <pre>
+
+        </pre>
+        <pre>
+          valid = {{productForm.valid | json}}
+                    invalid = {{productForm.invalid | json}}
+                    dirty = {{productForm.dirty | json}}
+                    enabled = {{productForm.enabled | json}}
+                    disabled = {{productForm.disabled | json}}
+                    touched = {{productForm.touched | json}}
+                    untouched = {{productForm.untouched | json}}
+                    errors = {{productForm.errors | json}}
+                    status = {{productForm.status | json}}
+        </pre>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="25">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <h2 style="color: #c4c6ca;">Developer Area</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <pre>
+
+        </pre>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="25">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <h2 style="color: #c4c6ca;">Developer Area</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <pre>
+
+        </pre>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="25">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <h2 style="color: #c4c6ca;">Developer Area</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <pre>
+
+        </pre>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
