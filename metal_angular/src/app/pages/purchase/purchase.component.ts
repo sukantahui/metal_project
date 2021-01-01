@@ -210,6 +210,7 @@ export class PurchaseComponent implements OnInit {
           this.transactionDetails = [];
         }else{
           this.transactionDetails = purchaseContainer.td;
+          this.selectedLedger = this.vendors.find(x => x.id === this.transactionDetails[1].ledger_id);
         }
         if(!purchaseContainer.extraItems){
           this.extraItemDetails = [];

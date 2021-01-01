@@ -156,17 +156,17 @@
     <!--    <pre>validatorError = {{validatorError | json}}</pre>-->
   </div>
   <div fxFlex="50" id="right-div">
-    <mat-card class="example-card" *ngIf="purchaseDetails.length">
+    <mat-card class="example-card">
       <mat-card-header>
         <mat-card-title><fa-icon></fa-icon>&nbsp;Purchase details</mat-card-title>
         <mat-card-subtitle>
-<!--          <div>-->
-<!--            <span *ngIf="selectedLedger"><h3>{{selectedLedger.billing_name}}</h3></span>-->
-<!--            <span >Address: {{selectedLedger.address1}},Mob: {{selectedLedger.mobile1}}</span><br>-->
-<!--            <span >Invoice: {{purchaseMaster.invoice_number}},Ref no: {{purchaseMaster.reference_number}}</span><br>-->
-<!--            <span >Order no: {{purchaseMaster.order_number}},Challan no: {{purchaseMaster.challan_number}}</span><br>-->
-<!--            <span>Order date: {{purchaseMaster.order_date}}</span>-->
-<!--          </div>-->
+          <div *ngIf="purchaseMaster && selectedLedger">
+            <span><h3>{{selectedLedger.billing_name}}</h3></span>
+            <span>Address: {{selectedLedger.address1}},Mob: {{selectedLedger.mobile1}}</span><br>
+            <span>Invoice: {{purchaseMaster.invoice_number}},Ref no: {{purchaseMaster.reference_number}}</span><br>
+            <span >Order no: {{purchaseMaster.order_number}},Challan no: {{purchaseMaster.challan_number}}</span><br>
+            <span>Order date: {{purchaseMaster.order_date}}</span>
+          </div>
         </mat-card-subtitle>
 
       </mat-card-header>
@@ -276,6 +276,7 @@
       </mat-card-header>
       <mat-card-content>
         <pre>
+          selectedLedger = {{selectedLedger | json}}
           purchaseContainer = {{purchaseContainer | json}}
           extraItemDetails = {{extraItemDetails | json}}
         </pre>

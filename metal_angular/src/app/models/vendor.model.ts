@@ -10,8 +10,8 @@ export class Vendor{
   email: string;
   mobile1: string;
   mobile2: string;
-  address1: string;
-  address2: string;
+  address1?: string;
+  address2?: string;
   state_id: number;
   po: string;
   area: string;
