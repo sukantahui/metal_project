@@ -9,7 +9,7 @@
       </mat-card-header>
       <mat-card-content>
         <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-          <div fxFlex="50">
+          <div fxFlex="40">
             <form [formGroup]="transactionDetailsForm" class="transaction-detail">
               <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
                 <ng-select [items]="vendors" fxFlex="80" (change)="onSelectedVendor($event)"
@@ -29,12 +29,12 @@
                     <b><i><span style="color: #ffc520">Popover With</span></i></b> <small>Html support</small>.
                   </popover-content>
 
-                  <a [routerLink]="" [popover]="myPopover">Vendor info</a>
+                  <a [routerLink]="" [popover]="myPopover">Info</a>
                 </div>
               </div>
             </form>
           </div>
-          <div fxFlex="25">
+          <div fxFlex="20">
             <form [formGroup]="transactionMasterForm">
               <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
                 <mat-form-field class="example-full-width" fxFlex="90">
@@ -48,57 +48,23 @@
               </div>
             </form>
           </div>
-          <div fxFlex="25">
-            <form [formGroup]="purchaseMasterForm" class="purchase-master">
-              <mat-form-field class="example-full-width" fxFlex="90">
-                <mat-label>Order date (dd/mm/yyyy)</mat-label>
-                <input matInput [matDatepicker]="orderDatePicker" formControlName="order_date" placeholder="dd/mm/yyyy">
-                <mat-datepicker-toggle matSuffix [for]="orderDatePicker">
-                  <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                </mat-datepicker-toggle>
-                <mat-datepicker #orderDatePicker ></mat-datepicker>
-              </mat-form-field>
+          <div fxFlex="40">
+            <form [formGroup]="purchaseMasterForm">
+              <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                <mat-form-field fxFlex="40">
+                  <mat-label>Invoice number</mat-label>
+                  <input type="text" matInput formControlName="invoice_number" placeholder="Invoice number">
+                </mat-form-field>
+                <mat-form-field fxFlex="40">
+                  <mat-label>Case number</mat-label>
+                  <input type="text" matInput formControlName="case_number" placeholder="Case number">
+                </mat-form-field>
+              </div>
             </form>
           </div>
         </div>
 
-
-
         <hr size="10">
-
-        <form [formGroup]="purchaseMasterForm" class="purchase-master">
-
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field fxFlex="30">
-              <mat-label>Invoice number</mat-label>
-              <input type="text" matInput formControlName="invoice_number" placeholder="Invoice number">
-            </mat-form-field>
-
-            <mat-form-field fxFlex="30">
-              <mat-label>Reference number</mat-label>
-              <input type="text" matInput formControlName="reference_number" placeholder="Reference number">
-            </mat-form-field>
-
-            <mat-form-field fxFlex="30">
-              <mat-label>Challan number</mat-label>
-              <input type="text" matInput formControlName="challan_number" placeholder="Challan number">
-            </mat-form-field>
-          </div>
-
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-
-            <mat-form-field fxFlex="30">
-              <mat-label>Order number</mat-label>
-              <input type="text" matInput formControlName="order_number" placeholder="Order number">
-            </mat-form-field>
-
-            <mat-form-field fxFlex="30">
-              <mat-label>Case number</mat-label>
-              <input type="text" matInput formControlName="order_number" placeholder="Order number">
-            </mat-form-field>
-          </div>
-          <hr size="20">
-        </form>
 
         <form [formGroup]="purchaseDetailsForm" class="purchase-details">
 
@@ -119,9 +85,6 @@
                        formControlName="product_id"
                        placeholder="Product">
             </ng-select>
-
-            <button mat-stroked-button (click)="addItem()">Add</button>
-
           </div>
 
 
@@ -135,22 +98,25 @@
               <mat-label>Quantity</mat-label>
               <input type="number" class="text-right" matInput formControlName="purchase_quantity" (change)="setStockQuantity()" placeholder="Quantity">
             </mat-form-field>
-            Amount: {{currentItemAmount | number: '1.2'}}
+
+            <mat-form-field fxFlex="20">
+              <mat-label>Amount</mat-label>
+              <input matInput [value]="currentItemAmount" readonly>
+            </mat-form-field>
 
             <mat-form-field fxFlex="20" *ngIf="selectedProduct && selectedProduct.purchase_unit_id!=selectedProduct.sale_unit_id">
               <mat-label>Stock quantity</mat-label>
               <input type="number" class="text-right" matInput formControlName="stock_quantity" placeholder="Stock quantity">
 
             </mat-form-field>
-
-
+          </div>
+          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <button class="pull-right" mat-stroked-button (click)="addItem()">Add</button>
+            <button class="pull-right"  mat-stroked-button (click)="clearPurchaseForm()">clear</button>
           </div>
         </form>
 
       </mat-card-content>
-      <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
-        <button  mat-stroked-button (click)="clearPurchaseForm()">clear</button>
-      </div>
     </mat-card>
 
     <!--    <pre>validatorError = {{validatorError | json}}</pre>-->
@@ -163,9 +129,7 @@
           <div *ngIf="purchaseMaster && selectedLedger">
             <span><h3>{{selectedLedger.billing_name}}</h3></span>
             <span>Address: {{selectedLedger.address1}},Mob: {{selectedLedger.mobile1}}</span><br>
-            <span>Invoice: {{purchaseMaster.invoice_number}},Ref no: {{purchaseMaster.reference_number}}</span><br>
-            <span >Order no: {{purchaseMaster.order_number}},Challan no: {{purchaseMaster.challan_number}}</span><br>
-            <span>Order date: {{purchaseMaster.order_date}}</span>
+            <span>Invoice: {{purchaseMaster.invoice_number}},Challan no: {{purchaseMaster.case_number}}</span><br>
           </div>
         </mat-card-subtitle>
 

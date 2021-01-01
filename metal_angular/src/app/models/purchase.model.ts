@@ -6,10 +6,7 @@ import {Unit} from "../pages/product/product.component";
 export class PurchaseMaster{
   id?: number;
   invoice_number: string;
-  reference_number?: string;
-  challan_number?: string
-  order_number?: string;
-  order_date: string;
+  case_number: string;
   comment?: string
 }
 export class PurchaseDetail{

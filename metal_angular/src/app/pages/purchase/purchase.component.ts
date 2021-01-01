@@ -72,7 +72,7 @@ export class PurchaseComponent implements OnInit {
   saveablePurchaseDetails: { rate: number; id: number }[];
 
   // tslint:disable-next-line:max-line-length
-  currentItemAmount: number;
+  currentItemAmount = 0;
   // tslint:disable-next-line:max-line-length
   constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService,
               private purchaseService: PurchaseService, private storage: StorageMap) {
@@ -81,10 +81,7 @@ export class PurchaseComponent implements OnInit {
     this.purchaseMasterForm = new FormGroup({
       id: new FormControl(null),
       invoice_number: new FormControl(null),
-      reference_number: new FormControl(null),
-      challan_number: new FormControl(null),
-      order_number: new FormControl(null),
-      order_date: new FormControl(currentSQLDate),
+      case_number: new FormControl(null),
       comment: new FormControl(null),
 
     });
@@ -96,6 +93,7 @@ export class PurchaseComponent implements OnInit {
       rate: new FormControl(null),
       purchase_quantity: new FormControl(null),
       stock_quantity: new FormControl(null),
+      amount: new FormControl(null),
     });
     const userData: {id: number, personName: string, _authKey: string, personTypeId: number} = JSON.parse(localStorage.getItem('user'));
     this.transactionMasterForm = new FormGroup({
@@ -162,15 +160,16 @@ export class PurchaseComponent implements OnInit {
     });
 
     this.purchaseMasterForm.valueChanges.subscribe(val => {
-      const x = val.order_date;
-      val.order_date =  formatDate(x, 'yyyy-MM-dd', 'en');
-      this.purchaseMaster = val;
+      // val.order_date =  formatDate(x, 'yyyy-MM-dd', 'en');
       // if(this.purchaseContainer.pm){
       //   this.purchaseContainer.pm.comment = val.comment;
       // }
     });
     this.purchaseDetailsForm.valueChanges.subscribe(val => {
-      this.currentItemAmount = val.rate * val.purchase_quantity;
+      console.log(val);
+      if(val.rate && val.purchase_quantity){
+        this.currentItemAmount = val.rate * val.purchase_quantity;
+      }
     });
 
     this.vendors = this.vendorService.getVendors();
