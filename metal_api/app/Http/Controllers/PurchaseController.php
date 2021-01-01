@@ -23,14 +23,7 @@ class PurchaseController extends Controller
         $inputTransactionDetails=($input['transaction_details']);
         $inputExtraItems=($input['extra_items']);
 
-        $validator = Validator::make($input['purchase_master'],[
-            'invoice_number'=> 'required|unique:purchase_masters,invoice_number',
-        ],
-            [
-                'invoice_number.required' => 'Invoice number can not be blank',
-                'invoice_number.unique' => 'Invoice number already exists'
-            ]
-        );
+        $validator = Validator::make($input['purchase_master'],[]);
         if($validator->fails()){
             return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
         }
@@ -40,10 +33,7 @@ class PurchaseController extends Controller
             //save data into purchase_masters
             $purchaseMaster= new PurchaseMaster();
             $purchaseMaster->invoice_number = $inputPurchaseMaster->invoice_number;
-            $purchaseMaster->reference_number = $inputPurchaseMaster->reference_number;
-            $purchaseMaster->challan_number = $inputPurchaseMaster->challan_number;
-            $purchaseMaster->order_number = $inputPurchaseMaster->order_number;
-            $purchaseMaster->order_date = $inputPurchaseMaster->order_date;
+            $purchaseMaster->case_number = $inputPurchaseMaster->case_number;
             $purchaseMaster->comment = $inputPurchaseMaster->comment;
             $purchaseMaster->save();
             //save data into purchase_details
