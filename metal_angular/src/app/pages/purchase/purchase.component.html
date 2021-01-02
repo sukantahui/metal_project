@@ -1,7 +1,7 @@
 <div fxLayout.xs="column" fxLayout="row" fxFlexFill>
 
 
-  <div fxFlex="50" id="left-div">
+  <div fxFlex="40" id="left-div">
     <mat-card class="example-card">
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
@@ -9,7 +9,24 @@
       </mat-card-header>
       <mat-card-content>
         <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-          <div fxFlex="40">
+          <div fxFlex="80">
+            <form [formGroup]="purchaseMasterForm">
+              <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                <mat-form-field fxFlex="50">
+                  <mat-label>Invoice number</mat-label>
+                  <input type="text" matInput formControlName="invoice_number" placeholder="Invoice number">
+                </mat-form-field>
+                <mat-form-field fxFlex="50">
+                  <mat-label>Case number</mat-label>
+                  <input type="text" matInput formControlName="case_number" placeholder="Case number">
+                </mat-form-field>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+          <div fxFlex="50">
             <form [formGroup]="transactionDetailsForm" class="transaction-detail">
               <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
                 <ng-select [items]="vendors" fxFlex="80" (change)="onSelectedVendor($event)"
@@ -34,7 +51,7 @@
               </div>
             </form>
           </div>
-          <div fxFlex="20">
+          <div fxFlex="40">
             <form [formGroup]="transactionMasterForm">
               <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
                 <mat-form-field class="example-full-width" fxFlex="90">
@@ -44,20 +61,6 @@
                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                   </mat-datepicker-toggle>
                   <mat-datepicker #purchaseDatePicker ></mat-datepicker>
-                </mat-form-field>
-              </div>
-            </form>
-          </div>
-          <div fxFlex="40">
-            <form [formGroup]="purchaseMasterForm">
-              <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-                <mat-form-field fxFlex="40">
-                  <mat-label>Invoice number</mat-label>
-                  <input type="text" matInput formControlName="invoice_number" placeholder="Invoice number">
-                </mat-form-field>
-                <mat-form-field fxFlex="40">
-                  <mat-label>Case number</mat-label>
-                  <input type="text" matInput formControlName="case_number" placeholder="Case number">
                 </mat-form-field>
               </div>
             </form>
@@ -121,7 +124,7 @@
 
     <!--    <pre>validatorError = {{validatorError | json}}</pre>-->
   </div>
-  <div fxFlex="50" id="right-div">
+  <div fxFlex="60" id="right-div" *ngIf="purchaseDetails.length">
     <mat-card class="example-card">
       <mat-card-header>
         <mat-card-title><fa-icon></fa-icon>&nbsp;Purchase details</mat-card-title>
@@ -136,52 +139,51 @@
       </mat-card-header>
 
       <mat-card-content>
-        <table class="table table-bordered table-responsive" id="purchase-detail-list" width="100%">
+        <table class="table table-bordered" id="purchase-detail-list">
           <thead>
           <tr>
-            <th>SL</th>
-            <th>Product</th>
-            <th>Rate</th>
-            <th>Qty</th>
-            <th>Amount</th>
-            <th class="text-center" colspan="2">Action</th>
+            <th class="w-10">SL</th>
+            <th class="w-30">Product</th>
+            <th class="w-10">Rate</th>
+            <th class="w-10">Qty</th>
+            <th class="w-10">Amount</th>
+            <th class="w-30 text-center" colspan="2">Action</th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let purchaseDetail of purchaseDetails;let indexOfElement=index">
             <td>{{indexOfElement+1}}</td>
             <td>{{purchaseDetail.product.product_name}}</td>
-            <td>{{purchaseDetail.rate}}</td>
-            <td>{{purchaseDetail.purchase_quantity + ' (' + purchaseDetail.unit.unit_name + ')'}}</td>
-            <td class="text-right">{{(purchaseDetail.rate * purchaseDetail.purchase_quantity) | number: '1.0-2'}}</td>
-            <td>
+            <td class="text-right">{{purchaseDetail.rate}}</td>
+            <td class="text-right">{{purchaseDetail.purchase_quantity + ' (' + purchaseDetail.unit.unit_name + ')'}}</td>
+            <td class="text-right pr-5">{{(purchaseDetail.rate * purchaseDetail.purchase_quantity) | number: '1.0-2'}}</td>
+            <td class="text-right">
               <span  (click)="itemToEdit(purchaseDetail)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
             </td>
-            <td>
+            <td class="text-right">
               <span  (click)="deleteItem(purchaseDetail)"><fa-icon class="edit" [icon]="faTrashAlt"></fa-icon></span>
             </td>
           </tr>
           </tbody>
 
           <tfoot>
-          <tr>
-            <td colspan="4">Total</td>
-            <td class="text-right">{{currentPurchaseTotal}}</td>
-            <td colspan="2"></td>
-          </tr>
+              <tr>
+                <td colspan="4">Total</td>
+                <td class="text-right">{{currentPurchaseTotal}}</td>
+                <td colspan="2"></td>
+              </tr>
 
-          <tr *ngFor="let extraItem of extraItemDetails">
-            <td colspan="4"><b>{{extraItem.item_type==1?'Add: ' : 'Less: '}}</b>{{extraItem.item_name}}</td>
-            <td class="text-right">{{extraItem.amount}}</td>
-            <td colspan="2"></td>
-          </tr>
+              <tr *ngFor="let extraItem of extraItemDetails">
+                <td colspan="4"><b>{{extraItem.item_type==1?'Add: ' : 'Less: '}}</b>{{extraItem.item_name}}</td>
+                <td class="text-right">{{extraItem.amount}}</td>
+                <td colspan="2"></td>
+              </tr>
 
-          <tr>
-            <td colspan="4">Gross amount</td>
-            <td class="text-right">{{grossTotal}}</td>
-            <td colspan="2"></td>
-          </tr>
-
+              <tr>
+                <td colspan="4">Gross amount</td>
+                <td class="text-right">{{grossTotal}}</td>
+                <td colspan="2"></td>
+              </tr>
 
           </tfoot>
         </table>
@@ -231,7 +233,7 @@
 
   </div>
 </div>
-<div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="true">
+<div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="false">
 
   <div fxFlex="25">
     <mat-card class="example-card">
@@ -240,7 +242,7 @@
       </mat-card-header>
       <mat-card-content>
         <pre>
-          selectedLedger = {{selectedLedger | json}}
+          purchaseDetails = {{purchaseDetails | json}}
           purchaseContainer = {{purchaseContainer | json}}
           extraItemDetails = {{extraItemDetails | json}}
         </pre>
