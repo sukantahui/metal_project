@@ -1,7 +1,7 @@
-<div fxLayout.xs="column" fxLayout="row" fxFlexFill>
+<div fxLayout.xs="column" fxLayout="row" fxFlexFill style="height: 80vh;">
 
 
-  <div fxFlex="40" id="left-div">
+  <div fxFlex="40" id="left-div" fxFill>
     <mat-card class="example-card">
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
@@ -124,7 +124,7 @@
 
     <!--    <pre>validatorError = {{validatorError | json}}</pre>-->
   </div>
-  <div fxFlex="60" id="right-div" *ngIf="purchaseDetails.length">
+  <div fxFlex="60" id="right-div" *ngIf="purchaseDetails.length" fxFill>
     <mat-card class="example-card">
       <mat-card-header>
         <mat-card-title><fa-icon></fa-icon>&nbsp;Purchase details</mat-card-title>
@@ -188,29 +188,31 @@
           </tfoot>
         </table>
         <h3>Extra item</h3>
-        <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+        <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
           <form [formGroup]="extraItemsForm">
-            <mat-form-field fxFlex="40">
-              <mat-label>Type</mat-label>
-              <mat-select  formControlName="item_type" placeholder="Extra item">
-                <mat-option *ngFor="let extraItemType of extraItemTypes" [value]="extraItemType.value">
-                  {{extraItemType.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field fxFlex="40">
-            <mat-label>Extra item</mat-label>
-              <mat-select  formControlName="extra_item_id" placeholder="Extra item" required>
-                <mat-option *ngFor="let extraItem of extraItems" [value]="extraItem.id">
-                  {{extraItem.item_name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field fxFlex="20">
-              <mat-label>Amount</mat-label>
-              <input type="number" class="text-right" matInput formControlName="amount" placeholder="Extra amount" required>
-            </mat-form-field>
-            <button  mat-stroked-button (click)="addExtraItemForPurchase()" [disabled]="extraItemsForm.invalid">Add</button>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <mat-form-field fxFlex="30">
+                <mat-label>Type</mat-label>
+                <mat-select  formControlName="item_type" placeholder="Extra item">
+                  <mat-option *ngFor="let extraItemType of extraItemTypes" [value]="extraItemType.value">
+                    {{extraItemType.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field fxFlex="30">
+                <mat-label>Extra item</mat-label>
+                <mat-select  formControlName="extra_item_id" placeholder="Extra item" required>
+                  <mat-option *ngFor="let extraItem of extraItems" [value]="extraItem.id">
+                    {{extraItem.item_name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field fxFlex="20">
+                <mat-label>Amount</mat-label>
+                <input type="number" class="text-right" matInput formControlName="amount" placeholder="Extra amount" required>
+              </mat-form-field>
+              <button mat-raised-button color="primary" (click)="addExtraItemForPurchase()" [disabled]="extraItemsForm.invalid">Add</button>
+            </div>
           </form>
         </div>
 
@@ -233,6 +235,9 @@
 
   </div>
 </div>
+
+
+<!--developer div-->
 <div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="false">
 
   <div fxFlex="25">

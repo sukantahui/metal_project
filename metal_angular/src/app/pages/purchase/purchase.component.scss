@@ -26,12 +26,12 @@ mat-card-content{
 .purchase-master{
   border: 1px solid yellow;
   border-radius: 8px;
-  background: linear-gradient(90deg, #FFFFFF 0%, #ffda94 35%, rgba(255, 248, 248, 0.6) 100%);
+  background: linear-gradient(90deg, #FFFFFF 0%, #f5f3f0 35%, rgba(255, 248, 248, 0.6) 100%);
 }
 .purchase-details{
   padding: 20px;
   border-radius: 8px;
-  background: linear-gradient(90deg, #fff656 0%, #ffda94 35%, rgba(255, 246, 86, 0.6) 100%);
+  background: linear-gradient(90deg, rgba(186, 183, 183, 0.91) 0%, #eeece9 35%, rgba(231, 248, 184, 0.6) 100%);
 }
 #developer-area{
   mat-card {
@@ -74,6 +74,10 @@ mat-card-content{
     vertical-align: middle !important;
     border-top: 1px solid #dee2e6;
     color: #29262d;
+  }
+
+  #left-div{
+    height: 800px;
   }
 }
 

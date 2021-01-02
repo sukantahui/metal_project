@@ -134,7 +134,6 @@ export class PurchaseComponent implements OnInit {
     // Transaction master will be updated
     this.http.get('http://127.0.0.1:8000/api/dev/extraItems').subscribe((response: {success: number, data: ExtraItem[]}) => {
       this.extraItems = response.data;
-      console.log(this.extraItems);
     });
 
 
@@ -166,7 +165,6 @@ export class PurchaseComponent implements OnInit {
       // }
     });
     this.purchaseDetailsForm.valueChanges.subscribe(val => {
-      console.log(val);
       if(val.rate && val.purchase_quantity){
         this.currentItemAmount = val.rate * val.purchase_quantity;
       }
@@ -233,7 +231,6 @@ export class PurchaseComponent implements OnInit {
 
   onSelectedVendor(value){
     this.selectedLedger = value;
-    console.log(this.selectedLedger);
   }
 
   onProductCategorySelected(value){
@@ -273,7 +270,6 @@ export class PurchaseComponent implements OnInit {
     this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 5, transaction_type_id: 1, amount: this.grossTotal});
     this.transactionDetailsForm.patchValue({amount: this.grossTotal});
     this.transactionDetails[1] = this.transactionDetailsForm.value;
-    console.log(this.transactionDetails);
     this.extraItemDetails[0] = {"extra_item_id": 1, "amount": this.roundedOff, "item_type": 1, "item_name": "Rounded off"};
 
     this.purchaseContainer = {
@@ -331,7 +327,6 @@ export class PurchaseComponent implements OnInit {
       extra_items: this.purchaseContainer.extraItems
     };
     this.purchaseService.savePurchase(masterData).subscribe(response => {
-      console.log(response);
       if (response.success === 1){
         Swal.fire({
           position: 'top-end',
@@ -362,11 +357,9 @@ export class PurchaseComponent implements OnInit {
   }
 
   addExtraItemForPurchase() {
-      console.log(this.extraItemDetails);
       let extraItem = this.extraItemsForm.value;
       let extraItemObj =  this.extraItems.find(x => x.id === extraItem.extra_item_id);
       extraItem.item_name = extraItemObj.item_name;
-      console.log(extraItemObj,this.extraItemDetails);
       this.extraItemDetails.push(extraItem);
       this.grossTotal+= extraItem.amount * extraItem.item_type;
       this.purchaseContainer.extraItems = this.extraItemDetails;
