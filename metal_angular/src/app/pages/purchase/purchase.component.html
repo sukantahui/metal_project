@@ -1,231 +1,229 @@
-<div fxLayout.xs="column" fxLayout="row" fxFlexFill style="height: 80vh;">
-
-
-    <div fxFlex="40" id="left-div" fxFill>
-        <mat-card class="example-card">
-            <mat-card-header>
-                <div mat-card-avatar class="example-header-image"></div>
-                <mat-card-title>Purchase Form</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-                    <div fxFlex="80">
-                        <form [formGroup]="purchaseMasterForm">
-                            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-                                <mat-form-field fxFlex="50">
-                                    <mat-label>Invoice number</mat-label>
-                                    <input type="text" matInput formControlName="invoice_number" placeholder="Invoice number">
-                                </mat-form-field>
-                                <mat-form-field fxFlex="50">
-                                    <mat-label>Case number</mat-label>
-                                    <input type="text" matInput formControlName="case_number" placeholder="Case number">
-                                </mat-form-field>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-                    <div fxFlex="50">
-                        <form [formGroup]="transactionDetailsForm" class="transaction-detail">
-                            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-                                <ng-select [items]="vendors" fxFlex="80" (change)="onSelectedVendor($event)" bindLabel="ledger_name" class="custom" bindValue="id" formControlName="ledger_id" placeholder="Select Vendor">
-                                </ng-select>
-                                <div fxFlex="20" *ngIf="selectedLedger">
-                                    <popover-content #myPopover title="{{selectedLedger.ledger_name}}" placement="right" [animation]="true" [closeOnClickOutside]="true">
-                                        <b>{{selectedLedger.address1 + ' | ' + selectedLedger.address2}}</b> <span style="color: #C21F39">Dynamic</span> <span style="color: #00b3ee">Reusable</span>
-                                        <b><i><span style="color: #ffc520">Popover With</span></i></b> <small>Html support</small>.
-                                    </popover-content>
-
-                                    <a [routerLink]="" [popover]="myPopover">Info</a>
+<div fxLayout.xs="column" fxLayout="row" fxFlexFill>
+    <div fxFlex="40">
+        <div style="min-height: 92vh; background-color: rgba(202, 199, 224, 0.81);">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image"></div>
+                    <mat-card-title>Purchase Form</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                        <div fxFlex="80">
+                            <form [formGroup]="purchaseMasterForm">
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                                    <mat-form-field fxFlex="50">
+                                        <mat-label>Invoice number</mat-label>
+                                        <input type="text" matInput formControlName="invoice_number" placeholder="Invoice number">
+                                    </mat-form-field>
+                                    <mat-form-field fxFlex="50">
+                                        <mat-label>Case number</mat-label>
+                                        <input type="text" matInput formControlName="case_number" placeholder="Case number">
+                                    </mat-form-field>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                    <div fxFlex="40">
-                        <form [formGroup]="transactionMasterForm">
-                            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-                                <mat-form-field class="example-full-width" fxFlex="90">
-                                    <mat-label>Purchase date (dd/mm/yyyy)</mat-label>
-                                    <input matInput [matDatepicker]="purchaseDatePicker" formControlName="transaction_date" placeholder="dd/mm/yyyy">
-                                    <mat-datepicker-toggle matSuffix [for]="purchaseDatePicker">
-                                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker #purchaseDatePicker></mat-datepicker>
-                                </mat-form-field>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <hr size="10">
-
-                <form [formGroup]="purchaseDetailsForm" class="purchase-details">
 
                     <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-                        <mat-form-field fxFlex="30">
-                            <mat-label>Product category</mat-label>
-                            <mat-select formControlName="product_category_id" placeholder="Product category" (ngModelChange)="onProductCategorySelected($event)">
-                                <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.id">
-                                    {{productCategory.category_name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                        <div fxFlex="50">
+                            <form [formGroup]="transactionDetailsForm" class="transaction-detail">
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                                    <ng-select [items]="vendors" fxFlex="80" (change)="onSelectedVendor($event)" bindLabel="ledger_name" class="custom" bindValue="id" formControlName="ledger_id" placeholder="Select Vendor">
+                                    </ng-select>
+                                    <div fxFlex="20" *ngIf="selectedLedger">
+                                        <popover-content #myPopover title="{{selectedLedger.ledger_name}}" placement="right" [animation]="true" [closeOnClickOutside]="true">
+                                            <b>{{selectedLedger.address1 + ' | ' + selectedLedger.address2}}</b> <span style="color: #C21F39">Dynamic</span> <span style="color: #00b3ee">Reusable</span>
+                                            <b><i><span style="color: #ffc520">Popover With</span></i></b> <small>Html support</small>.
+                                        </popover-content>
 
-                        <ng-select [items]="productsByCategory" fxFlex="30" (change)="onSelectedProduct($event)" bindLabel="product_name" class="custom" bindValue="id" formControlName="product_id" placeholder="Product">
-                        </ng-select>
+                                        <a [routerLink]="" [popover]="myPopover">Info</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div fxFlex="40">
+                            <form [formGroup]="transactionMasterForm">
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                                    <mat-form-field class="example-full-width" fxFlex="90">
+                                        <mat-label>Purchase date (dd/mm/yyyy)</mat-label>
+                                        <input matInput [matDatepicker]="purchaseDatePicker" formControlName="transaction_date" placeholder="dd/mm/yyyy">
+                                        <mat-datepicker-toggle matSuffix [for]="purchaseDatePicker">
+                                            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #purchaseDatePicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
+                    <hr size="10">
 
-                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-                        <mat-form-field fxFlex="20">
-                            <mat-label>Rate</mat-label>
-                            <input type="number" class="text-right" matInput formControlName="rate" placeholder="Rate">
-                        </mat-form-field>
+                    <form [formGroup]="purchaseDetailsForm" class="purchase-details">
 
-                        <mat-form-field fxFlex="20">
-                            <mat-label>Quantity</mat-label>
-                            <input type="number" class="text-right" matInput formControlName="purchase_quantity" (change)="setStockQuantity()" placeholder="Quantity">
-                        </mat-form-field>
-
-                        <mat-form-field fxFlex="20">
-                            <mat-label>Amount</mat-label>
-                            <input matInput [value]="currentItemAmount" readonly>
-                        </mat-form-field>
-
-                        <mat-form-field fxFlex="20" *ngIf="selectedProduct && selectedProduct.purchase_unit_id!=selectedProduct.sale_unit_id">
-                            <mat-label>Stock quantity</mat-label>
-                            <input type="number" class="text-right" matInput formControlName="stock_quantity" placeholder="Stock quantity">
-
-                        </mat-form-field>
-                    </div>
-                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-                        <button class="pull-right" mat-stroked-button (click)="addItem()">Add</button>
-                        <button class="pull-right" mat-stroked-button (click)="clearPurchaseForm()">clear</button>
-                    </div>
-                </form>
-
-            </mat-card-content>
-        </mat-card>
-
-        <!--    <pre>validatorError = {{validatorError | json}}</pre>-->
-    </div>
-    <div fxFlex="60" id="right-div" *ngIf="purchaseDetails.length" fxFill>
-        <mat-card class="example-card">
-            <mat-card-header>
-                <mat-card-title>
-                    <fa-icon></fa-icon>&nbsp;Purchase details</mat-card-title>
-                <mat-card-subtitle>
-                    <div *ngIf="purchaseMaster && selectedLedger">
-                        <span><h3>{{selectedLedger.billing_name}}</h3></span>
-                        <span>Address: {{selectedLedger.address1}},Mob: {{selectedLedger.mobile1}}</span><br>
-                        <span>Invoice: {{purchaseMaster.invoice_number}},Challan no: {{purchaseMaster.case_number}}</span><br>
-                    </div>
-                </mat-card-subtitle>
-
-            </mat-card-header>
-
-            <mat-card-content>
-                <table class="table table-bordered" id="purchase-detail-list">
-                    <thead>
-                        <tr>
-                            <th class="w-10">SL</th>
-                            <th class="w-30">Product</th>
-                            <th class="w-10">Rate</th>
-                            <th class="w-10">Qty</th>
-                            <th class="w-10">Amount</th>
-                            <th class="w-30 text-center" colspan="2">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let purchaseDetail of purchaseDetails;let indexOfElement=index">
-                            <td>{{indexOfElement+1}}</td>
-                            <td>{{purchaseDetail.product.product_name}}</td>
-                            <td class="text-right">{{purchaseDetail.rate}}</td>
-                            <td class="text-right">{{purchaseDetail.purchase_quantity + ' (' + purchaseDetail.unit.unit_name + ')'}}</td>
-                            <td class="text-right pr-5">{{(purchaseDetail.rate * purchaseDetail.purchase_quantity) | number: '1.0-2'}}</td>
-                            <td class="text-right">
-                                <span (click)="itemToEdit(purchaseDetail)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
-                            </td>
-                            <td class="text-right">
-                                <span (click)="deleteItem(purchaseDetail)"><fa-icon class="edit" [icon]="faTrashAlt"></fa-icon></span>
-                            </td>
-                        </tr>
-                    </tbody>
-
-                    <tfoot>
-                        <tr>
-                            <td colspan="4">Total</td>
-                            <td class="text-right">{{currentPurchaseTotal}}</td>
-                            <td colspan="2"></td>
-                        </tr>
-
-                        <tr *ngFor="let extraItem of extraItemDetails">
-                            <td colspan="4"><b>{{extraItem.item_type==1?'Add: ' : 'Less: '}}</b>{{extraItem.item_name}}</td>
-                            <td class="text-right">{{extraItem.amount}}</td>
-                            <td colspan="2"></td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="4">Gross amount</td>
-                            <td class="text-right">{{grossTotal}}</td>
-                            <td colspan="2"></td>
-                        </tr>
-
-                    </tfoot>
-                </table>
-                <h3>Extra item</h3>
-                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
-                    <form [formGroup]="extraItemsForm">
                         <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
                             <mat-form-field fxFlex="30">
-                                <mat-label>Type</mat-label>
-                                <mat-select formControlName="item_type" placeholder="Extra item">
-                                    <mat-option *ngFor="let extraItemType of extraItemTypes" [value]="extraItemType.value">
-                                        {{extraItemType.name}}
+                                <mat-label>Product category</mat-label>
+                                <mat-select formControlName="product_category_id" placeholder="Product category" (ngModelChange)="onProductCategorySelected($event)">
+                                    <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.id">
+                                        {{productCategory.category_name}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
-                            <mat-form-field fxFlex="30">
-                                <mat-label>Extra item</mat-label>
-                                <mat-select formControlName="extra_item_id" placeholder="Extra item" required>
-                                    <mat-option *ngFor="let extraItem of extraItems" [value]="extraItem.id">
-                                        {{extraItem.item_name}}
-                                    </mat-option>
-                                </mat-select>
+
+                            <ng-select [items]="productsByCategory" fxFlex="30" (change)="onSelectedProduct($event)" bindLabel="product_name" class="custom" bindValue="id" formControlName="product_id" placeholder="Product">
+                            </ng-select>
+                        </div>
+
+
+                        <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                            <mat-form-field fxFlex="20">
+                                <mat-label>Rate</mat-label>
+                                <input type="number" class="text-right" matInput formControlName="rate" placeholder="Rate">
                             </mat-form-field>
+
+                            <mat-form-field fxFlex="20">
+                                <mat-label>Quantity</mat-label>
+                                <input type="number" class="text-right" matInput formControlName="purchase_quantity" (change)="setStockQuantity()" placeholder="Quantity">
+                            </mat-form-field>
+
                             <mat-form-field fxFlex="20">
                                 <mat-label>Amount</mat-label>
-                                <input type="number" class="text-right" matInput formControlName="amount" placeholder="Extra amount" required>
+                                <input matInput [value]="currentItemAmount" readonly>
                             </mat-form-field>
-                            <button mat-raised-button color="primary" (click)="addExtraItemForPurchase()" [disabled]="extraItemsForm.invalid">Add</button>
+
+                            <mat-form-field fxFlex="20" *ngIf="selectedProduct && selectedProduct.purchase_unit_id!=selectedProduct.sale_unit_id">
+                                <mat-label>Stock quantity</mat-label>
+                                <input type="number" class="text-right" matInput formControlName="stock_quantity" placeholder="Stock quantity">
+
+                            </mat-form-field>
+                        </div>
+                        <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                            <button class="pull-right" mat-stroked-button (click)="addItem()">Add</button>
+                            <button class="pull-right" mat-stroked-button (click)="clearPurchaseForm()">clear</button>
                         </div>
                     </form>
-                </div>
 
-                <form [formGroup]="purchaseMasterForm" class="">
-                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-                        <mat-form-field fxFlex="60">
-                            <mat-label>Comment</mat-label>
-                            <input type="textarea" matInput formControlName="comment" placeholder="Comment">
-                        </mat-form-field>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <div fxFlex="60" style="background-color: rgba(3,2,12,0.81);">
+        <div style="min-height: 92vh; background-color: rgba(202, 199, 224, 0.81);">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>
+                        <fa-icon></fa-icon>&nbsp;Purchase details</mat-card-title>
+                    <mat-card-subtitle>
+                        <div *ngIf="purchaseMaster && selectedLedger">
+                            <span><h3>{{selectedLedger.billing_name}}</h3></span>
+                            <span>Address: {{selectedLedger.address1}},Mob: {{selectedLedger.mobile1}}</span><br>
+                            <span>Invoice: {{purchaseMaster.invoice_number}},Challan no: {{purchaseMaster.case_number}}</span><br>
+                        </div>
+                    </mat-card-subtitle>
+
+                </mat-card-header>
+
+                <mat-card-content>
+                    <table class="table table-bordered" id="purchase-detail-list">
+                        <thead>
+                            <tr>
+                                <th class="w-10">SL</th>
+                                <th class="w-30">Product</th>
+                                <th class="w-10">Rate</th>
+                                <th class="w-10">Qty</th>
+                                <th class="w-10">Amount</th>
+                                <th class="w-30 text-center" colspan="2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let purchaseDetail of purchaseDetails;let indexOfElement=index">
+                                <td>{{indexOfElement+1}}</td>
+                                <td>{{purchaseDetail.product.product_name}}</td>
+                                <td class="text-right">{{purchaseDetail.rate}}</td>
+                                <td class="text-right">{{purchaseDetail.purchase_quantity + ' (' + purchaseDetail.unit.unit_name + ')'}}</td>
+                                <td class="text-right pr-5">{{(purchaseDetail.rate * purchaseDetail.purchase_quantity) | number: '1.0-2'}}</td>
+                                <td class="text-right">
+                                    <span (click)="itemToEdit(purchaseDetail)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
+                                </td>
+                                <td class="text-right">
+                                    <span (click)="deleteItem(purchaseDetail)"><fa-icon class="edit" [icon]="faTrashAlt"></fa-icon></span>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">Total</td>
+                                <td class="text-right">{{currentPurchaseTotal}}</td>
+                                <td colspan="2"></td>
+                            </tr>
+
+                            <tr *ngFor="let extraItem of extraItemDetails">
+                                <td colspan="4"><b>{{extraItem.item_type==1?'Add: ' : 'Less: '}}</b>{{extraItem.item_name}}</td>
+                                <td class="text-right">{{extraItem.amount}}</td>
+                                <td colspan="2"></td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4">Gross amount</td>
+                                <td class="text-right">{{grossTotal}}</td>
+                                <td colspan="2"></td>
+                            </tr>
+
+                        </tfoot>
+                    </table>
+                    <h3>Extra item</h3>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
+                        <form [formGroup]="extraItemsForm">
+                            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                                <mat-form-field fxFlex="30">
+                                    <mat-label>Type</mat-label>
+                                    <mat-select formControlName="item_type" placeholder="Extra item">
+                                        <mat-option *ngFor="let extraItemType of extraItemTypes" [value]="extraItemType.value">
+                                            {{extraItemType.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="30">
+                                    <mat-label>Extra item</mat-label>
+                                    <mat-select formControlName="extra_item_id" placeholder="Extra item" required>
+                                        <mat-option *ngFor="let extraItem of extraItems" [value]="extraItem.id">
+                                            {{extraItem.item_name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20">
+                                    <mat-label>Amount</mat-label>
+                                    <input type="number" class="text-right" matInput formControlName="amount" placeholder="Extra amount" required>
+                                </mat-form-field>
+                                <button mat-raised-button color="primary" (click)="addExtraItemForPurchase()" [disabled]="extraItemsForm.invalid">Add</button>
+                            </div>
+                        </form>
                     </div>
-                </form>
 
-                <div class="container mt-3" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0">
-                    <button mat-stroked-button color="primary" mat-stroked-button (click)="onSubmit()">Save Purchase</button>
-                </div>
+                    <form [formGroup]="purchaseMasterForm" class="">
+                        <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                            <mat-form-field fxFlex="60">
+                                <mat-label>Comment</mat-label>
+                                <input type="textarea" matInput formControlName="comment" placeholder="Comment">
+                            </mat-form-field>
+                        </div>
+                    </form>
 
-            </mat-card-content>
-        </mat-card>
+                    <div class="container mt-3" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                        <button mat-stroked-button color="primary" mat-stroked-button (click)="onSubmit()">Save Purchase</button>
+                    </div>
 
-
+                </mat-card-content>
+            </mat-card>
+        </div>
     </div>
 </div>
 
 
 <!--developer div-->
-<div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="true">
+<div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="false">
 
     <div fxFlex="25">
         <mat-card class="example-card">
