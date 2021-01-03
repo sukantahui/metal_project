@@ -22,6 +22,14 @@ export class AppComponent implements OnInit, OnDestroy{
   faBaby = faBaby;
   mediaSub: Subscription;
   deviceXs: boolean;
+
+  direction = "row";
+
+  toggleDirection() {
+    let next = (DIRECTIONS.indexOf(this.direction) +1 ) % DIRECTIONS.length;
+    this.direction = DIRECTIONS[next];
+  }
+
   constructor(public mediaObserver: MediaObserver, private authService: AuthService){
   }
   ngOnInit(): void {
@@ -38,3 +46,5 @@ export class AppComponent implements OnInit, OnDestroy{
     this.mediaSub.unsubscribe();
   }
 }
+
+const DIRECTIONS = ['row', 'row-reverse', 'column', 'column-reverse'];

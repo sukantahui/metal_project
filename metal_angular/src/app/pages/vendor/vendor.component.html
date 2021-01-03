@@ -1,189 +1,182 @@
 <div fxLayout.xs="column" fxLayout="row" fxFlexFill>
-  <div fxFlex="50" id="left-div">
-    <mat-card class="example-card">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Vendor Form</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <!--        This is the vendor form-->
-        <form [formGroup]="vendorForm">
-          <!--          Vendor name-->
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field fxFlex="50">
-              <mat-label>Vendor Name</mat-label>
-              <input type="text" matInput formControlName="ledger_name" placeholder="Vendor Name">
-              <mat-hint>Enter any unique Vendor name</mat-hint>
-            </mat-form-field>
-          </div>
+    <div fxFlex="50" id="left-div">
+        <mat-card class="example-card">
+            <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title>Vendor Form</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <!--        This is the vendor form-->
+                <form [formGroup]="vendorForm">
+                    <!--          Vendor name-->
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                        <mat-form-field fxFlex="50">
+                            <mat-label>Vendor Name</mat-label>
+                            <input type="text" matInput formControlName="ledger_name" placeholder="Vendor Name">
+                            <mat-hint>Enter any unique Vendor name</mat-hint>
+                        </mat-form-field>
+                    </div>
 
-          <!--  Vendor Billing Name-->
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field fxFlex="50">
-              <mat-label>Billing Name</mat-label>
-              <input type="text" matInput formControlName="billing_name" placeholder="Billing Name">
-            </mat-form-field>
-          </div>
-          <!--          Email address-->
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field fxFlex="30">
-              <mat-label>Email</mat-label>
-              <input type="email" matInput formControlName="email" placeholder="Email">
-            </mat-form-field>
+                    <!--  Vendor Billing Name-->
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                        <mat-form-field fxFlex="50">
+                            <mat-label>Billing Name</mat-label>
+                            <input type="text" matInput formControlName="billing_name" placeholder="Billing Name">
+                        </mat-form-field>
+                    </div>
+                    <!--          Email address-->
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                        <mat-form-field fxFlex="30">
+                            <mat-label>Email</mat-label>
+                            <input type="email" matInput formControlName="email" placeholder="Email">
+                        </mat-form-field>
 
-            <mat-form-field fxFlex="30">
-              <mat-label>Mobile1</mat-label>
-              <input type="text" matInput formControlName="mobile1" placeholder="mobile1">
-            </mat-form-field>
+                        <mat-form-field fxFlex="30">
+                            <mat-label>Mobile1</mat-label>
+                            <input type="text" matInput formControlName="mobile1" placeholder="mobile1">
+                        </mat-form-field>
 
-            <mat-form-field fxFlex="30">
-              <mat-label>Mobile2</mat-label>
-              <input type="text" matInput formControlName="mobile2" placeholder="mobile2">
-            </mat-form-field>
-          </div>
+                        <mat-form-field fxFlex="30">
+                            <mat-label>Mobile2</mat-label>
+                            <input type="text" matInput formControlName="mobile2" placeholder="mobile2">
+                        </mat-form-field>
+                    </div>
 
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field fxFlex="70">
-              <mat-label>Address1</mat-label>
-              <input type="email" matInput formControlName="address1" placeholder="Address1">
-            </mat-form-field>
-          </div>
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field fxFlex="70">
-              <mat-label>Address2</mat-label>
-              <input type="text" matInput formControlName="address2" placeholder="Address2">
-            </mat-form-field>
-          </div>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                        <mat-form-field fxFlex="70">
+                            <mat-label>Address1</mat-label>
+                            <input type="email" matInput formControlName="address1" placeholder="Address1">
+                        </mat-form-field>
+                    </div>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                        <mat-form-field fxFlex="70">
+                            <mat-label>Address2</mat-label>
+                            <input type="text" matInput formControlName="address2" placeholder="Address2">
+                        </mat-form-field>
+                    </div>
 
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field fxFlex="20">
-              <mat-label>State</mat-label>
-              <mat-select  formControlName="state_id">
-                <mat-option *ngFor="let state of states" [value]="state.id">
-                  {{state.state_name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                        <mat-form-field fxFlex="20">
+                            <mat-label>State</mat-label>
+                            <mat-select formControlName="state_id">
+                                <mat-option *ngFor="let state of states" [value]="state.id">
+                                    {{state.state_name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
 
-            <mat-form-field fxFlex="20">
-              <mat-label>Po</mat-label>
-              <input type="text" matInput formControlName="po" placeholder="Po">
-            </mat-form-field>
+                        <mat-form-field fxFlex="20">
+                            <mat-label>Po</mat-label>
+                            <input type="text" matInput formControlName="po" placeholder="Po">
+                        </mat-form-field>
 
-            <mat-form-field fxFlex="30">
-              <mat-label>Area</mat-label>
-              <input type="text" matInput formControlName="area" placeholder="Area">
-            </mat-form-field>
+                        <mat-form-field fxFlex="30">
+                            <mat-label>Area</mat-label>
+                            <input type="text" matInput formControlName="area" placeholder="Area">
+                        </mat-form-field>
 
-          </div>
+                    </div>
 
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field fxFlex="20">
-              <mat-label>City</mat-label>
-              <input type="text" matInput formControlName="city" placeholder="city">
-            </mat-form-field>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                        <mat-form-field fxFlex="20">
+                            <mat-label>City</mat-label>
+                            <input type="text" matInput formControlName="city" placeholder="city">
+                        </mat-form-field>
 
-            <mat-form-field fxFlex="20">
-              <mat-label>Pin</mat-label>
-              <input type="text" matInput formControlName="pin" placeholder="Pin">
-            </mat-form-field>
-          </div>
+                        <mat-form-field fxFlex="20">
+                            <mat-label>Pin</mat-label>
+                            <input type="text" matInput formControlName="pin" placeholder="Pin">
+                        </mat-form-field>
+                    </div>
 
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field fxFlex="20">
-              <mat-label>Transaction type</mat-label>
-              <mat-select  formControlName="transaction_type_id">
-                <mat-option *ngFor="let transactionType of transactionTypes" [value]="transactionType.id">
-                  {{transactionType.formal_name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                        <mat-form-field fxFlex="20">
+                            <mat-label>Transaction type</mat-label>
+                            <mat-select formControlName="transaction_type_id">
+                                <mat-option *ngFor="let transactionType of transactionTypes" [value]="transactionType.id">
+                                    {{transactionType.formal_name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
 
-            <mat-form-field fxFlex="20">
-              <mat-label>Opening balance</mat-label>
-              <input type="text" (click)="$event.target.select()" matInput formControlName="opening_balance" placeholder="Opening balance">
-            </mat-form-field>
-          </div>
-
-
-        </form>
-        <!--        End of Vendor form-->
-      </mat-card-content>
-      <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" >
-        <button [disabled]="vendorForm.invalid" *ngIf="!vendorForm.value.id" (click)="onSubmit()" mat-button>Save</button>
-        <button (click)="onUpdate()" [disabled]="vendorForm.invalid || vendorForm.dirty==false">Update</button>
-        <button [disabled]="!vendorForm.dirty && !vendorForm.value.id" (click)="clearVendorForm()" mat-stroked-button>clear</button>
-      </div>
-    </mat-card>
-
-    <!--    <pre>validatorError = {{validatorError | json}}</pre>-->
-  </div>
-  <div fxFlex="50" id="right-div">
-
-    <div id="vendor-list-div">
-      <mat-card class="example-card">
-        <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
-        </mat-card-header>
-        <mat-card-content>
-          <table class="table table-responsive">
-            <thead>
-            <tr>
-              <th>Name</th>
-              <th>Mobile</th>
-              <th>Address</th>
-              <th>opening Balance</th>
-              <th class="text-center"  colspan="2">Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let vendor of vendors | paginate: { itemsPerPage: pageSize, currentPage: p };let indexOfElement=index">
-              <td>{{vendor.ledger_name}}</td>
-              <td>{{vendor.mobile1}}</td>
-              <td>{{vendor.address1}}</td>
-              <td>{{vendor.opening_balance}}</td>
-              <td>
-                <span  (click)="populateVendorForm(vendor)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
-              </td>
-              <td>
-                <span (click)="deleteVendor(vendor.id)"><fa-icon class="delete" [icon]="faTrashAlt"></fa-icon></span>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </mat-card-content>
-        <mat-card-actions>
-          <div fxLayout.xs="column" fxLayout="column" fxFlexFill>
-            <!--    https://www.npmjs.com/package/ngx-pagination-->
-            <!--    npm i ngx-pagination-->
-            <pagination-controls (pageChange)="p = $event"
-                                 responsive="true"
-                                 autoHide="true"
-                                 previousLabel="আগে"
-                                 nextLabel="পরে"
-                                 screenReaderPaginationLabel="Pagination"
-                                 screenReaderPageLabel="page"
-                                 directionLinks="true">
-            </pagination-controls>
-          </div>
-        </mat-card-actions>
-      </mat-card>
+                        <mat-form-field fxFlex="20">
+                            <mat-label>Opening balance</mat-label>
+                            <input type="text" (click)="$event.target.select()" matInput formControlName="opening_balance" placeholder="Opening balance">
+                        </mat-form-field>
+                    </div>
 
 
+                </form>
+                <!--        End of Vendor form-->
+            </mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                <button [disabled]="vendorForm.invalid" *ngIf="!vendorForm.value.id" (click)="onSubmit()" mat-button>Save</button>
+                <button (click)="onUpdate()" [disabled]="vendorForm.invalid || vendorForm.dirty==false">Update</button>
+                <button [disabled]="!vendorForm.dirty && !vendorForm.value.id" (click)="clearVendorForm()" mat-stroked-button>clear</button>
+            </div>
+        </mat-card>
 
+        <!--    <pre>validatorError = {{validatorError | json}}</pre>-->
     </div>
-  </div>
+    <div fxFlex="50" id="right-div">
+
+        <div id="vendor-list-div">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image"></div>
+                </mat-card-header>
+                <mat-card-content>
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>Address</th>
+                                <th>opening Balance</th>
+                                <th class="text-center" colspan="2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let vendor of vendors | paginate: { itemsPerPage: pageSize, currentPage: p };let indexOfElement=index">
+                                <td>{{vendor.ledger_name}}</td>
+                                <td>{{vendor.mobile1}}</td>
+                                <td>{{vendor.address1}}</td>
+                                <td>{{vendor.opening_balance}}</td>
+                                <td>
+                                    <span (click)="populateVendorForm(vendor)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
+                                </td>
+                                <td>
+                                    <span (click)="deleteVendor(vendor.id)"><fa-icon class="delete" [icon]="faTrashAlt"></fa-icon></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </mat-card-content>
+                <mat-card-actions>
+                    <div fxLayout.xs="column" fxLayout="column" fxFlexFill>
+                        <!--    https://www.npmjs.com/package/ngx-pagination-->
+                        <!--    npm i ngx-pagination-->
+                        <pagination-controls (pageChange)="p = $event" responsive="true" autoHide="true" previousLabel="আগে" nextLabel="পরে" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page" directionLinks="true">
+                        </pagination-controls>
+                    </div>
+                </mat-card-actions>
+            </mat-card>
+
+
+
+        </div>
+    </div>
 </div>
 
-<div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="true">
+<div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="false">
 
-  <div fxFlex="50">
-    <mat-card class="example-card">
-      <mat-card-header>
-        <h2 style="color: #c4c6ca;">Developer Area</h2>
-      </mat-card-header>
-      <mat-card-content>
-        <pre>
+    <div fxFlex="50">
+        <mat-card class="example-card">
+            <mat-card-header>
+                <h2 style="color: #c4c6ca;">Developer Area</h2>
+            </mat-card-header>
+            <mat-card-content>
+                <pre>
           valid = {{vendorForm.valid | json}}
           invalid = {{vendorForm.invalid | json}}
           dirty = {{vendorForm.dirty | json}}
@@ -194,21 +187,19 @@
           errors = {{vendorForm.errors | json}}
           status = {{vendorForm.status | json}}
         </pre>
-      </mat-card-content>
-    </mat-card>
-  </div>
-  <div fxFlex="50">
-    <mat-card class="example-card">
-      <mat-card-header>
-        <h2 style="color: #c4c6ca;">Developer Area</h2>
-      </mat-card-header>
-      <mat-card-content>
-        <pre>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex="50">
+        <mat-card class="example-card">
+            <mat-card-header>
+                <h2 style="color: #c4c6ca;">Developer Area</h2>
+            </mat-card-header>
+            <mat-card-content>
+                <pre>
           {{vendorForm.value | json}}
         </pre>
-      </mat-card-content>
-    </mat-card>
-  </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
 </div>
-
-

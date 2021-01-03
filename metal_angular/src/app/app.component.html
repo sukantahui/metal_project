@@ -1,34 +1,35 @@
+<!-- <div fxLayout="column" fxLayoutAlign="start none" class="fixVertical yellow">
 
 
 
 
+    <header class="flex-container" fxLayout="row" fxLayoutAlign="center center">
+        <app-header [deviceXs]="deviceXs"></app-header>
+    </header>
+
+    <div class="flex-container" fxFlex fxFlexFill>
+        <router-outlet></router-outlet>
+    </div>
+    <footer class="flex-container" fxLayout="row" fxLayoutAlign="center center">
+        this footer should always stick to the bottom of the page
+    </footer>
+</div> -->
 
 
 
 
 <!--Header-->
-<div fxLayout="column" fxFlexFill fxLayoutAlign="space-between stretch" class="bg-red">
-  <div fxFlex="1" fxLayout="column" flexLayoutAlign="center center">
-    <app-header [deviceXs]="deviceXs"></app-header>
-  </div>
-<!--  This is our main working area-->
-  <div fxFlex="1"  fxLayout="column" flexLayoutAlign="center center"  style="margin-top: 70px; min-height: 80vh">
-    <router-outlet></router-outlet>
-  </div>
+<div fxLayout="column" fxLayoutAlign="start none" class="fixVertical">
+    <div fxFlex="1" fxLayout="column" flexLayoutAlign="center center">
+        <app-header [deviceXs]="deviceXs"></app-header>
+    </div>
+    <!--  This is our main working area-->
+    <div fxFlex="1" fxLayout="column" flexLayoutAlign="center center" style="margin-top: 70px; min-height: 80vh">
+        <router-outlet></router-outlet>
+    </div>
 
-<!--  Footer-->
-  <div fxFlexFill fxLayoutAlign="start end" class="bottom-div" style="background-color: #f8f6f6">
-    Metal Project by coder
-  </div>
+    <!--  Footer-->
+    <footer class="flex-container" fxLayout="row" fxLayoutAlign="center center" id="footer-div">
+        this footer should always stick to the bottom of the page
+    </footer>
 </div>
-
-
-
-
-
-
-
-
-
-
-
