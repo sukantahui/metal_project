@@ -32,8 +32,14 @@
                                     </ng-select>
                                     <div fxFlex="20" *ngIf="selectedLedger">
                                         <popover-content #myPopover title="{{selectedLedger.ledger_name}}" placement="right" [animation]="true" [closeOnClickOutside]="true">
-                                            <b>{{selectedLedger.address1 + ' | ' + selectedLedger.address2}}</b> <span style="color: #C21F39">Dynamic</span> <span style="color: #00b3ee">Reusable</span>
-                                            <b><i><span style="color: #ffc520">Popover With</span></i></b> <small>Html support</small>.
+
+<!--                                            <b>{{selectedLedger.address1 + ' | ' + selectedLedger.address2}}</b>-->
+                                            <span style="color: #00b3ee">billing_name: {{selectedLedger.billing_name}}</span><br>
+                                            <span style="color: #C21F39">Address: {{selectedLedger.address1}}</span><br>
+                                            <span style="color: #00b3ee">Mobile 1: {{selectedLedger.mobile1}}</span><br>
+                                            <span style="color: #C21F39">Area: {{selectedLedger.area}}</span><br>
+                                            <span style="color: #00b3ee">Pin: {{selectedLedger.pin}}</span>
+<!--                                            <b><i><span style="color: #ffc520">Popover With</span></i></b> <small>Html support</small>.-->
                                         </popover-content>
 
                                         <a [routerLink]="" [popover]="myPopover">Info</a>
@@ -223,7 +229,7 @@
 
 
 <!--developer div-->
-<div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="false">
+<div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="true">
 
     <div fxFlex="25">
         <mat-card class="example-card">
@@ -270,8 +276,9 @@
             </mat-card-header>
             <mat-card-content>
                 <pre>
-          transactionMasterForm = {{transactionMasterForm.value | json}}
-          transactionMaster = {{transactionMaster | json}}
+<!--          transactionMasterForm = {{transactionMasterForm.value | json}}-->
+<!--          transactionMaster = {{transactionMaster | json}}-->
+                  selectedLedger = {{selectedLedger | json}}
         </pre>
             </mat-card-content>
         </mat-card>
@@ -283,8 +290,8 @@
             </mat-card-header>
             <mat-card-content>
                 <pre>
-          transactionDetailsForm = {{transactionDetailsForm.value | json}}
-          transactionDetails = {{transactionDetails | json}}
+<!--          transactionDetailsForm = {{transactionDetailsForm.value | json}}-->
+<!--          transactionDetails = {{transactionDetails | json}}-->
         </pre>
             </mat-card-content>
         </mat-card>
