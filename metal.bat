@@ -1,0 +1,1 @@
+wt -p "Command Prompt" -d e:\metal_project ; new-tab -p "Metal Angular" -d e:\metal_project\metal_angular; split-pane -p "Metal Api" -d e:\metal_project\metal_api
