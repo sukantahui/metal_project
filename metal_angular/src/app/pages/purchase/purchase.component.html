@@ -207,6 +207,26 @@
                             </div>
                         </form>
                     </div>
+                  <h3>Paid Amount</h3>
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
+                    <form [formGroup]="paidAmountForm">
+                      <mat-form-field fxFlex="30">
+                        <mat-label>Mode</mat-label>
+                        <mat-select formControlName="ledger_id" placeholder="Extra item" (ngModelChange)="onSelectedPaymentMode($event)">
+                          <mat-option *ngFor="let mode of paymentModes" [value]="mode.id">
+                            {{mode.name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                        <mat-form-field fxFlex="40">
+                          <mat-label>Amount</mat-label>
+                          <input type="number" class="text-right" matInput formControlName="amount" placeholder="Paid amount" required>
+                        </mat-form-field>
+                      </div>
+                    </form>
+                  </div>
 
                     <form [formGroup]="purchaseMasterForm" class="">
                         <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
@@ -231,17 +251,17 @@
 <!--developer div-->
 <div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="true">
 
-    <div fxFlex="25">
+    <div fxFlex="30">
         <mat-card class="example-card">
             <mat-card-header>
                 <h2 style="color: #c4c6ca;">Developer Area</h2>
             </mat-card-header>
             <mat-card-content>
                 <pre>
-          purchaseDetails = {{purchaseDetails | json}}
-          purchaseContainer = {{purchaseContainer | json}}
-          extraItemDetails = {{extraItemDetails | json}}
-        </pre>
+                  paymentTransactionMaster = {{paymentTransactionMaster | json}}
+                  paymentTransactionDetails = {{paymentTransactionDetails | json}}
+<!--                  extraItemDetails = {{extraItemDetails | json}}-->
+                </pre>
                 <pre>
 <!--          valid = {{customerForm.valid | json}}-->
 <!--          invalid = {{customerForm.invalid | json}}-->
@@ -277,8 +297,8 @@
             <mat-card-content>
                 <pre>
 <!--          transactionMasterForm = {{transactionMasterForm.value | json}}-->
-<!--          transactionMaster = {{transactionMaster | json}}-->
-                  selectedLedger = {{selectedLedger | json}}
+          transactionMaster = {{transactionMaster | json}}
+<!--                  selectedLedger = {{selectedLedger | json}}-->
         </pre>
             </mat-card-content>
         </mat-card>
