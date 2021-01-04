@@ -328,6 +328,8 @@ export class PurchaseComponent implements OnInit {
     this.roundedOff = 0;
     this.grossTotal = 0;
     this.storage.delete('purchaseContainer').subscribe(() => {});
+    this.currentItemAmount = 0;
+
   }
 
   itemToEdit(item) {
