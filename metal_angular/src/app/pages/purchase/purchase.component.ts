@@ -12,9 +12,9 @@ import { faUserEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {StorageMap} from '@ngx-pwa/local-storage';
 import {TransactionDetail, TransactionMaster} from '../../models/transaction.model';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
-import {State} from "../vendor/vendor.component";
-import Swal from "sweetalert2";
-import {PurchaseService} from "../../services/purchase.service";
+import {State} from '../vendor/vendor.component';
+import Swal from 'sweetalert2';
+import {PurchaseService} from '../../services/purchase.service';
 
 export interface ExtraItem {
   id: number;
@@ -49,8 +49,8 @@ export class PurchaseComponent implements OnInit {
   selectedProduct: Product = null;
   extraItems: ExtraItem[] = [];
   extraItemDetails: ExtraItemDetails[] = [];
-  extraItemTypes = [{"value": 1, "name": "Add"},{"value": -1, name: "Less"}];
-  paymentModes = [{"id": 1, "name": "Cash"},{"id": 2, name: "Cheque"}];
+  extraItemTypes = [{value: 1, name: 'Add'}, {value: -1, name: 'Less'}];
+  paymentModes = [{id: 1, name: 'Cash'}, {id: 2, name: 'Cheque'}];
   paymentTransactionMaster = null;
   paymentTransactionDetails = [];
 
@@ -62,8 +62,8 @@ export class PurchaseComponent implements OnInit {
   currentPurchaseTotal = 0;
   roundedOff = 0;
   grossTotal = 0;
-  purchaseContainer: {tm: TransactionMaster, td: TransactionDetail[], pm: PurchaseMaster, pd: PurchaseDetail[],paymentTransactionMaster:TransactionMaster,
-    paymentTransactionDetails: TransactionDetail[],currentPurchaseTotal: number, roundedOff: number, extraItems: ExtraItemDetails[]};
+  purchaseContainer: {tm: TransactionMaster, td: TransactionDetail[], pm: PurchaseMaster, pd: PurchaseDetail[], paymentTransactionMaster: TransactionMaster,
+    paymentTransactionDetails: TransactionDetail[], currentPurchaseTotal: number, roundedOff: number, extraItems: ExtraItemDetails[]};
   private defaultValues: any;
   validatorError: any = null;
 
@@ -184,7 +184,7 @@ export class PurchaseComponent implements OnInit {
       // }
     });
     this.purchaseDetailsForm.valueChanges.subscribe(val => {
-      if(val.rate && val.purchase_quantity){
+      if (val.rate && val.purchase_quantity){
         this.currentItemAmount = val.rate * val.purchase_quantity;
       }
     });
@@ -235,29 +235,29 @@ export class PurchaseComponent implements OnInit {
       if (purchaseContainer){
         this.purchaseContainer = purchaseContainer;
         this.purchaseMaster = purchaseContainer.pm;
-        if(!purchaseContainer.pd){
+        if (!purchaseContainer.pd){
           this.purchaseDetails = [];
         }else{
           this.purchaseDetails = purchaseContainer.pd;
         }
         this.transactionMaster = purchaseContainer.tm;
-        if(!purchaseContainer.td){
+        if (!purchaseContainer.td){
           this.transactionDetails = [];
         }else{
           this.transactionDetails = purchaseContainer.td;
           this.selectedLedger = this.vendors.find(x => x.id === this.transactionDetails[1].ledger_id);
         }
-        if(!purchaseContainer.extraItems){
+        if (!purchaseContainer.extraItems){
           this.extraItemDetails = [];
         }else{
           this.extraItemDetails = purchaseContainer.extraItems;
         }
         this.paymentTransactionMaster = purchaseContainer.paymentTransactionMaster;
-        if(!purchaseContainer.paymentTransactionDetails){
+        if (!purchaseContainer.paymentTransactionDetails){
           this.paymentTransactionDetails = [];
         }else{
           this.paymentTransactionDetails = purchaseContainer.paymentTransactionDetails;
-          this.paidAmountForm.patchValue({amount:this.paymentTransactionDetails[0].amount});
+          this.paidAmountForm.patchValue({amount: this.paymentTransactionDetails[0].amount});
         }
 
         this.purchaseMasterForm.setValue(purchaseContainer.pm);
@@ -302,7 +302,7 @@ export class PurchaseComponent implements OnInit {
     this.purchaseDetails.unshift(tempPurchaseDetailObj);
     this.purchaseMaster = tempPurchaseMasterObj;
 
-    let tempPurchaseTotal = this.purchaseDetails.reduce( (total, record) => {
+    const tempPurchaseTotal = this.purchaseDetails.reduce( (total, record) => {
       // @ts-ignore
       return total + (record.rate * record.purchase_quantity);
     }, 0);
@@ -315,11 +315,12 @@ export class PurchaseComponent implements OnInit {
 
     this.transactionDetails = [];
     this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 5, transaction_type_id: 1, amount: this.grossTotal});
-    console.log(this.grossTotal);
-    this.transactionDetailsForm.patchValue({amount: this.grossTotal});
-    console.log(this.transactionDetailsForm.value);
     this.transactionDetails[1] = this.transactionDetailsForm.value;
-    this.extraItemDetails[0] = {"extra_item_id": 1, "amount": this.roundedOff, "item_type": 1, "item_name": "Rounded off"};
+    this.transactionDetails[1].amount = this.grossTotal;
+
+    this.transactionDetailsForm.patchValue({amount: this.grossTotal});
+
+    this.extraItemDetails[0] = {extra_item_id: 1, amount: this.roundedOff, item_type: 1, item_name: 'Rounded off'};
 
     this.purchaseContainer = {
       tm: this.transactionMaster,
@@ -368,12 +369,12 @@ export class PurchaseComponent implements OnInit {
   onSubmit() {
 
     /* This way we will fetch particular fields to save */
-    let tempPurchaseDetails = this.purchaseContainer.pd.map(
+    const tempPurchaseDetails = this.purchaseContainer.pd.map(
       ({id , product_id , rate
       , purchase_quantity , stock_quantity}) => ({id, product_id, rate, purchase_quantity, stock_quantity})
     );
 
-    let masterData = {
+    const masterData = {
       transaction_master: this.purchaseContainer.tm,
       transaction_details: this.purchaseContainer.td,
       purchase_master: this.purchaseContainer.pm,
@@ -413,16 +414,16 @@ export class PurchaseComponent implements OnInit {
   }
 
   addExtraItemForPurchase() {
-      let extraItem = this.extraItemsForm.value;
-      let extraItemObj =  this.extraItems.find(x => x.id === extraItem.extra_item_id);
+      const extraItem = this.extraItemsForm.value;
+      const extraItemObj =  this.extraItems.find(x => x.id === extraItem.extra_item_id);
       extraItem.item_name = extraItemObj.item_name;
       this.extraItemDetails.push(extraItem);
-      this.grossTotal+= extraItem.amount * extraItem.item_type;
+      this.grossTotal += extraItem.amount * extraItem.item_type;
       this.purchaseContainer.extraItems = this.extraItemDetails;
       this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
   }
 
   setStockQuantity() {
     this.purchaseDetailsForm.patchValue({stock_quantity: this.purchaseDetailsForm.value.purchase_quantity});
-  };
+  }
 }

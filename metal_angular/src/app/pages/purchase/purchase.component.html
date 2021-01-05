@@ -288,9 +288,9 @@
             </mat-card-header>
             <mat-card-content>
                 <pre>
-                  paymentTransactionMaster = {{paymentTransactionMaster | json}}
-                  paymentTransactionDetails = {{paymentTransactionDetails | json}}
-                  paidAmountForm = {{paidAmountForm.value | json}}
+                  transactionMaster = {{transactionMaster | json}}
+                  transactionDetails = {{transactionDetails | json}}
+
                 </pre>
                 <pre>
 <!--          valid = {{customerForm.valid | json}}-->
@@ -313,7 +313,7 @@
             </mat-card-header>
             <mat-card-content>
                 <pre>
-          purchaseContainer = {{purchaseContainer | json}}
+          transactionDetailsForm = {{transactionDetailsForm.value | json}}
 <!--          purchaseMaster = {{purchaseMaster | json}}-->
 <!--          purchaseDetails = {{purchaseDetails | json}}-->
         </pre>
@@ -332,7 +332,10 @@
                   transactionMaster = {{transactionMaster | json}}
                   transactionDetails = {{transactionDetails | json}}
 <!--                  selectedLedger = {{selectedLedger | json}}-->
-        </pre>
+                  paymentTransactionMaster = {{paymentTransactionMaster | json}}
+                  paymentTransactionDetails = {{paymentTransactionDetails | json}}
+                  paidAmountForm = {{paidAmountForm.value | json}}
+                </pre>
             </mat-card-content>
         </mat-card>
     </div>
