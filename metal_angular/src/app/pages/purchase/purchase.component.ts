@@ -78,6 +78,7 @@ export class PurchaseComponent implements OnInit {
   // tslint:disable-next-line:max-line-length
   currentItemAmount = 0;
   // tslint:disable-next-line:max-line-length
+  checked: any;
   constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService,
               private purchaseService: PurchaseService, private storage: StorageMap) {
     const now = new Date();
