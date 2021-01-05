@@ -135,11 +135,11 @@ export class PurchaseComponent implements OnInit {
     //   console.log(val);
     // });
     this.defaultValues = {
-      transactionMasterForm: this.transactionMasterForm.value,
-      transactionDetailsForm: this.transactionDetailsForm.value,
-      purchaseMasterForm: this.purchaseMasterForm.value,
-      purchaseDetailsForm: this.purchaseDetailsForm.value,
-      extraItemsForm: this.extraItemsForm.value
+      transactionMasterFormValue: this.transactionMasterForm.value,
+      transactionDetailsFormValue: this.transactionDetailsForm.value,
+      purchaseMasterFormValue: this.purchaseMasterForm.value,
+      purchaseDetailsFormValue: this.purchaseDetailsForm.value,
+      extraItemsFormValue: this.extraItemsForm.value
     };
 
     // Transaction master will be updated
@@ -157,6 +157,7 @@ export class PurchaseComponent implements OnInit {
 
     /* Transaction detail will be updated if vendor is selected */
     this.transactionDetailsForm.valueChanges.subscribe(val => {
+      console.log(val);
       /* first it will erase all previous data, then it will first push the purchase ledger, its id is 5 and it is  permanent */
       /* in step2 i am pushing the vendor ledger */
       /*
@@ -165,16 +166,16 @@ export class PurchaseComponent implements OnInit {
       * Vendor/Cash/Bank A/C Cr.
       * Amount to be adjusted latter
       */
-      // this.transactionDetails = [];
-      // this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 5, transaction_type_id: 1, amount: 0});
-      // this.transactionDetails.push(val);
+      this.transactionDetails = [];
+      this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 5, transaction_type_id: 1, amount: 0});
+      this.transactionDetails.push(val);
 
       const paidAmount = this.paidAmountForm.value.amount;
       this.paymentTransactionDetails = [];
       this.paymentTransactionDetails.push(val);
-      this.paymentTransactionDetails[0].transaction_type_id = 1;
-      this.paymentTransactionDetails[0].amount = paidAmount;
-      this.paymentTransactionDetails.push({id: null, transaction_master_id: null, ledger_id: 1, transaction_type_id: 2, amount: paidAmount});
+      // this.paymentTransactionDetails[0].transaction_type_id = 1;
+      // this.paymentTransactionDetails[0].amount = paidAmount;
+      // this.paymentTransactionDetails.push({id: null, transaction_master_id: null, ledger_id: 1, transaction_type_id: 2, amount: paidAmount});
     });
 
     this.purchaseMasterForm.valueChanges.subscribe(val => {
@@ -290,6 +291,7 @@ export class PurchaseComponent implements OnInit {
     this.selectedProduct = value;
   }
 
+  // adding product details here when add button is pushed
   addItem(){
     const tempPurchaseMasterObj = this.purchaseMasterForm.value;
     const tempPurchaseDetailObj = this.purchaseDetailsForm.value;
@@ -318,7 +320,9 @@ export class PurchaseComponent implements OnInit {
     this.transactionDetails[1] = this.transactionDetailsForm.value;
     this.transactionDetails[1].amount = this.grossTotal;
 
-    this.transactionDetailsForm.patchValue({amount: this.grossTotal});
+    // this.transactionDetailsForm.patchValue({amount: this.grossTotal});
+    this.transactionDetailsForm.patchValue({amount: 500});
+    console.log(this.transactionDetailsForm.value);
 
     this.extraItemDetails[0] = {extra_item_id: 1, amount: this.roundedOff, item_type: 1, item_name: 'Rounded off'};
 
@@ -338,11 +342,11 @@ export class PurchaseComponent implements OnInit {
   }
 
   clearPurchaseForm() {
-    this.purchaseMasterForm.reset(this.defaultValues.purchaseMasterForm);
-    this.purchaseDetailsForm.reset(this.defaultValues.purchaseDetailsForm);
-    this.transactionMasterForm.reset(this.defaultValues.transactionMasterForm);
-    this.transactionDetailsForm.reset(this.defaultValues.transactionDetailsForm);
-    this.extraItemsForm.reset(this.defaultValues.extraItemsForm);
+    this.purchaseMasterForm.patchValue(this.defaultValues.purchaseMasterFormValue);
+    this.purchaseDetailsForm.patchValue(this.defaultValues.purchaseDetailsFormValue);
+    this.transactionMasterForm.patchValue(this.defaultValues.transactionMasterFormValue);
+    this.transactionDetailsForm.patchValue(this.defaultValues.transactionDetailsFormValue);
+    this.extraItemsForm.patchValue(this.defaultValues.extraItemsFormValue);
 
     this.purchaseMaster = null;
     this.purchaseDetails = [];
