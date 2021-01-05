@@ -242,7 +242,7 @@
                     <form [formGroup]="paidAmountForm">
                       <mat-form-field fxFlex="30">
                         <mat-label>Mode</mat-label>
-                        <mat-select formControlName="ledger_id" placeholder="Extra item" (ngModelChange)="onSelectedPaymentMode($event)">
+                        <mat-select formControlName="ledger_id" (ngModelChange)="onSelectedPaymentMode($event)">
                           <mat-option *ngFor="let mode of paymentModes" [value]="mode.id">
                             {{mode.name}}
                           </mat-option>
@@ -290,7 +290,7 @@
                 <pre>
                   paymentTransactionMaster = {{paymentTransactionMaster | json}}
                   paymentTransactionDetails = {{paymentTransactionDetails | json}}
-<!--                  extraItemDetails = {{extraItemDetails | json}}-->
+                  paidAmountForm = {{paidAmountForm.value | json}}
                 </pre>
                 <pre>
 <!--          valid = {{customerForm.valid | json}}-->
@@ -313,8 +313,9 @@
             </mat-card-header>
             <mat-card-content>
                 <pre>
-          purchaseMaster = {{purchaseMaster | json}}
-          purchaseDetails = {{purchaseDetails | json}}
+          purchaseContainer = {{purchaseContainer | json}}
+<!--          purchaseMaster = {{purchaseMaster | json}}-->
+<!--          purchaseDetails = {{purchaseDetails | json}}-->
         </pre>
             </mat-card-content>
         </mat-card>
@@ -327,7 +328,9 @@
             <mat-card-content>
                 <pre>
 <!--          transactionMasterForm = {{transactionMasterForm.value | json}}-->
-          transactionMaster = {{transactionMaster | json}}
+                  transactionDetailsForm = {{transactionDetailsForm.value | json}}
+                  transactionMaster = {{transactionMaster | json}}
+                  transactionDetails = {{transactionDetails | json}}
 <!--                  selectedLedger = {{selectedLedger | json}}-->
         </pre>
             </mat-card-content>

@@ -62,8 +62,8 @@ export class PurchaseComponent implements OnInit {
   currentPurchaseTotal = 0;
   roundedOff = 0;
   grossTotal = 0;
-  purchaseContainer: {tm: TransactionMaster, td: TransactionDetail[], pm: PurchaseMaster, pd: PurchaseDetail[],
-    currentPurchaseTotal: number, roundedOff: number, extraItems: ExtraItemDetails[]};
+  purchaseContainer: {tm: TransactionMaster, td: TransactionDetail[], pm: PurchaseMaster, pd: PurchaseDetail[],paymentTransactionMaster:TransactionMaster,
+    paymentTransactionDetails: TransactionDetail[],currentPurchaseTotal: number, roundedOff: number, extraItems: ExtraItemDetails[]};
   private defaultValues: any;
   validatorError: any = null;
 
@@ -165,14 +165,16 @@ export class PurchaseComponent implements OnInit {
       * Vendor/Cash/Bank A/C Cr.
       * Amount to be adjusted latter
       */
-      this.transactionDetails = [];
-      this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 5, transaction_type_id: 1, amount: 0});
-      this.transactionDetails.push(val);
+      // this.transactionDetails = [];
+      // this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 5, transaction_type_id: 1, amount: 0});
+      // this.transactionDetails.push(val);
 
+      const paidAmount = this.paidAmountForm.value.amount;
       this.paymentTransactionDetails = [];
       this.paymentTransactionDetails.push(val);
       this.paymentTransactionDetails[0].transaction_type_id = 1;
-      this.paymentTransactionDetails.push({id: null, transaction_master_id: null, ledger_id: 1, transaction_type_id: 2, amount: 0});
+      this.paymentTransactionDetails[0].amount = paidAmount;
+      this.paymentTransactionDetails.push({id: null, transaction_master_id: null, ledger_id: 1, transaction_type_id: 2, amount: paidAmount});
     });
 
     this.purchaseMasterForm.valueChanges.subscribe(val => {
@@ -186,13 +188,25 @@ export class PurchaseComponent implements OnInit {
         this.currentItemAmount = val.rate * val.purchase_quantity;
       }
     });
-    this.paidAmountForm.valueChanges.subscribe(val => {
-      if(val.amount>0){
-        this.paymentTransactionDetails[0].amount = val.amount;
-        this.paymentTransactionDetails[1].amount = val.amount;
-
-      }
-    });
+    // this.paidAmountForm.valueChanges.subscribe(val => {
+    //   if(val.amount>0){
+    //     this.paymentTransactionDetails[0].amount = val.amount;
+    //     this.paymentTransactionDetails[1].amount = val.amount;
+    //
+    //     this.purchaseContainer = {
+    //       tm: this.transactionMaster,
+    //       td: this.transactionDetails,
+    //       pm: this.purchaseMaster,
+    //       pd: this.purchaseDetails,
+    //       paymentTransactionMaster: this.paymentTransactionMaster,
+    //       paymentTransactionDetails: this.paymentTransactionDetails,
+    //       currentPurchaseTotal: this.currentPurchaseTotal,
+    //       roundedOff: this.roundedOff,
+    //       extraItems: this.extraItemDetails
+    //     };
+    //     this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
+    //   }
+    // });
 
     this.vendors = this.vendorService.getVendors();
     this.vendorService.getVendorServiceListener().subscribe(response => {
@@ -238,7 +252,13 @@ export class PurchaseComponent implements OnInit {
         }else{
           this.extraItemDetails = purchaseContainer.extraItems;
         }
-
+        this.paymentTransactionMaster = purchaseContainer.paymentTransactionMaster;
+        if(!purchaseContainer.paymentTransactionDetails){
+          this.paymentTransactionDetails = [];
+        }else{
+          this.paymentTransactionDetails = purchaseContainer.paymentTransactionDetails;
+          this.paidAmountForm.patchValue({amount:this.paymentTransactionDetails[0].amount});
+        }
 
         this.purchaseMasterForm.setValue(purchaseContainer.pm);
         this.transactionMasterForm.setValue(purchaseContainer.tm);
@@ -295,7 +315,9 @@ export class PurchaseComponent implements OnInit {
 
     this.transactionDetails = [];
     this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 5, transaction_type_id: 1, amount: this.grossTotal});
+    console.log(this.grossTotal);
     this.transactionDetailsForm.patchValue({amount: this.grossTotal});
+    console.log(this.transactionDetailsForm.value);
     this.transactionDetails[1] = this.transactionDetailsForm.value;
     this.extraItemDetails[0] = {"extra_item_id": 1, "amount": this.roundedOff, "item_type": 1, "item_name": "Rounded off"};
 
@@ -304,6 +326,8 @@ export class PurchaseComponent implements OnInit {
       td: this.transactionDetails,
       pm: this.purchaseMaster,
       pd: this.purchaseDetails,
+      paymentTransactionMaster: this.paymentTransactionMaster,
+      paymentTransactionDetails: this.paymentTransactionDetails,
       currentPurchaseTotal: this.currentPurchaseTotal,
       roundedOff: this.roundedOff,
       extraItems: this.extraItemDetails
@@ -355,7 +379,8 @@ export class PurchaseComponent implements OnInit {
       purchase_master: this.purchaseContainer.pm,
       purchase_details: tempPurchaseDetails,
       extra_items: this.purchaseContainer.extraItems,
-      // paid_amount: this.paidAmountForm.value
+      payment_transaction_master: this.purchaseContainer.paymentTransactionMaster,
+      payment_transaction_details: this.purchaseContainer.paymentTransactionDetails
     };
     this.purchaseService.savePurchase(masterData).subscribe(response => {
       if (response.success === 1){
