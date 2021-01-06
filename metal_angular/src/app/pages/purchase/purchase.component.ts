@@ -115,7 +115,7 @@ export class PurchaseComponent implements OnInit {
       transaction_master_id: new FormControl(null),
       ledger_id: new FormControl(null),
       transaction_type_id: new FormControl(2),
-      amount: new FormControl(null),
+      amount: new FormControl(0),
     });
     this.extraItemsForm = new FormGroup({
       id: new FormControl(null),
@@ -159,7 +159,6 @@ export class PurchaseComponent implements OnInit {
 
     /* Transaction detail will be updated if vendor is selected */
     this.transactionDetailsForm.valueChanges.subscribe(val => {
-      console.log(val);
       /* first it will erase all previous data, then it will first push the purchase ledger, its id is 5 and it is  permanent */
       /* in step2 i am pushing the vendor ledger */
       /*
@@ -169,7 +168,17 @@ export class PurchaseComponent implements OnInit {
       * Amount to be adjusted latter
       */
       this.transactionDetails = [];
-      this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 5, transaction_type_id: 1, amount: 0});
+      // when we are loading data from storage, purchaseContainer, changing the transactionDetailsForm to reflect the venture
+      // hence transactionDetails are initialising again with amount 0 for position 0
+      // we need to resolve it #problem 2
+      let transactionAmount = 0;
+      if (this.purchaseContainer && this.purchaseContainer.td){
+        transactionAmount = this.purchaseContainer.td[0].amount;
+      }
+
+
+      // tslint:disable-next-line:max-line-length
+      this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 5, transaction_type_id: 1, amount: transactionAmount});
       this.transactionDetails.push(val);
 
       const paidAmount = this.paidAmountForm.value.amount;
@@ -275,13 +284,15 @@ export class PurchaseComponent implements OnInit {
 
         this.purchaseMasterForm.setValue(purchaseContainer.pm);
         this.transactionMasterForm.setValue(purchaseContainer.tm);
+        // this area has problem, need to be sorted out
+        // as transactionDetailsForm is changing again it will change the transaction details again
         this.transactionDetailsForm.setValue(purchaseContainer.td[1]);
 
         this.currentPurchaseTotal = this.purchaseContainer.currentPurchaseTotal;
         this.roundedOff = this.purchaseContainer.roundedOff;
         this.grossTotal = this.currentPurchaseTotal + this.roundedOff;
       }
-    }, (error) => {});
+    }, (error) => {console.log('error getting purchase container'); });
 
     // console.log('on load purchaseContainer ', this.purchaseContainer);
   }
@@ -333,8 +344,7 @@ export class PurchaseComponent implements OnInit {
     this.transactionDetails[1].amount = this.grossTotal;
 
     // this.transactionDetailsForm.patchValue({amount: this.grossTotal});
-    this.transactionDetailsForm.patchValue({amount: 500});
-    console.log(this.transactionDetailsForm.value);
+    // console.log(this.transactionDetailsForm.value);
 
     this.extraItemDetails[0] = {extra_item_id: 1, amount: this.roundedOff, item_type: 1, item_name: 'Rounded off'};
 
@@ -371,7 +381,10 @@ export class PurchaseComponent implements OnInit {
     this.currentPurchaseTotal = 0;
     this.roundedOff = 0;
     this.grossTotal = 0;
-    this.storage.delete('purchaseContainer').subscribe(() => {});
+    this.storage.delete('purchaseContainer').subscribe(() => {
+      console.log('purchaseMaster storage cleared');
+      this.purchaseContainer = null;
+    });
     this.currentItemAmount = 0;
 
   }
