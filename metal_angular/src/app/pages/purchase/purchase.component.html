@@ -316,10 +316,13 @@
             </mat-card-header>
             <mat-card-content>
                 <pre>
-          transactionDetailsForm = {{transactionDetailsForm.value | json}}
-<!--          purchaseMaster = {{purchaseMaster | json}}-->
-<!--          purchaseDetails = {{purchaseDetails | json}}-->
-        </pre>
+                  transactionDetailsForm = {{transactionDetailsForm.value | json}}
+                </pre>
+                <hr>
+                <pre>
+                  purchaseMaster = {{purchaseMaster | json}}
+                  purchaseDetails = {{purchaseDetails | json}}
+                </pre>
             </mat-card-content>
         </mat-card>
     </div>
@@ -332,6 +335,10 @@
                 <pre>
                   defaultValues= {{defaultValues | json}}
                 </pre>
+                <hr>
+              <pre>
+                products= {{products | json}}
+              </pre>
             </mat-card-content>
         </mat-card>
     </div>
