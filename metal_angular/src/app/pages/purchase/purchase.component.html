@@ -88,8 +88,8 @@
                                 <input type="number" class="text-right" matInput formControlName="rate" placeholder="Rate">
                             </mat-form-field>
 
-                            <mat-form-field fxFlex="20">
-                                <mat-label>Quantity</mat-label>
+                            <mat-form-field fxFlex="20" *ngIf="selectedProduct">
+                              <mat-label>Qty <b>{{selectedProduct.purchase_unit_name}}</b></mat-label>
                                 <input type="number" class="text-right" matInput formControlName="purchase_quantity" (change)="setStockQuantity()" placeholder="Quantity">
                             </mat-form-field>
 
@@ -99,7 +99,7 @@
                             </mat-form-field>
 
                             <mat-form-field fxFlex="20" *ngIf="selectedProduct && selectedProduct.purchase_unit_id!=selectedProduct.sale_unit_id">
-                                <mat-label>Stock quantity</mat-label>
+                              <mat-label>Stock Qty <b>{{selectedProduct.sale_unit_name}}</b></mat-label>
                                 <input type="number" class="text-right" matInput formControlName="stock_quantity" placeholder="Stock quantity">
 
                             </mat-form-field>
