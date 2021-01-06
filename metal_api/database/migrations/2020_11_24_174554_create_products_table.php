@@ -18,13 +18,13 @@ class CreateProductsTable extends Migration
             $table->string('product_name',50)->unique();
             $table->string('description',50)->nullable(true);
 
-            $table->bigInteger('product_category_id')->unsigned();
+            $table->unsignedBigInteger('product_category_id');
             $table ->foreign('product_category_id')->references('id')->on('product_categories');
 
-            $table->bigInteger('purchase_unit_id')->unsigned();
+            $table->unsignedBigInteger('purchase_unit_id');
             $table ->foreign('purchase_unit_id')->references('id')->on('units');
 
-            $table->bigInteger('sale_unit_id')->unsigned();
+            $table->unsignedBigInteger('sale_unit_id');
             $table ->foreign('sale_unit_id')->references('id')->on('units');
 
             $table->integer('gst_rate')->default(12);

@@ -17,15 +17,15 @@ class CreateTransactionMastersTable extends Migration
             $table->id();
             $table->string('transaction_number',20)->unique()->nullable(false);
 
-            $table->bigInteger('reference_transaction_master_id')->unsigned()->nullable(true);
+            $table->unsignedBigInteger('reference_transaction_master_id')->nullable(true);
 
-            $table->bigInteger('user_id')->unsigned();
+            $table->unsignedBigInteger('user_id');
             $table ->foreign('user_id')->references('id')->on('ledgers');
 
-            $table->bigInteger('voucher_type_id')->unsigned();
-            $table ->foreign('voucher_type_id')->references('id')->on('voucher_types');
+            $table->unsignedBigInteger('voucher_type_id');
+            $table ->foreign('voucher_type_id')->references('id')->on('voucher_types')->onDelete('CASCADE');;
 
-            $table->bigInteger('purchase_master_id')->unsigned();
+            $table->unsignedBigInteger('purchase_master_id');
             $table ->foreign('purchase_master_id')->references('id')->on('purchase_masters');
 
             $table->date('transaction_date');
