@@ -15,6 +15,7 @@ import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 import {State} from '../vendor/vendor.component';
 import Swal from 'sweetalert2';
 import {PurchaseService} from '../../services/purchase.service';
+import * as cloneDeep from 'lodash/cloneDeep';
 
 export interface ExtraItem {
   id: number;
@@ -62,9 +63,10 @@ export class PurchaseComponent implements OnInit {
   currentPurchaseTotal = 0;
   roundedOff = 0;
   grossTotal = 0;
+  // tslint:disable-next-line:max-line-length
   purchaseContainer: {tm: TransactionMaster, td: TransactionDetail[], pm: PurchaseMaster, pd: PurchaseDetail[], paymentTransactionMaster: TransactionMaster,
     paymentTransactionDetails: TransactionDetail[], currentPurchaseTotal: number, roundedOff: number, extraItems: ExtraItemDetails[]};
-  private defaultValues: any;
+  defaultValues: any;
   validatorError: any = null;
 
   selectedProductCategoryId = 1;
@@ -172,10 +174,20 @@ export class PurchaseComponent implements OnInit {
 
       const paidAmount = this.paidAmountForm.value.amount;
       this.paymentTransactionDetails = [];
-      this.paymentTransactionDetails.push(val);
-      // this.paymentTransactionDetails[0].transaction_type_id = 1;
-      // this.paymentTransactionDetails[0].amount = paidAmount;
-      // this.paymentTransactionDetails.push({id: null, transaction_master_id: null, ledger_id: 1, transaction_type_id: 2, amount: paidAmount});
+      // the reference val is generated when we select vendor ledger it is part of transactionDetailsForm
+      // we also pushing this value to paymentTransactionDetails and changing the transaction type here
+      // being reference it is also changing the value of transactionDetails array
+      // hence i am copying the val to new object first and then pushing the value
+      // this way delinking the objects
+      // npm install lodash to use cloneDeep
+      // const valObject = cloneDeep(val); or we can use Angular with ECMAScript6 by using the spread operator:
+      this.paymentTransactionDetails.push({...val});  // copying object to new object
+      this.paymentTransactionDetails[0].transaction_type_id = 1;
+      this.paymentTransactionDetails[0].amount = paidAmount;
+      // Getting payment Ledger current value i.e. Cash = 1 or Bank = 2
+      const paymentCreditableLedger = this.paidAmountForm.get('ledger_id').value;
+      // tslint:disable-next-line:max-line-length
+      this.paymentTransactionDetails.push({id: null, transaction_master_id: null, ledger_id: paymentCreditableLedger, transaction_type_id: 2, amount: paidAmount});
     });
 
     this.purchaseMasterForm.valueChanges.subscribe(val => {
@@ -353,6 +365,8 @@ export class PurchaseComponent implements OnInit {
     this.transactionMaster = null;
     this.transactionDetails = [];
     this.extraItemDetails = [];
+    this.paymentTransactionMaster = null;
+    this.paymentTransactionDetails = [];
     this.selectedLedger = null;
     this.currentPurchaseTotal = 0;
     this.roundedOff = 0;
