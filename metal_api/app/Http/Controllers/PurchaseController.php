@@ -22,7 +22,7 @@ class PurchaseController extends Controller
         $inputTransactionMaster=(object)($input['transaction_master']);
         $inputTransactionDetails=($input['transaction_details']);
         $inputExtraItems=($input['extra_items']);
-        $inputPaymentTransactionMaster=($input['payment_transaction_master']);
+        $inputPaymentTransactionMaster=(object)($input['payment_transaction_master']);
         $inputPaymentTransactionDetails=($input['payment_transaction_details']);
 
         $validator = Validator::make($input['purchase_master'],[]);
@@ -59,17 +59,17 @@ class PurchaseController extends Controller
                 $x = $temp_date[0]%100;
                 $accounting_year =($x-1)*100+$x;
             }
-            $customVoucher=CustomVoucher::where('voucher_name','=',"Purchase")->where('accounting_year',"=",$accounting_year)->first();
+            $customVoucher=CustomVoucher::where('voucher_name','=',"Transaction")->where('accounting_year',"=",$accounting_year)->first();
             if($customVoucher) {
                 $customVoucher->last_counter = $customVoucher->last_counter + 1;
                 $customVoucher->save();
             }else{
                 $customVoucher= new CustomVoucher();
-                $customVoucher->voucher_name="Purchase";
+                $customVoucher->voucher_name="Transaction";
                 $customVoucher->accounting_year= $accounting_year;
                 $customVoucher->last_counter=1;
                 $customVoucher->delimiter='-';
-                $customVoucher->prefix='MT';
+                $customVoucher->prefix='TRN';
                 $customVoucher->save();
             }
             $voucher_number = $customVoucher->prefix.'-'.$customVoucher->last_counter."-".$accounting_year;
@@ -93,32 +93,34 @@ class PurchaseController extends Controller
             }
 
 //            save into transaction master for payment voucher
-            $customVoucher=CustomVoucher::where('voucher_name','=',"Payment")->where('accounting_year',"=",$accounting_year)->first();
+            $customVoucher=CustomVoucher::where('voucher_name','=',"Transaction")->where('accounting_year',"=",$accounting_year)->first();
             if($customVoucher) {
                 $customVoucher->last_counter = $customVoucher->last_counter + 1;
                 $customVoucher->save();
             }else{
                 $customVoucher= new CustomVoucher();
-                $customVoucher->voucher_name="Payment";
+                $customVoucher->voucher_name="Transaction";
                 $customVoucher->accounting_year= $accounting_year;
                 $customVoucher->last_counter=1;
                 $customVoucher->delimiter='-';
-                $customVoucher->prefix='MT';
+                $customVoucher->prefix='TRN';
                 $customVoucher->save();
             }
             $voucher_number = $customVoucher->prefix.'-'.$customVoucher->last_counter."-".$accounting_year;
 
-            $transactionMaster = new TransactionMaster();
-            $transactionMaster->transaction_number = $voucher_number;
-            $transactionMaster->user_id = $inputPaymentTransactionMaster->user_id;
-            $transactionMaster->voucher_type_id = 3;
-            $transactionMaster->purchase_master_id = $purchaseMaster->id;
-            $transactionMaster->transaction_date = $inputPaymentTransactionMaster->transaction_date;
-            $transactionMaster->save();
+            $transactionMaster2 = new TransactionMaster();
+            $transactionMaster2->transaction_number = $voucher_number;
+            $transactionMaster2->reference_transaction_master_id = $transactionMaster->id;
+            $transactionMaster2->user_id = $inputPaymentTransactionMaster->user_id;
+            $transactionMaster2->voucher_type_id = 3;
+            $transactionMaster2->purchase_master_id = $purchaseMaster->id;
+            $transactionMaster2->transaction_date = $inputPaymentTransactionMaster->transaction_date;
+            $transactionMaster2->save();
+
 //            save into transaction details for payment voucher
             foreach($inputPaymentTransactionDetails as $inputPaymentTransactionDetail){
                 $transactionDetail = new TransactionDetail();
-                $transactionDetail->transaction_master_id = $transactionMaster->id;
+                $transactionDetail->transaction_master_id = $transactionMaster2->id;
                 $transactionDetail->ledger_id = $inputPaymentTransactionDetail['ledger_id'];
                 $transactionDetail->transaction_type_id = $inputPaymentTransactionDetail['transaction_type_id'];
                 $transactionDetail->amount = $inputPaymentTransactionDetail['amount'];

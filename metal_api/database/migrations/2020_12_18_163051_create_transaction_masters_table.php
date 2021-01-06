@@ -17,6 +17,8 @@ class CreateTransactionMastersTable extends Migration
             $table->id();
             $table->string('transaction_number',20)->unique()->nullable(false);
 
+            $table->bigInteger('reference_transaction_master_id')->unsigned()->nullable(true);
+
             $table->bigInteger('user_id')->unsigned();
             $table ->foreign('user_id')->references('id')->on('ledgers');
 

@@ -210,25 +210,26 @@ export class PurchaseComponent implements OnInit {
         this.currentItemAmount = val.rate * val.purchase_quantity;
       }
     });
-    // this.paidAmountForm.valueChanges.subscribe(val => {
-    //   if(val.amount>0){
-    //     this.paymentTransactionDetails[0].amount = val.amount;
-    //     this.paymentTransactionDetails[1].amount = val.amount;
-    //
-    //     this.purchaseContainer = {
-    //       tm: this.transactionMaster,
-    //       td: this.transactionDetails,
-    //       pm: this.purchaseMaster,
-    //       pd: this.purchaseDetails,
-    //       paymentTransactionMaster: this.paymentTransactionMaster,
-    //       paymentTransactionDetails: this.paymentTransactionDetails,
-    //       currentPurchaseTotal: this.currentPurchaseTotal,
-    //       roundedOff: this.roundedOff,
-    //       extraItems: this.extraItemDetails
-    //     };
-    //     this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
-    //   }
-    // });
+    this.paidAmountForm.valueChanges.subscribe(val => {
+      if(val.amount>0){
+        this.paymentTransactionDetails[0].amount = val.amount;
+        this.paymentTransactionDetails[1].amount = val.amount;
+
+
+        this.purchaseContainer = {
+          tm: this.transactionMaster,
+          td: this.transactionDetails,
+          pm: this.purchaseMaster,
+          pd: this.purchaseDetails,
+          paymentTransactionMaster: this.paymentTransactionMaster,
+          paymentTransactionDetails: this.paymentTransactionDetails,
+          currentPurchaseTotal: this.purchaseContainer.currentPurchaseTotal,
+          roundedOff: this.purchaseContainer.roundedOff,
+          extraItems: this.extraItemDetails
+        };
+        this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
+      }
+    });
 
     this.vendors = this.vendorService.getVendors();
     this.vendorService.getVendorServiceListener().subscribe(response => {
