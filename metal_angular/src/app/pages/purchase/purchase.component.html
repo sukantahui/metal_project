@@ -360,6 +360,8 @@
 
 
               <div id="print-section">
+                I am going to print this
+                <div id="test">This is testing</div>
                 <!--Your html stuff that you want to print-->
               </div>
 
@@ -368,6 +370,14 @@
                 3)- Affect your ID to printSectionId
               -->
               <button printSectionId="print-section" ngxPrint>print</button>
+              <button
+                [useExistingCss]="true"
+                printSectionId="print-section"
+                ngxPrint>print with current css</button>
+              <button
+                styleSheetFile="assets/print_css/custom1.css,assets/print_css/custom2.css"
+                printSectionId="print-section"
+                ngxPrint>print with css file</button>
             </mat-card-content>
         </mat-card>
     </div>
