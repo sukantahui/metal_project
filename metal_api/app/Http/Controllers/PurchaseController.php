@@ -55,7 +55,7 @@ class PurchaseController extends Controller
             foreach($inputPurchaseDetails as $inputPurchaseDetail){
                 $purchaseDetail = new PurchaseDetail();
                 $purchaseDetail->purchase_master_id = $purchaseMaster->id;
-                $purchaseDetail->product_id2 = $inputPurchaseDetail['product_id'];
+                $purchaseDetail->product_id = $inputPurchaseDetail['product_id'];
                 $purchaseDetail->rate = $inputPurchaseDetail['rate'];
                 $purchaseDetail->purchase_quantity = $inputPurchaseDetail['purchase_quantity'];
                 $purchaseDetail->stock_quantity = $inputPurchaseDetail['stock_quantity'];
@@ -167,5 +167,30 @@ class PurchaseController extends Controller
             ->first();
 
         return response()->json(['success'=>1,'data'=>array('purchaseMaster' => $purchaseMaster), 'error' => null], 200);
+    }
+
+    public function  getAllPurchase(){
+        $purchaseList = TransactionDetail::select("transaction_masters.id","transaction_masters.transaction_number","ledgers.ledger_name",
+            "transaction_masters.transaction_date","transaction_details.amount")
+            ->join('transaction_masters','transaction_details.transaction_master_id','transaction_masters.id')
+            ->join('ledgers','transaction_details.ledger_id','ledgers.id')
+            ->where('transaction_details.transaction_type_id',2)
+            ->orderBy('transaction_masters.transaction_date')
+            ->get();
+
+        return response()->json(['success'=>1,'data'=>$purchaseList], 200,[],JSON_NUMERIC_CHECK);
+    }
+
+    public function  getAllPurchaseByDateRange($startDate,$endDate){
+        $purchaseList = TransactionDetail::select("transaction_masters.id","transaction_masters.transaction_number","ledgers.ledger_name",
+            "transaction_masters.transaction_date","transaction_details.amount")
+            ->join('transaction_masters','transaction_details.transaction_master_id','transaction_masters.id')
+            ->join('ledgers','transaction_details.ledger_id','ledgers.id')
+            ->where('transaction_details.transaction_type_id',2)
+            ->whereBetween('transaction_masters.transaction_date', [$startDate, $endDate])
+            ->orderBy('transaction_masters.transaction_date')
+            ->get();
+
+        return response()->json(['success'=>1,'data'=>$purchaseList], 200,[],JSON_NUMERIC_CHECK);
     }
 }

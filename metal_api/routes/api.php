@@ -78,6 +78,8 @@ Route::group(array('prefix' => 'dev'), function() {
 
     //purchase
     Route::post("purchases",[PurchaseController::class,'savePurchase']);
+    Route::get("purchases",[PurchaseController::class,'getAllPurchase']);
+    Route::get("purchases/{startDate}/{endDate}",[PurchaseController::class,'getAllPurchaseByDateRange']);
 
 });
 

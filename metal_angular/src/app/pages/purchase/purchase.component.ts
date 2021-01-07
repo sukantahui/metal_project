@@ -66,7 +66,7 @@ export class PurchaseComponent implements OnInit {
   grossTotal = 0;
   // tslint:disable-next-line:max-line-length
   purchaseContainer: {tm: TransactionMaster, td: TransactionDetail[], pm: PurchaseMaster, pd: PurchaseDetail[], paymentTransactionMaster: TransactionMaster,
-    paymentTransactionDetails: TransactionDetail[], currentPurchaseTotal: number, roundedOff: number, extraItems: ExtraItemDetails[]};
+    paymentTransactionDetails: TransactionDetail[], currentPurchaseTotal: number, roundedOff: number,grossTotal:number, extraItems: ExtraItemDetails[]};
   defaultValues: any;
   validatorError: any = null;
 
@@ -234,11 +234,13 @@ export class PurchaseComponent implements OnInit {
           paymentTransactionDetails: this.paymentTransactionDetails,
           currentPurchaseTotal: this.purchaseContainer.currentPurchaseTotal,
           roundedOff: this.purchaseContainer.roundedOff,
+          grossTotal: this.purchaseContainer.grossTotal,
           extraItems: this.extraItemDetails
         };
         this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
       }
     });
+
 
     this.vendors = this.vendorService.getVendors();
     this.vendorService.getVendorServiceListener().subscribe(response => {
@@ -300,7 +302,7 @@ export class PurchaseComponent implements OnInit {
 
         this.currentPurchaseTotal = this.purchaseContainer.currentPurchaseTotal;
         this.roundedOff = this.purchaseContainer.roundedOff;
-        this.grossTotal = this.currentPurchaseTotal + this.roundedOff;
+        this.grossTotal = this.purchaseContainer.grossTotal;
       }
     }, (error) => {console.log('error getting purchase container'); });
 
@@ -309,6 +311,11 @@ export class PurchaseComponent implements OnInit {
 
   onSelectedVendor(value){
     this.selectedLedger = value;
+    if(!this.paymentTransactionMaster){
+      const now = new Date();
+      const currentSQLDate = formatDate(now, 'yyyy-MM-dd', 'en');
+      this.transactionMasterForm.patchValue({transaction_date: currentSQLDate});
+    }
   }
   onSelectedPaymentMode(value){
     this.paymentTransactionDetails[1].ledger_id = value;
@@ -367,6 +374,7 @@ export class PurchaseComponent implements OnInit {
       paymentTransactionDetails: this.paymentTransactionDetails,
       currentPurchaseTotal: this.currentPurchaseTotal,
       roundedOff: this.roundedOff,
+      grossTotal: this.grossTotal,
       extraItems: this.extraItemDetails
     };
     this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
@@ -466,7 +474,12 @@ export class PurchaseComponent implements OnInit {
       extraItem.item_name = extraItemObj.item_name;
       this.extraItemDetails.push(extraItem);
       this.grossTotal += extraItem.amount * extraItem.item_type;
+      this.transactionDetails[0].amount = this.grossTotal;
+      this.transactionDetails[1].amount = this.grossTotal;
+
+      this.purchaseContainer.td = this.transactionDetails;
       this.purchaseContainer.extraItems = this.extraItemDetails;
+      this.purchaseContainer.grossTotal = this.grossTotal;
       this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
   }
 
