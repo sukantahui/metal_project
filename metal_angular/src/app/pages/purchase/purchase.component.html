@@ -357,6 +357,17 @@
                   purchaseMasterData = {{purchaseMasterData | json}}
 
                 </pre>
+
+
+              <div id="print-section">
+                <!--Your html stuff that you want to print-->
+              </div>
+
+              <!--
+                2)- Add the directive name in your button (ngxPrint),
+                3)- Affect your ID to printSectionId
+              -->
+              <button printSectionId="print-section" ngxPrint>print</button>
             </mat-card-content>
         </mat-card>
     </div>

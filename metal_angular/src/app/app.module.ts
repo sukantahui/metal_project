@@ -43,6 +43,7 @@ import {EditInputComponent} from './pages/product/edit-input/edit-input.componen
 import { VendorComponent } from './pages/vendor/vendor.component';
 import { PurchaseComponent } from './pages/purchase/purchase.component';
 import {PopoverModule} from 'ngx-smart-popover';
+import {LogLevel, NgxFancyLoggerModule} from 'ngx-fancy-logger';
 
 
 
@@ -85,7 +86,14 @@ import {PopoverModule} from 'ngx-smart-popover';
         NgxPaginationModule,
         NgSelectModule,
         ShowHidePasswordModule,
-        PopoverModule
+        PopoverModule,
+        NgxFancyLoggerModule.forRoot({
+          showTime: false,
+          logLevel: LogLevel.WARNING,
+          levelColor: {
+            [LogLevel.ERROR]: 'brown'
+          }
+        })
     ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorInterceptor, multi: true},
               {provide: DateAdapter, useClass: DateFormat} ],

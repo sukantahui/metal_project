@@ -16,6 +16,7 @@ import {State} from '../vendor/vendor.component';
 import Swal from 'sweetalert2';
 import {PurchaseService} from '../../services/purchase.service';
 import * as cloneDeep from 'lodash/cloneDeep';
+import {NgxFancyLoggerService} from 'ngx-fancy-logger';
 
 export interface ExtraItem {
   id: number;
@@ -83,8 +84,14 @@ export class PurchaseComponent implements OnInit {
   checked: any;
   // tslint:disable-next-line:max-line-length
   purchaseMasterData: { transaction_master: TransactionMaster; payment_transaction_master: TransactionMaster; purchase_master: PurchaseMaster; purchase_details: { rate: number; product_id: number; purchase_quantity: number; id: number; stock_quantity: number }[]; extra_items: ExtraItemDetails[]; payment_transaction_details: TransactionDetail[]; transaction_details: TransactionDetail[] };
-  constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService,
+  // tslint:disable-next-line:max-line-length
+  constructor(private logger: NgxFancyLoggerService, private http: HttpClient, private vendorService: VendorService, private productService: ProductService,
               private purchaseService: PurchaseService, private storage: StorageMap) {
+    logger.header('This is a Ngx Fancy Logger Demo', { color: 'red', fontSize: 30 });
+    logger.debug('This is a DEBUG Log', { a: 20, b: 30 });
+    logger.info('This is a INFO log', 123, { a: 20, b: 30 });
+    logger.warning('This is a WARNING Log', { a: 20, b: 30 });
+    logger.error('This is an ERROR Log', { a: 20, b: 30 });
     const now = new Date();
     const currentSQLDate = formatDate(now, 'yyyy-MM-dd', 'en');
     this.purchaseMasterForm = new FormGroup({
