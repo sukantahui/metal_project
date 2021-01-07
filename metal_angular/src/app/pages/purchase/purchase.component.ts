@@ -420,25 +420,25 @@ export class PurchaseComponent implements OnInit {
 
     this.purchaseMasterData = masterData;
     this.purchaseService.savePurchase(masterData).subscribe(response => {
-      // if (response.success === 1){
-      //   Swal.fire({
-      //     position: 'top-end',
-      //     icon: 'success',
-      //     title: 'Purchase successful',
-      //     showConfirmButton: false,
-      //     timer: 1000
-      //   });
-      //   this.clearPurchaseForm();
-      // }else{
-      //   this.validatorError = response.error;
-      //   Swal.fire({
-      //     position: 'top-end',
-      //     icon: 'error',
-      //     title: 'Validation error',
-      //     showConfirmButton: false,
-      //     timer: 3000
-      //   });
-      // }
+      if (response.success === 1){
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Purchase successful',
+          showConfirmButton: false,
+          timer: 1000
+        });
+        this.clearPurchaseForm();
+      }else{
+        this.validatorError = response.error;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Validation error',
+          showConfirmButton: false,
+          timer: 3000
+        }).then(r => {});
+      }
       console.log(response);
     }, error => {
       console.log('getting error');

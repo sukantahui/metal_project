@@ -16,6 +16,21 @@ export class AuthInterceptorInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService, private router: Router) {
   }
 
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+
+    if (localStorage.getItem('user')){
+      this.userData = JSON.parse(localStorage.getItem('user'));
+    }else{
+      this.userData = {id: 0, personName: 'No Person', _authKey: 'no key', personTypeId: 0};
+    }
+    // Clone the request to add the new header.
+    const authReq = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + this.userData._authKey) });
+    // send the newly created request
+    return next.handle(authReq).pipe(catchError(x => this.handleAuthError(x)));
+  }
+
+
   private handleAuthError(err: HttpErrorResponse): Observable<any> {
     // handle your auth error or rethrow
     if (err.status === 401 || err.status === 403) {
@@ -30,26 +45,6 @@ export class AuthInterceptorInterceptor implements HttpInterceptor {
       return of(err.message); // or EMPTY may be appropriate here
     }
     return throwError(err);
-  }
-
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-
-    if (localStorage.getItem('user')){
-      this.userData = JSON.parse(localStorage.getItem('user'));
-    }else{
-      this.userData = {id: 0, personName: 'No Person', _authKey: 'no key', personTypeId: 0};
-    }
-
-    console.log('intercepted request ... ');
-
-    // Clone the request to add the new header.
-    const authReq = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + this.userData._authKey) });
-
-    console.log('Sending request with new header now ...');
-
-    // send the newly created request
-    return next.handle(authReq).pipe(catchError(x => this.handleAuthError(x)));
   }
 
 }

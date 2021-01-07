@@ -5,6 +5,7 @@ import {VendorResponseData} from './vendor.service';
 import {throwError} from 'rxjs';
 import {PurchaseResponse, SavePurchaseResponse} from '../models/purchase.model';
 import {catchError, tap} from 'rxjs/operators';
+import {ErrorService} from './error.service';
 
 
 @Injectable({
@@ -12,48 +13,15 @@ import {catchError, tap} from 'rxjs/operators';
 })
 // @ts-ignore
 export class PurchaseService {
+  constructor(private http: HttpClient, private errorService: ErrorService) {
 
-  constructor(private http: HttpClient) {
-    console.log(GlobalVariable.BASE_API_URL_DEV);
   }
 
   savePurchase(purchase){
     return this.http.post(GlobalVariable.BASE_API_URL_DEV + '/purchases', purchase)
-      .pipe(catchError(this.serverError), tap((response: SavePurchaseResponse) => {
+      .pipe(catchError(this.errorService.serverError), tap((response: SavePurchaseResponse) => {
 
       }));
 
-  }
-
-
-
-  private serverError(err: any) {
-    // console.log('sever error:', err);  // debug
-    if (err instanceof Response) {
-      return throwError('backend server error');
-      // if you're using lite-server, use the following line
-      // instead of the line above:
-      // return Observable.throw(err.text() || 'backend server error');
-    }
-    if (err.status === 0){
-      // tslint:disable-next-line:label-position
-      return throwError ({status: err.status, message: 'Backend Server is not Working', statusText: err.statusText});
-    }
-    if (err.status === 401){
-      // tslint:disable-next-line:label-position
-      return throwError ({status: err.status, message: 'Your are not authorised', statusText: err.statusText});
-    }
-    if (err.status === 500){
-      // tslint:disable-next-line:label-position
-      return throwError ({status: err.status, message: 'Data saving error', statusText: err.statusText});
-    }
-    return throwError(err);
-  }
-  private handleError(errorResponse: HttpErrorResponse){
-    if (errorResponse.error.message.includes('1062')){
-      return throwError('Record already exists');
-    }else {
-      return throwError(errorResponse.error.message);
-    }
   }
 }
