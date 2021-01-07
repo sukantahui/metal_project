@@ -65,7 +65,7 @@ export class CustomerService {
       .pipe(catchError(this.serverError), tap((response: {success: boolean, id: number}) => {
         if (response.success){
           const index = this.customers.findIndex(x => x.id === CustomerId);
-          this.customers.splice(index,1);
+          this.customers.splice(index, 1);
           this.customerSubject.next([...this.customers]);
         }
       }));

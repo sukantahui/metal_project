@@ -6,7 +6,7 @@ import {ProductCategory, Unit} from '../product/product.component';
 import {HttpClient} from '@angular/common/http';
 import {ProductService} from '../../services/product.service';
 import {Product} from '../../models/product.model';
-import {PurchaseDetail, PurchaseMaster} from '../../models/purchase.model';
+import {PurchaseDetail, PurchaseMaster, SavePurchaseResponse} from '../../models/purchase.model';
 import {formatDate} from '@angular/common';
 import { faUserEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {StorageMap} from '@ngx-pwa/local-storage';
@@ -81,6 +81,8 @@ export class PurchaseComponent implements OnInit {
   currentItemAmount = 0;
   // tslint:disable-next-line:max-line-length
   checked: any;
+  // tslint:disable-next-line:max-line-length
+  purchaseMasterData: { transaction_master: TransactionMaster; payment_transaction_master: TransactionMaster; purchase_master: PurchaseMaster; purchase_details: { rate: number; product_id: number; purchase_quantity: number; id: number; stock_quantity: number }[]; extra_items: ExtraItemDetails[]; payment_transaction_details: TransactionDetail[]; transaction_details: TransactionDetail[] };
   constructor(private http: HttpClient, private vendorService: VendorService, private productService: ProductService,
               private purchaseService: PurchaseService, private storage: StorageMap) {
     const now = new Date();
@@ -415,26 +417,32 @@ export class PurchaseComponent implements OnInit {
       payment_transaction_master: this.purchaseContainer.paymentTransactionMaster,
       payment_transaction_details: this.purchaseContainer.paymentTransactionDetails
     };
+
+    this.purchaseMasterData = masterData;
     this.purchaseService.savePurchase(masterData).subscribe(response => {
-      if (response.success === 1){
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Purchase successful',
-          showConfirmButton: false,
-          timer: 1000
-        });
-        this.clearPurchaseForm();
-      }else{
-        this.validatorError = response.error;
-        Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          title: 'Validation error',
-          showConfirmButton: false,
-          timer: 3000
-        });
-      }
+      // if (response.success === 1){
+      //   Swal.fire({
+      //     position: 'top-end',
+      //     icon: 'success',
+      //     title: 'Purchase successful',
+      //     showConfirmButton: false,
+      //     timer: 1000
+      //   });
+      //   this.clearPurchaseForm();
+      // }else{
+      //   this.validatorError = response.error;
+      //   Swal.fire({
+      //     position: 'top-end',
+      //     icon: 'error',
+      //     title: 'Validation error',
+      //     showConfirmButton: false,
+      //     timer: 3000
+      //   });
+      // }
+      console.log(response);
+    }, error => {
+      console.log('getting error');
+      console.log(error);
     });
 
   }

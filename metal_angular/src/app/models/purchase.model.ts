@@ -24,11 +24,29 @@ export class PurchaseDetail{
 export class PurchaseResponse{
   success: number;
   data: {
-    "id": number,
-    "transaction_number": string,
-    "amount": number,
-    "ledger_name": string,
-    "billing_name": string
+    'id': number,
+    'transaction_number': string,
+    'amount': number,
+    'ledger_name': string,
+    'billing_name': string
   };
-  error: any
+  error: any;
+}
+
+
+
+export class SavePurchaseResponse {
+  success: number;
+  data?: {
+    purchaseMaster: {
+      invoice_number?: string;
+      case_number?: string;
+      comment?: string;
+      updated_at?: string;
+      created_at?: string;
+      id?: number;
+    }
+  };
+  error?: string;
+  exception?: string;
 }

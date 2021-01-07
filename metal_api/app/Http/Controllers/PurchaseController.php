@@ -25,8 +25,21 @@ class PurchaseController extends Controller
         $inputPaymentTransactionMaster=(object)($input['payment_transaction_master']);
         $inputPaymentTransactionDetails=($input['payment_transaction_details']);
 
-        $validator = Validator::make($input['purchase_master'],[]);
+
+
+        $validator = Validator::make($input['purchase_master'],[
+//            'inforce' => 'required'
+        ]);
         if($validator->fails()){
+            return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
+        }
+
+        $validator = Validator::make($input['purchase_details'], [
+            'stock_quantity.*' => 'required|min:1'
+        ]);
+
+        if($validator->fails()) {
+//            return back()->withInput()->withErrors($validator->errors());
             return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
         }
 
@@ -42,7 +55,7 @@ class PurchaseController extends Controller
             foreach($inputPurchaseDetails as $inputPurchaseDetail){
                 $purchaseDetail = new PurchaseDetail();
                 $purchaseDetail->purchase_master_id = $purchaseMaster->id;
-                $purchaseDetail->product_id = $inputPurchaseDetail['product_id'];
+                $purchaseDetail->product_id2 = $inputPurchaseDetail['product_id'];
                 $purchaseDetail->rate = $inputPurchaseDetail['rate'];
                 $purchaseDetail->purchase_quantity = $inputPurchaseDetail['purchase_quantity'];
                 $purchaseDetail->stock_quantity = $inputPurchaseDetail['stock_quantity'];
@@ -141,7 +154,7 @@ class PurchaseController extends Controller
         }
         catch(\Exception $e){
             DB::rollBack();
-            return response()->json(['success'=>0,'exception'=>$e->getMessage()], 401);
+            return response()->json(['success'=>0,'exception'=>$e->getMessage()], 500);
         }
 
         $purchaseInfo = TransactionMaster::select('transaction_masters.id','transaction_masters.transaction_number','transaction_details.amount'

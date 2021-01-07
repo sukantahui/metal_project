@@ -3,8 +3,8 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {GlobalVariable} from '../shared/global';
 import {VendorResponseData} from './vendor.service';
 import {throwError} from 'rxjs';
-import {PurchaseResponse} from '../models/purchase.model';
-import {catchError, tap} from "rxjs/operators";
+import {PurchaseResponse, SavePurchaseResponse} from '../models/purchase.model';
+import {catchError, tap} from 'rxjs/operators';
 
 
 @Injectable({
@@ -18,12 +18,9 @@ export class PurchaseService {
   }
 
   savePurchase(purchase){
-    console.log(GlobalVariable.BASE_API_URL_DEV);
     return this.http.post(GlobalVariable.BASE_API_URL_DEV + '/purchases', purchase)
-      .pipe(catchError(this.serverError), tap((response: PurchaseResponse) => {
-        if (response.success === 1){
+      .pipe(catchError(this.serverError), tap((response: SavePurchaseResponse) => {
 
-        }
       }));
 
   }
@@ -45,6 +42,10 @@ export class PurchaseService {
     if (err.status === 401){
       // tslint:disable-next-line:label-position
       return throwError ({status: err.status, message: 'Your are not authorised', statusText: err.statusText});
+    }
+    if (err.status === 500){
+      // tslint:disable-next-line:label-position
+      return throwError ({status: err.status, message: 'Data saving error', statusText: err.statusText});
     }
     return throwError(err);
   }
