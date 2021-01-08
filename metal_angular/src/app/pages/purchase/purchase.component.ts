@@ -6,7 +6,7 @@ import {ProductCategory, Unit} from '../product/product.component';
 import {HttpClient} from '@angular/common/http';
 import {ProductService} from '../../services/product.service';
 import {Product} from '../../models/product.model';
-import {PurchaseDetail, PurchaseMaster, SavePurchaseResponse} from '../../models/purchase.model';
+import {PurchaseDetail, PurchaseList, PurchaseMaster, SavePurchaseResponse} from '../../models/purchase.model';
 import {formatDate} from '@angular/common';
 import { faUserEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {StorageMap} from '@ngx-pwa/local-storage';
@@ -69,6 +69,7 @@ export class PurchaseComponent implements OnInit {
     paymentTransactionDetails: TransactionDetail[], currentPurchaseTotal: number, roundedOff: number,grossTotal:number, extraItems: ExtraItemDetails[]};
   defaultValues: any;
   validatorError: any = null;
+  purchaseList = [];
 
   selectedProductCategoryId = 1;
   private formattedMessage: string;
@@ -245,6 +246,11 @@ export class PurchaseComponent implements OnInit {
     this.vendors = this.vendorService.getVendors();
     this.vendorService.getVendorServiceListener().subscribe(response => {
       this.vendors = response;
+    });
+
+    this.purchaseList = this.purchaseService.getPurchaseList();
+    this.purchaseService.getPurchaseListServiceListener().subscribe(response => {
+      this.purchaseList = response;
     });
 
     this.http.get('http://127.0.0.1:8000/api/dev/productCategories')

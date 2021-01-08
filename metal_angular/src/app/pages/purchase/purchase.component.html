@@ -114,9 +114,9 @@
             </mat-card>
         </div>
     </div>
-    <div fxFlex="60" style="background-color: rgba(3,2,12,0.81);" *ngIf="purchaseDetails.length>0">
+    <div fxFlex="60" style="background-color: rgba(3,2,12,0.81);" >
         <div style="min-height: 92vh; background-color: rgba(202, 199, 224, 0.81);">
-            <mat-card class="example-card">
+            <mat-card *ngIf="purchaseDetails.length>0"  class="example-card">
                 <mat-card-header>
                     <mat-card-title>
                         <fa-icon></fa-icon>&nbsp;Purchase details</mat-card-title>
@@ -273,6 +273,52 @@
 
                 </mat-card-content>
             </mat-card>
+
+
+          <!--          purchase list-->
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title></mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <table class="table table-bordered" id="purchase-list">
+                  <thead>
+                    <tr>
+                      <th class="w-10">SL</th>
+                      <th class="w-30">Transaction number</th>
+                      <th class="w-10">Vendor</th>
+                      <th class="w-10">Date</th>
+                      <th class="w-10">Amount</th>
+                      <th class="w-30 text-center" colspan="2">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let purchase of purchaseList;let indexOfElement=index">
+                    <td>{{indexOfElement+1}}</td>
+                    <td>{{purchase.transaction_number}}</td>
+                    <td class="text-right">{{purchase.ledger_name}}</td>
+                    <td class="text-right">{{purchase.transaction_date}}</td>
+                    <td class="text-right pr-5">{{purchase.amount}}</td>
+                    <td class="text-right">
+                      <span ><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
+                    </td>
+                    <td class="text-right">
+                      <span ><fa-icon class="edit" [icon]="faTrashAlt"></fa-icon></span>
+                    </td>
+                  </tr>
+                  </tbody>
+
+                  <tfoot>
+                    <tr>
+                      <td colspan="4">Total</td>
+                      <td class="text-right"></td>
+                      <td colspan="2"></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </mat-card-content>
+
+            </mat-card>
         </div>
     </div>
 </div>
@@ -295,6 +341,10 @@
                 <pre>
                 <pre>
                     purchaseContainer = {{purchaseContainer | json}}
+                </pre>
+                  <hr>
+                  <pre>
+                    purchaseList = {{purchaseList | json}}
                 </pre>
 <!--          valid = {{customerForm.valid | json}}-->
 <!--          invalid = {{customerForm.invalid | json}}-->
@@ -385,4 +435,5 @@
             </mat-card-content>
         </mat-card>
     </div>
+
 </div>

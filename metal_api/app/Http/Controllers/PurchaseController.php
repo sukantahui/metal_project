@@ -190,8 +190,8 @@ class PurchaseController extends Controller
             return response()->json(['success'=>0,'exception'=>$e->getMessage()], 500);
         }
 
-        $purchaseInfo = TransactionMaster::select('transaction_masters.id','transaction_masters.transaction_number','transaction_details.amount'
-        ,'ledgers.ledger_name','ledgers.billing_name')
+        $purchaseInfo = TransactionMaster::select("transaction_masters.id","transaction_masters.transaction_number","ledgers.ledger_name",
+            "transaction_masters.transaction_date","transaction_details.amount")
             ->join('transaction_details','transaction_masters.id','transaction_details.transaction_master_id')
             ->join('ledgers','ledgers.id','transaction_details.ledger_id')
             ->where('transaction_masters.id',$transactionMaster->id)
@@ -199,7 +199,7 @@ class PurchaseController extends Controller
             ->where('transaction_details.transaction_type_id',2)
             ->first();
 
-        return response()->json(['success'=>1,'data'=>array('purchaseMaster' => $purchaseMaster), 'error' => null], 200);
+        return response()->json(['success'=>1,'data'=>$purchaseInfo, 'error' => null], 200);
     }
 
     public function  getAllPurchase(){

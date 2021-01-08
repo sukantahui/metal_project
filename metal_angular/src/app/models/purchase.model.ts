@@ -38,15 +38,18 @@ export class PurchaseResponse{
 export class SavePurchaseResponse {
   success: number;
   data?: {
-    purchaseMaster: {
-      invoice_number?: string;
-      case_number?: string;
-      comment?: string;
-      updated_at?: string;
-      created_at?: string;
-      id?: number;
-    }
+    transaction_number?: string;
+    ledger_name?: string;
+    transaction_date?: string;
+    id?: number;
   };
   error?: string;
-  exception?: string;
+}
+
+export class PurchaseList {
+  id?: number;
+  transaction_number: string;
+  ledger_name: string;
+  transaction_date: string;
+  amount: number;
 }

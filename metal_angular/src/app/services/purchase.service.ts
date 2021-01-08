@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {GlobalVariable} from '../shared/global';
 import {VendorResponseData} from './vendor.service';
-import {throwError} from 'rxjs';
-import {PurchaseResponse, SavePurchaseResponse} from '../models/purchase.model';
+import {Subject, throwError} from 'rxjs';
+import {PurchaseList, PurchaseResponse, SavePurchaseResponse} from '../models/purchase.model';
 import {catchError, tap} from 'rxjs/operators';
 import {ErrorService} from './error.service';
+import {Customer} from "../models/customer.model";
 
 
 @Injectable({
@@ -13,8 +14,22 @@ import {ErrorService} from './error.service';
 })
 // @ts-ignore
 export class PurchaseService {
+  purchaseList: PurchaseList[] = [];
+  purchaseSubject = new Subject<PurchaseList[]>();
+
   constructor(private http: HttpClient, private errorService: ErrorService) {
 
+    this.http.get(GlobalVariable.BASE_API_URL_DEV + '/purchases')
+      .subscribe((response: {success:number,data:PurchaseList[]}) => {
+        this.purchaseList = response.data;
+        this.purchaseSubject.next([...this.purchaseList]);
+      });
+  }
+  getPurchaseList(){
+    return [...this.purchaseList];
+  }
+  getPurchaseListServiceListener(){
+    return this.purchaseSubject.asObservable();
   }
 
   savePurchase(purchase){
