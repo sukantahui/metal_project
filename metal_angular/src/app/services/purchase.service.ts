@@ -18,7 +18,7 @@ export class PurchaseService {
   }
 
   savePurchase(purchase){
-    return this.http.post(GlobalVariable.BASE_API_URL_DEV + '/purchases', purchase)
+    return this.http.post(GlobalVariable.BASE_API_URL + '/purchases', purchase)
       .pipe(catchError(this.errorService.serverError), tap((response: SavePurchaseResponse) => {
 
       }));

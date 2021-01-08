@@ -34,15 +34,37 @@ class PurchaseController extends Controller
             return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
         }
 
+        // Purchase Master validation
         $validator = Validator::make($input['purchase_details'], [
-            'stock_quantity.*' => 'required|min:1'
+            '*.product_id' => 'required|exists:products,id',
+            '*.purchase_quantity' => 'required|numeric|min:1|not_in:0',
+            '*.rate' => 'required|numeric|min:1|not_in:0',
+            '*.stock_quantity' => 'required|numeric|min:1|not_in:0'
         ]);
 
         if($validator->fails()) {
-//            return back()->withInput()->withErrors($validator->errors());
             return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
         }
 
+        // Transaction Master validation
+        $validator = Validator::make($input['transaction_master'], [
+            'transaction_date' => 'required|date_format:Y-m-d'
+        ]);
+        if($validator->fails()) {
+            return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
+        }
+
+
+        // Transaction Details validation
+        $validator = Validator::make($input['transaction_details'], [
+            '*.ledger_id' => 'required|exists:ledgers,id',
+            '*.transaction_type_id' => 'required|exists:transaction_types,id',
+            '*.amount' => 'required|numeric|min:1|not_in:0'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
+        }
         DB::beginTransaction();
         try{
             //save data into purchase_masters

@@ -37,6 +37,11 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
     //get all users
     Route::get("users",[UserController::class,'getAllUsers']);
+
+    //purchase
+    Route::post("purchases",[PurchaseController::class,'savePurchase']);
+    Route::get("purchases",[PurchaseController::class,'getAllPurchase']);
+    Route::get("purchases/{startDate}/{endDate}",[PurchaseController::class,'getAllPurchaseByDateRange']);
 });
 
 
