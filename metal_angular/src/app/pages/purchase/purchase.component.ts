@@ -35,7 +35,13 @@ export interface ExtraItemDetails{
   styleUrls: ['./purchase.component.scss']
 })
 export class PurchaseComponent implements OnInit {
-  p: number;
+  page: number;
+  pageSize = 15;
+  p = 1;
+  currentPage = 1;
+  searchTerm: any;
+
+
   purchaseMasterForm: FormGroup;
   purchaseDetailsForm: FormGroup;
   transactionMasterForm: FormGroup;

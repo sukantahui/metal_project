@@ -293,7 +293,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                  <tr *ngFor="let purchase of purchaseList;let indexOfElement=index">
+                  <tr *ngFor="let purchase of purchaseList| paginate: { itemsPerPage: pageSize, currentPage: p };let indexOfElement=index">
                     <td>{{indexOfElement+1}}</td>
                     <td>{{purchase.transaction_number}}</td>
                     <td class="text-right">{{purchase.ledger_name}}</td>
@@ -317,6 +317,21 @@
                   </tfoot>
                 </table>
               </mat-card-content>
+              <mat-card-actions>
+                <div fxLayout.xs="column" fxLayout="column" fxFlexFill>
+                  <!--    https://www.npmjs.com/package/ngx-pagination-->
+                  <!--    npm i ngx-pagination-->
+                  <pagination-controls (pageChange)="p = $event"
+                                       responsive="true"
+                                       autoHide="true"
+                                       previousLabel="আগে"
+                                       nextLabel="পরে"
+                                       screenReaderPaginationLabel="Pagination"
+                                       screenReaderPageLabel="page"
+                                       directionLinks="true">
+                  </pagination-controls>
+                </div>
+              </mat-card-actions>
 
             </mat-card>
         </div>
