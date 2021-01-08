@@ -65,6 +65,17 @@ class PurchaseController extends Controller
         if($validator->fails()) {
             return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
         }
+
+        // Extra Items validation
+        $validator = Validator::make($input['extra_items'], [
+            '*.extra_item_id' => 'required|exists:extra_items,id',
+            '*.amount' => 'required|numeric'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
+        }
+
         DB::beginTransaction();
         try{
             //save data into purchase_masters
