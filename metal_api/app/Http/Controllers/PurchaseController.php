@@ -209,7 +209,7 @@ class PurchaseController extends Controller
             ->join('ledgers','transaction_details.ledger_id','ledgers.id')
             ->where('transaction_masters.voucher_type_id',2)
             ->where('transaction_details.transaction_type_id',2)
-            ->orderBy('transaction_masters.transaction_date')
+            ->orderBy('transaction_masters.transaction_date','DESC')
             ->get();
 
         return response()->json(['success'=>1,'data'=>$purchaseList], 200,[],JSON_NUMERIC_CHECK);
