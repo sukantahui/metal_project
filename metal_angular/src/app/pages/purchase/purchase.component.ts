@@ -448,6 +448,7 @@ export class PurchaseComponent implements OnInit {
       purchase_master: this.purchaseContainer.pm,
       purchase_details: tempPurchaseDetails,
       extra_items: this.purchaseContainer.extraItems,
+      isPaying: this.isAmountPaid,
       payment_transaction_master: this.purchaseContainer.paymentTransactionMaster,
       payment_transaction_details: this.purchaseContainer.paymentTransactionDetails
     };

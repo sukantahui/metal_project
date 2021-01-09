@@ -24,7 +24,7 @@ class PurchaseController extends Controller
         $inputExtraItems=($input['extra_items']);
         $inputPaymentTransactionMaster=(object)($input['payment_transaction_master']);
         $inputPaymentTransactionDetails=($input['payment_transaction_details']);
-
+        $isPaying = $input['isPaying'];
 
 
         $validator = Validator::make($input['purchase_master'],[
@@ -94,6 +94,17 @@ class PurchaseController extends Controller
                 $purchaseDetail->stock_quantity = $inputPurchaseDetail['stock_quantity'];
                 $purchaseDetail->save();
             }
+
+            //save data into purchase_extras
+            foreach($inputExtraItems as $inputExtraItem){
+                $purchaseExtraDetail = new PurchaseExtra();
+                $purchaseExtraDetail->purchase_master_id = $purchaseMaster->id;
+                $purchaseExtraDetail->extra_item_id = $inputExtraItem['extra_item_id'];
+                $purchaseExtraDetail->amount = $inputExtraItem['amount'];
+                $purchaseExtraDetail->item_type = $inputExtraItem['item_type'];
+                $purchaseExtraDetail->save();
+            }
+
             //save data into transaction_masters
 
             $temp_date = explode("-",$inputTransactionMaster->transaction_date);
@@ -138,6 +149,10 @@ class PurchaseController extends Controller
                 $transactionDetail->save();
             }
 
+
+            if($isPaying==false){
+                DB::commit();
+            }
 //            save into transaction master for payment voucher
             $customVoucher=CustomVoucher::where('voucher_name','=',"Transaction")->where('accounting_year',"=",$accounting_year)->first();
             if($customVoucher) {
@@ -173,15 +188,7 @@ class PurchaseController extends Controller
                 $transactionDetail->save();
             }
 
-            //save data into purchase_extras
-            foreach($inputExtraItems as $inputExtraItem){
-                $purchaseExtraDetail = new PurchaseExtra();
-                $purchaseExtraDetail->purchase_master_id = $purchaseMaster->id;
-                $purchaseExtraDetail->extra_item_id = $inputExtraItem['extra_item_id'];
-                $purchaseExtraDetail->amount = $inputExtraItem['amount'];
-                $purchaseExtraDetail->item_type = $inputExtraItem['item_type'];
-                $purchaseExtraDetail->save();
-            }
+
 
             DB::commit();
         }
