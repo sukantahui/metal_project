@@ -207,6 +207,7 @@ class PurchaseController extends Controller
             "transaction_masters.transaction_date","transaction_details.amount")
             ->join('transaction_masters','transaction_details.transaction_master_id','transaction_masters.id')
             ->join('ledgers','transaction_details.ledger_id','ledgers.id')
+            ->where('transaction_masters.voucher_type_id',2)
             ->where('transaction_details.transaction_type_id',2)
             ->orderBy('transaction_masters.transaction_date')
             ->get();

@@ -29,7 +29,15 @@ class CreateAllProceduresAndFunctions extends Migration
                   declare out_actual_sale double;
                   select sum(purchase_quantity*rate) into out_total_sale from purchase_details where purchase_master_id=in_pm_id;
                   select sum(amount*item_type) into out_total_extra from purchase_extras where purchase_master_id=in_pm_id;
-                  set out_actual_sale = out_total_sale + out_total_extra;
+                  IF(out_total_sale IS NULL) THEN
+                    SET out_total_sale := 0;
+                  END IF;
+
+                  IF(out_total_extra IS NULL) THEN
+                    SET out_total_extra := 0;
+                  END IF;
+
+                  set out_actual_sale := out_total_sale + out_total_extra;
                     RETURN out_actual_sale;
                 END'
         );
