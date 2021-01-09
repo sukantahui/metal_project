@@ -72,14 +72,14 @@ export class PurchaseComponent implements OnInit {
   grossTotal = 0;
   // tslint:disable-next-line:max-line-length
   purchaseContainer: {tm: TransactionMaster, td: TransactionDetail[], pm: PurchaseMaster, pd: PurchaseDetail[], paymentTransactionMaster: TransactionMaster,
-    paymentTransactionDetails: TransactionDetail[], currentPurchaseTotal: number, roundedOff: number,grossTotal:number, extraItems: ExtraItemDetails[]};
+    // tslint:disable-next-line:max-line-length
+    paymentTransactionDetails: TransactionDetail[], currentPurchaseTotal: number, roundedOff: number, grossTotal: number, extraItems: ExtraItemDetails[]};
   defaultValues: any;
   validatorError: any = null;
   purchaseList = [];
 
   selectedProductCategoryId = 1;
   private formattedMessage: string;
-  pageSize: string | number;
 
   faUserEdit = faUserEdit;
   faTrashAlt = faTrashAlt;
