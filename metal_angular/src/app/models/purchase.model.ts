@@ -1,6 +1,6 @@
-import {Vendor} from "./vendor.model";
-import {Product} from "./product.model";
-import {Unit} from "../pages/product/product.component";
+import {Vendor} from './vendor.model';
+import {Product} from './product.model';
+import {Unit} from '../pages/product/product.component';
 
 
 export class PurchaseMaster{
@@ -37,12 +37,7 @@ export class PurchaseResponse{
 
 export class SavePurchaseResponse {
   success: number;
-  data?: {
-    transaction_number?: string;
-    ledger_name?: string;
-    transaction_date?: string;
-    id?: number;
-  };
+  data?: PurchaseList;
   error?: string;
 }
 

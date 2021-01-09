@@ -6,7 +6,6 @@ import {Subject, throwError} from 'rxjs';
 import {PurchaseList, PurchaseResponse, SavePurchaseResponse} from '../models/purchase.model';
 import {catchError, tap} from 'rxjs/operators';
 import {ErrorService} from './error.service';
-import {Customer} from "../models/customer.model";
 
 
 @Injectable({
@@ -20,7 +19,7 @@ export class PurchaseService {
   constructor(private http: HttpClient, private errorService: ErrorService) {
 
     this.http.get(GlobalVariable.BASE_API_URL_DEV + '/purchases')
-      .subscribe((response: {success:number,data:PurchaseList[]}) => {
+      .subscribe((response: {success: number, data: PurchaseList[]}) => {
         this.purchaseList = response.data;
         this.purchaseSubject.next([...this.purchaseList]);
       });
@@ -35,7 +34,11 @@ export class PurchaseService {
   savePurchase(purchase){
     return this.http.post(GlobalVariable.BASE_API_URL + '/purchases', purchase)
       .pipe(catchError(this.errorService.serverError), tap((response: SavePurchaseResponse) => {
-
+          console.log(response);
+          if (response.success === 1){
+              this.purchaseList.unshift(response.data);
+              this.purchaseSubject.next([...this.purchaseList]);
+          }
       }));
 
   }

@@ -88,9 +88,12 @@ export class PurchaseComponent implements OnInit {
   // tslint:disable-next-line:max-line-length
   currentItemAmount = 0;
   // tslint:disable-next-line:max-line-length
-  checked: any;
+  isAmountPaid = false;
+  isExtraItemAdded: false;
   // tslint:disable-next-line:max-line-length
   purchaseMasterData: { transaction_master: TransactionMaster; payment_transaction_master: TransactionMaster; purchase_master: PurchaseMaster; purchase_details: { rate: number; product_id: number; purchase_quantity: number; id: number; stock_quantity: number }[]; extra_items: ExtraItemDetails[]; payment_transaction_details: TransactionDetail[]; transaction_details: TransactionDetail[] };
+
+
   // tslint:disable-next-line:max-line-length
   constructor(private logger: NgxFancyLoggerService, private http: HttpClient, private vendorService: VendorService, private productService: ProductService,
               private purchaseService: PurchaseService, private storage: StorageMap) {
@@ -227,7 +230,7 @@ export class PurchaseComponent implements OnInit {
       }
     });
     this.paidAmountForm.valueChanges.subscribe(val => {
-      if(val.amount>0){
+      if (val.amount>0){
         this.paymentTransactionDetails[0].amount = val.amount;
         this.paymentTransactionDetails[1].amount = val.amount;
 
@@ -245,6 +248,10 @@ export class PurchaseComponent implements OnInit {
           extraItems: this.extraItemDetails
         };
         this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
+      }
+      else {
+        this.paymentTransactionDetails[0].amount = 0;
+        this.paymentTransactionDetails[1].amount = 0;
       }
     });
 
@@ -497,5 +504,8 @@ export class PurchaseComponent implements OnInit {
 
   setStockQuantity() {
     this.purchaseDetailsForm.patchValue({stock_quantity: this.purchaseDetailsForm.value.purchase_quantity});
+  }
+  setPaidAmount(){
+    this.paidAmountForm.patchValue({amount: this.grossTotal});
   }
 }

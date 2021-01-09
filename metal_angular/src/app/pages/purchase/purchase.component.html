@@ -180,8 +180,9 @@
                         </tfoot>
                     </table>
                   <section class="example-section">
-                    <mat-checkbox class="example-margin" [(ngModel)]="checked"><h3>Extra item</h3></mat-checkbox>
-                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
+                    <mat-checkbox class="example-margin" [(ngModel)]="isExtraItemAdded"><h3>Extra item</h3></mat-checkbox>
+
+                    <div *ngIf="isExtraItemAdded" class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
                       <form [formGroup]="extraItemsForm">
                         <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
                           <mat-form-field fxFlex="30">
@@ -210,35 +211,10 @@
                     </div>
                   </section>
 
-<!--                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">-->
-<!--                        <form [formGroup]="extraItemsForm">-->
-<!--                            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">-->
-<!--                                <mat-form-field fxFlex="30">-->
-<!--                                    <mat-label>Type</mat-label>-->
-<!--                                    <mat-select formControlName="item_type" placeholder="Extra item">-->
-<!--                                        <mat-option *ngFor="let extraItemType of extraItemTypes" [value]="extraItemType.value">-->
-<!--                                            {{extraItemType.name}}-->
-<!--                                        </mat-option>-->
-<!--                                    </mat-select>-->
-<!--                                </mat-form-field>-->
-<!--                                <mat-form-field fxFlex="30">-->
-<!--                                    <mat-label>Extra item</mat-label>-->
-<!--                                    <mat-select formControlName="extra_item_id" placeholder="Extra item" required>-->
-<!--                                        <mat-option *ngFor="let extraItem of extraItems" [value]="extraItem.id">-->
-<!--                                            {{extraItem.item_name}}-->
-<!--                                        </mat-option>-->
-<!--                                    </mat-select>-->
-<!--                                </mat-form-field>-->
-<!--                                <mat-form-field fxFlex="20">-->
-<!--                                    <mat-label>Amount</mat-label>-->
-<!--                                    <input type="number" class="text-right" matInput formControlName="amount" placeholder="Extra amount" required>-->
-<!--                                </mat-form-field>-->
-<!--                                <button mat-raised-button color="primary" (click)="addExtraItemForPurchase()" [disabled]="extraItemsForm.invalid">Add</button>-->
-<!--                            </div>-->
-<!--                        </form>-->
-<!--                    </div>-->
-                  <h3>Paid Amount</h3>
-                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
+
+
+                  <mat-checkbox class="example-margin" [(ngModel)]="isAmountPaid" (change)="setPaidAmount()"><h3>Pay Amount</h3></mat-checkbox>
+                  <div *ngIf="isAmountPaid" class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
                     <form [formGroup]="paidAmountForm">
                       <mat-form-field fxFlex="30">
                         <mat-label>Mode</mat-label>
@@ -252,7 +228,7 @@
                       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
                         <mat-form-field fxFlex="40">
                           <mat-label>Amount</mat-label>
-                          <input type="number" class="text-right" matInput formControlName="amount" placeholder="Paid amount" required>
+                          <input type="number" class="text-right" matInput formControlName="amount" placeholder="Paid amount" required (click)="$event.target.select()">
                         </mat-form-field>
                       </div>
                     </form>
@@ -349,6 +325,7 @@
             </mat-card-header>
             <mat-card-content>
                 <pre>
+                  checked= {{isAmountPaid}}
                   transactionMaster = {{transactionMaster | json}}
                   transactionDetails = {{transactionDetails | json}}
                 </pre>
@@ -414,6 +391,7 @@
             </mat-card-header>
             <mat-card-content>
                 <pre>
+                  paidAmountForm = {{paidAmountForm.value | json}}
                   paymentTransactionMaster = {{paymentTransactionMaster | json}}
                   paymentTransactionDetails = {{paymentTransactionDetails | json}}
                 </pre>
