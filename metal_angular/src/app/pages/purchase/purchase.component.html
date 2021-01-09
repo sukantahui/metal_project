@@ -296,7 +296,7 @@
                   <tr *ngFor="let purchase of purchaseList| paginate: { itemsPerPage: pageSize, currentPage: p };let indexOfElement=index">
                     <td>{{indexOfElement+1}}</td>
                     <td>{{purchase.transaction_number}}</td>
-                    <td class="text-right">{{purchase.ledger_name}}</td>
+                    <td class="text-left">{{purchase.ledger_name}}</td>
                     <td class="text-right">{{purchase.transaction_date}}</td>
                     <td class="text-right pr-5">{{purchase.amount}}</td>
                     <td class="text-right">
