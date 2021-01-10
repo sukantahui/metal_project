@@ -95,8 +95,12 @@ export class PurchaseComponent implements OnInit {
 
 
   // tslint:disable-next-line:max-line-length
-  constructor(private logger: NgxFancyLoggerService, private http: HttpClient, private vendorService: VendorService, private productService: ProductService,
-              private purchaseService: PurchaseService, private storage: StorageMap) {
+  constructor(private logger: NgxFancyLoggerService,
+              private http: HttpClient,
+              private vendorService: VendorService,
+              private productService: ProductService,
+              private purchaseService: PurchaseService,
+              private storage: StorageMap) {
     logger.header('This is a Ngx Fancy Logger Demo', { color: 'red', fontSize: 30 });
     logger.debug('This is a DEBUG Log', { a: 20, b: 30 });
     logger.info('This is a INFO log', 123, { a: 20, b: 30 });
