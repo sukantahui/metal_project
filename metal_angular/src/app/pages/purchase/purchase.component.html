@@ -150,7 +150,8 @@
                                 <td class="text-right">{{purchaseDetail.purchase_quantity + ' (' + purchaseDetail.unit.unit_name + ')'}}</td>
                                 <td class="text-right pr-5">{{(purchaseDetail.rate * purchaseDetail.purchase_quantity) | number: '1.0-2'}}</td>
                                 <td class="text-right">
-                                    <span (click)="itemToEdit(purchaseDetail)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
+                                    <span (click)="populatePurchaseDetailsForm(purchaseDetail)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
+<!--                                   itemToEdit(purchaseDetail)-->
                                 </td>
                                 <td class="text-right">
                                     <span (click)="deleteItem(purchaseDetail)"><fa-icon class="edit" [icon]="faTrashAlt"></fa-icon></span>
@@ -172,7 +173,7 @@
                                   <span (click)="itemToEdit(extraItemDetails)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
                                 </td>
                                 <td colspan="1" class="text-right">
-                                  <span (click)="deleteItem(extraItemDetails)"><fa-icon class="delete" [icon]="faTrashAlt"></fa-icon></span>
+                                  <span (click)="deleteItem(extraItemDetails)"><fa-icon class="deletef" [icon]="faTrashAlt"></fa-icon></span>
                                 </td>
                             </tr>
 
@@ -329,6 +330,9 @@
                 <h2 style="color: #c4c6ca;">Developer Area 1</h2>
             </mat-card-header>
             <mat-card-content>
+              <pre>
+                purchaseDetailsForm= {{purchaseDetailsForm.value | json}}
+              </pre>
                 <pre>
                   isAmountPaid= {{isAmountPaid}}
                   transactionMaster = {{transactionMaster | json}}

@@ -433,10 +433,34 @@ export class PurchaseComponent implements OnInit {
   itemToEdit(item) {
 
   }
-
-  deleteItem(item) {
+  populatePurchaseDetailsForm(purchaseDetails: PurchaseDetail) {
+    this.purchaseDetailsForm.patchValue({
+      product_category_id: purchaseDetails.product_category_id,
+      product_id:
+      rate
+      purchase_quantity
+      stock_quantity
+      amount
+    });
+    this.logger.warning(purchaseDetails);
 
   }
+
+  // editExtraItem() {
+  //   const extraItem = this.extraItemsForm.value;
+  //   const extraItemObj =  this.extraItems.find(x => x.id === extraItem.extra_item_id);
+  //   extraItem.item_name = extraItemObj.item_name;
+  //   this.extraItemDetails.push(extraItem);
+  //   this.grossTotal += extraItem.amount * extraItem.item_type;
+  //   this.transactionDetails[0].amount = this.grossTotal;
+  //   this.transactionDetails[1].amount = this.grossTotal;
+  //
+  //   this.purchaseContainer.td = this.transactionDetails;
+  //   this.purchaseContainer.extraItems = this.extraItemDetails;
+  //   this.purchaseContainer.grossTotal = this.grossTotal;
+  //   this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
+  //
+  // }
 
   onSubmit() {
 
