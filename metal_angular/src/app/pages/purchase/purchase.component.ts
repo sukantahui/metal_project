@@ -436,11 +436,10 @@ export class PurchaseComponent implements OnInit {
   populatePurchaseDetailsForm(purchaseDetails: PurchaseDetail) {
     this.purchaseDetailsForm.patchValue({
       product_category_id: purchaseDetails.product_category_id,
-      product_id:
-      rate
-      purchase_quantity
-      stock_quantity
-      amount
+      product_id: purchaseDetails.product_id,
+      rate: purchaseDetails.rate,
+      purchase_quantity: purchaseDetails.purchase_quantity,
+      stock_quantity: purchaseDetails.stock_quantity,
     });
     this.logger.warning(purchaseDetails);
 
