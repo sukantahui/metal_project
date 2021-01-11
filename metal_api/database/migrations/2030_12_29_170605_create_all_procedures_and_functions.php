@@ -41,6 +41,7 @@ class CreateAllProceduresAndFunctions extends Migration
                     RETURN out_actual_sale;
                 END'
         );
+
     }
 
     public function down()

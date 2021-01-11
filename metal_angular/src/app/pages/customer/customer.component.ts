@@ -9,7 +9,9 @@ import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { faUserAlt, faEnvelope, faMobileAlt, faMobile } from '@fortawesome/free-solid-svg-icons';
 import * as deepEqual from 'fast-deep-equal';
-
+// import {NGXLogger} from 'ngx-logger';
+// import {NGXLoggerMonitor, NGXLogInterface} from 'ngx-logger';
+import {NgxFancyLoggerService} from 'ngx-fancy-logger';
 
 export interface CustomerCategory {
   id: number;
@@ -56,7 +58,10 @@ export class CustomerComponent implements OnInit {
   defaultCustomerFormValue: any;
   private letname: any;
 
-  constructor(private http: HttpClient, private customerService: CustomerService) {
+  constructor(private http: HttpClient, private customerService: CustomerService, private logger: NgxFancyLoggerService) {
+    // this.logger.registerMonitor(new MyLoggerMonitor());
+
+    this.logger.error('BLAHBLAHBLAH');
     this.customerForm = new FormGroup({
       id: new FormControl(null),
       ledger_name: new FormControl(null, [Validators.required, Validators.maxLength(25), Validators.minLength(4)]),

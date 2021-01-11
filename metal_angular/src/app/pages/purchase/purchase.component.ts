@@ -536,4 +536,12 @@ export class PurchaseComponent implements OnInit {
   setPaidAmount(){
     this.paidAmountForm.patchValue({amount: this.grossTotal});
   }
+
+  deletePurchaseDetailItem(purchaseDetail: PurchaseDetail) {
+    
+  }
+
+  deleteExtraItemDetails(extraItemDetails: ExtraItemDetails[]) {
+    
+  }
 }
