@@ -364,6 +364,13 @@ export class PurchaseComponent implements OnInit {
     tempPurchaseDetailObj.unit = this.units.find(x => x.id === tempPurchaseDetailObj.product.purchase_unit_id);
     // tempPurchaseMasterObj.ledger = this.vendors.find(x => x.id === tempPurchaseMasterObj.ledger_id);
 
+    this.purchaseDetailsForm.patchValue({
+      product_category_id: null,
+      product_id: null,
+      rate: null,
+      purchase_quantity: null,
+      stock_quantity: null,
+    });
     this.purchaseDetails.unshift(tempPurchaseDetailObj);
     this.purchaseMaster = tempPurchaseMasterObj;
 
@@ -538,10 +545,10 @@ export class PurchaseComponent implements OnInit {
   }
 
   deletePurchaseDetailItem(purchaseDetail: PurchaseDetail) {
-    
+
   }
 
   deleteExtraItemDetails(extraItemDetails: ExtraItemDetails[]) {
-    
+
   }
 }
