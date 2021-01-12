@@ -370,6 +370,7 @@ export class PurchaseComponent implements OnInit {
       rate: null,
       purchase_quantity: null,
       stock_quantity: null,
+      amount: null,
     });
     this.purchaseDetails.unshift(tempPurchaseDetailObj);
     this.purchaseMaster = tempPurchaseMasterObj;
@@ -535,6 +536,13 @@ export class PurchaseComponent implements OnInit {
       this.purchaseContainer.extraItems = this.extraItemDetails;
       this.purchaseContainer.grossTotal = this.grossTotal;
       this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
+      this.extraItemsForm.patchValue({
+        extra_item_id: null,
+        amount: null,
+        item_type: null,
+        item_name: null,
+      });
+
   }
 
   setStockQuantity() {
@@ -544,7 +552,31 @@ export class PurchaseComponent implements OnInit {
     this.paidAmountForm.patchValue({amount: this.grossTotal});
   }
 
-  deletePurchaseDetailItem(purchaseDetail: PurchaseDetail) {
+  deletePurchaseDetailItem(purchaseDetail) {
+    console.log(purchaseDetail);
+    const itemPrice = purchaseDetail.rate * purchaseDetail.purchase_quantity;
+    let productId = purchaseDetail.product.id;
+    let itemIndex = this.purchaseDetails.findIndex(x => x.product_id === productId);
+    this.purchaseDetails.splice(itemIndex, 1);
+
+    const tempPurchaseTotal = this.purchaseDetails.reduce( (total, record) => {
+      // @ts-ignore
+      return total + (record.rate * record.purchase_quantity);
+    }, 0);
+    this.currentPurchaseTotal = tempPurchaseTotal;
+    this.currentPurchaseTotal = parseFloat(this.currentPurchaseTotal.toFixed(2));
+    const round =  Math.round(this.currentPurchaseTotal) - this.currentPurchaseTotal;
+    this.roundedOff = parseFloat(round.toFixed(2));
+    this.grossTotal = this.currentPurchaseTotal + this.roundedOff;
+
+    this.transactionDetails[0].amount = this.grossTotal;
+    this.transactionDetails[1].amount = this.grossTotal;
+
+    this.purchaseContainer.currentPurchaseTotal = this.currentPurchaseTotal;
+    this.purchaseContainer.grossTotal = this.grossTotal;
+    this.purchaseContainer.roundedOff = this.roundedOff;
+    this.purchaseContainer.td = this.transactionDetails;
+    this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
 
   }
 
