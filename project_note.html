@@ -27,6 +27,8 @@
 	 <dl>
 	  <dt>php artisan schema:dump --prune</dt>
 	  <dd>
+		***It will delete the migration folder from laravel project
+		<br>
 		Schema dumping is a way to squash migrations to a single file. It generates a schema file that has the whole schema for your database in a SQL form. This is used during development, useful for integrating new developers on your project that already has a large number of migrations. It supports MySQL, Postgres, SQLite.
 		<br>
 		Please add mysqldump to your path variable, like below
@@ -35,6 +37,7 @@
 		<br>
 		You will find the output file in database folder of laravel project, database/schema
 	  </dd>
+	  
 	</dl> 
 </body>
 </html>
