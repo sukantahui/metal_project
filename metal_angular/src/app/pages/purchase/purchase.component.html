@@ -91,6 +91,7 @@
                             <mat-form-field fxFlex="20" *ngIf="selectedProduct">
                               <mat-label>Qty <b>{{selectedProduct.purchase_unit_name}}</b></mat-label>
                                 <input type="number" class="text-right" matInput formControlName="purchase_quantity" (change)="setStockQuantity()" placeholder="Quantity">
+
                             </mat-form-field>
 
                             <mat-form-field fxFlex="20">
@@ -145,7 +146,7 @@
                         <tbody>
                             <tr *ngFor="let purchaseDetail of purchaseDetails;let indexOfElement=index">
                                 <td>{{indexOfElement+1}}</td>
-                                <td>{{purchaseDetail.product.product_name}}</td>
+                                <td>{{purchaseDetail.product.product_name}} ({{purchaseDetail.product.category_name}})</td>
                                 <td class="text-right">{{purchaseDetail.rate}}</td>
                                 <td class="text-right">{{purchaseDetail.purchase_quantity + ' (' + purchaseDetail.unit.unit_name + ')'}}</td>
                                 <td class="text-right pr-5">{{(purchaseDetail.rate * purchaseDetail.purchase_quantity) | number: '1.0-2'}}</td>

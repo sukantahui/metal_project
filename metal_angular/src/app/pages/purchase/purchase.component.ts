@@ -230,11 +230,15 @@ export class PurchaseComponent implements OnInit {
     });
     this.purchaseDetailsForm.valueChanges.subscribe(val => {
       if (val.rate && val.purchase_quantity){
-        this.currentItemAmount = val.rate * val.purchase_quantity;
+        const ans = val.rate * val.purchase_quantity;
+        this.currentItemAmount = +ans.toFixed(2);
+
+        // @ts-ignore
+
       }
     });
     this.paidAmountForm.valueChanges.subscribe(val => {
-      if (val.amount>0){
+      if (val.amount > 0){
         this.paymentTransactionDetails[0].amount = val.amount;
         this.paymentTransactionDetails[1].amount = val.amount;
 
@@ -372,6 +376,7 @@ export class PurchaseComponent implements OnInit {
       stock_quantity: null,
       amount: null,
     });
+    this.currentItemAmount = null;
     this.purchaseDetails.unshift(tempPurchaseDetailObj);
     this.purchaseMaster = tempPurchaseMasterObj;
 
@@ -553,31 +558,46 @@ export class PurchaseComponent implements OnInit {
   }
 
   deletePurchaseDetailItem(purchaseDetail) {
-    console.log(purchaseDetail);
-    const itemPrice = purchaseDetail.rate * purchaseDetail.purchase_quantity;
-    let productId = purchaseDetail.product.id;
-    let itemIndex = this.purchaseDetails.findIndex(x => x.product_id === productId);
-    this.purchaseDetails.splice(itemIndex, 1);
+    const productName = purchaseDetail.product.product_name;
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Are you sure to delete ' + productName,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,Delete It!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const itemPrice = purchaseDetail.rate * purchaseDetail.purchase_quantity;
+        let productId = purchaseDetail.product.id;
+        let itemIndex = this.purchaseDetails.findIndex(x => x.product_id === productId);
+        this.purchaseDetails.splice(itemIndex, 1);
 
-    const tempPurchaseTotal = this.purchaseDetails.reduce( (total, record) => {
-      // @ts-ignore
-      return total + (record.rate * record.purchase_quantity);
-    }, 0);
-    this.currentPurchaseTotal = tempPurchaseTotal;
-    this.currentPurchaseTotal = parseFloat(this.currentPurchaseTotal.toFixed(2));
-    const round =  Math.round(this.currentPurchaseTotal) - this.currentPurchaseTotal;
-    this.roundedOff = parseFloat(round.toFixed(2));
-    this.grossTotal = this.currentPurchaseTotal + this.roundedOff;
+        const tempPurchaseTotal = this.purchaseDetails.reduce((total, record) => {
+          // @ts-ignore
+          return total + (record.rate * record.purchase_quantity);
+        }, 0);
+        this.currentPurchaseTotal = tempPurchaseTotal;
+        this.currentPurchaseTotal = parseFloat(this.currentPurchaseTotal.toFixed(2));
+        this.logger.warning(this.roundedOff)
+        const round = Math.round(this.currentPurchaseTotal) - this.currentPurchaseTotal;
+        this.logger.warning(round);
+        this.roundedOff = parseFloat(round.toFixed(2));
+        this.grossTotal = this.currentPurchaseTotal + this.roundedOff;
 
-    this.transactionDetails[0].amount = this.grossTotal;
-    this.transactionDetails[1].amount = this.grossTotal;
+        this.transactionDetails[0].amount = this.grossTotal;
+        this.transactionDetails[1].amount = this.grossTotal;
 
-    this.purchaseContainer.currentPurchaseTotal = this.currentPurchaseTotal;
-    this.purchaseContainer.grossTotal = this.grossTotal;
-    this.purchaseContainer.roundedOff = this.roundedOff;
-    this.purchaseContainer.td = this.transactionDetails;
-    this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {});
+        this.purchaseContainer.currentPurchaseTotal = this.currentPurchaseTotal;
+        this.purchaseContainer.grossTotal = this.grossTotal;
+        this.purchaseContainer.roundedOff = this.roundedOff;
+        this.purchaseContainer.td = this.transactionDetails;
 
+        this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {
+        });
+      }
+    });
   }
 
   deleteExtraItemDetails(extraItemDetails: ExtraItemDetails[]) {
