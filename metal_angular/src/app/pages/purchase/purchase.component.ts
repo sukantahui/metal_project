@@ -606,4 +606,7 @@ export class PurchaseComponent implements OnInit {
   }
 
 
+  deleteExtraItemDetails(extraItemDetails: ExtraItemDetails[]) {
+    
+  }
 }
