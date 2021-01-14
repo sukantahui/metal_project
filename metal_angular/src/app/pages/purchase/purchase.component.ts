@@ -569,22 +569,26 @@ export class PurchaseComponent implements OnInit {
       confirmButtonText: 'Yes,Delete It!'
     }).then((result) => {
       if (result.isConfirmed) {
-        const itemPrice = purchaseDetail.rate * purchaseDetail.purchase_quantity;
         let productId = purchaseDetail.product.id;
         let itemIndex = this.purchaseDetails.findIndex(x => x.product_id === productId);
         this.purchaseDetails.splice(itemIndex, 1);
-
+        //calculating total again after deletion
         const tempPurchaseTotal = this.purchaseDetails.reduce((total, record) => {
           // @ts-ignore
           return total + (record.rate * record.purchase_quantity);
         }, 0);
-        this.currentPurchaseTotal = tempPurchaseTotal;
-        this.currentPurchaseTotal = parseFloat(this.currentPurchaseTotal.toFixed(2));
+
+        // this.currentPurchaseTotal = tempPurchaseTotal;
+        this.currentPurchaseTotal = parseFloat(tempPurchaseTotal.toFixed(2));
+        this.logger.warning(this.currentPurchaseTotal);
         this.logger.warning(this.roundedOff)
         const round = Math.round(this.currentPurchaseTotal) - this.currentPurchaseTotal;
         this.logger.warning(round);
         this.roundedOff = parseFloat(round.toFixed(2));
+        this.logger.error(this.roundedOff);
         this.grossTotal = this.currentPurchaseTotal + this.roundedOff;
+        const tempExtraItemIndex = this.extraItemDetails.findIndex(x=>x.extra_item_id === 1);
+        this.extraItemDetails[tempExtraItemIndex].amount = this.roundedOff;
 
         this.transactionDetails[0].amount = this.grossTotal;
         this.transactionDetails[1].amount = this.grossTotal;
@@ -593,6 +597,7 @@ export class PurchaseComponent implements OnInit {
         this.purchaseContainer.grossTotal = this.grossTotal;
         this.purchaseContainer.roundedOff = this.roundedOff;
         this.purchaseContainer.td = this.transactionDetails;
+        this.purchaseContainer.extraItems = this.extraItemDetails;
 
         this.storage.set('purchaseContainer', this.purchaseContainer).subscribe(() => {
         });
@@ -600,7 +605,5 @@ export class PurchaseComponent implements OnInit {
     });
   }
 
-  deleteExtraItemDetails(extraItemDetails: ExtraItemDetails[]) {
 
-  }
 }
