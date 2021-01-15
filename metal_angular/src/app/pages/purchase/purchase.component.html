@@ -107,6 +107,7 @@
                         </div>
                         <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
                             <button class="pull-right" mat-stroked-button (click)="addItem()">Add</button>
+                            <button class="pull-right" mat-stroked-button (click)="updateItem()">Update</button>
                             <button class="pull-right" mat-stroked-button (click)="clearPurchaseForm()">clear</button>
                         </div>
                     </form>
@@ -144,18 +145,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let purchaseDetail of purchaseDetails;let indexOfElement=index">
+                            <tr [class.editable-purchase-detail-item]="indexOfElement==editablePurchaseDetailItemIndex" *ngFor="let purchaseDetail of purchaseDetails;let indexOfElement=index">
                                 <td>{{indexOfElement+1}}</td>
                                 <td>{{purchaseDetail.product.product_name}} ({{purchaseDetail.product.category_name}})</td>
                                 <td class="text-right">{{purchaseDetail.rate}}</td>
                                 <td class="text-right">{{purchaseDetail.purchase_quantity + ' (' + purchaseDetail.unit.unit_name + ')'}}</td>
                                 <td class="text-right pr-5">{{(purchaseDetail.rate * purchaseDetail.purchase_quantity) | number: '1.0-2'}}</td>
                                 <td class="text-right">
-                                    <span (click)="populatePurchaseDetailsForm(purchaseDetail)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
-<!--                                   itemToEdit(purchaseDetail)-->
+                                    <a [routerLink]="" (click)="populatePurchaseDetailsForm(purchaseDetail , indexOfElement)"><fa-icon class="edit" [icon]="faPencilAlt"></fa-icon></a>
                                 </td>
                                 <td class="text-right">
-                                    <span (click)="deletePurchaseDetailItem(purchaseDetail)"><fa-icon class="edit" [icon]="faTrashAlt"></fa-icon></span>
+                                    <a [routerLink]="" (click)="deletePurchaseDetailItem(purchaseDetail)"><fa-icon class="edit" [icon]="faTrashAlt"></fa-icon></a>
                                 </td>
                             </tr>
                         </tbody>

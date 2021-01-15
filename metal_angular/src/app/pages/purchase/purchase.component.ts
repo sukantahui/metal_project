@@ -8,7 +8,7 @@ import {ProductService} from '../../services/product.service';
 import {Product} from '../../models/product.model';
 import {PurchaseDetail, PurchaseList, PurchaseMaster, SavePurchaseResponse} from '../../models/purchase.model';
 import {formatDate} from '@angular/common';
-import { faUserEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit, faTrashAlt, faPencilAlt} from '@fortawesome/free-solid-svg-icons';
 import {StorageMap} from '@ngx-pwa/local-storage';
 import {TransactionDetail, TransactionMaster} from '../../models/transaction.model';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
@@ -67,6 +67,8 @@ export class PurchaseComponent implements OnInit {
 
   transactionMaster: TransactionMaster = null;
   transactionDetails: TransactionDetail[] = [];
+
+  editablePurchaseDetailItemIndex = -1;
   currentPurchaseTotal = 0;
   roundedOff = 0;
   grossTotal = 0;
@@ -83,6 +85,7 @@ export class PurchaseComponent implements OnInit {
 
   faUserEdit = faUserEdit;
   faTrashAlt = faTrashAlt;
+  faPencilAlt = faPencilAlt;
   saveablePurchaseDetails: { rate: number; id: number }[];
 
   // tslint:disable-next-line:max-line-length
@@ -417,6 +420,12 @@ export class PurchaseComponent implements OnInit {
 
   }
 
+
+  //update item when update button is pushed
+  updateItem(){
+
+  }
+
   clearPurchaseForm() {
     this.purchaseMasterForm.patchValue(this.defaultValues.purchaseMasterFormValue);
     this.purchaseDetailsForm.patchValue(this.defaultValues.purchaseDetailsFormValue);
@@ -446,7 +455,7 @@ export class PurchaseComponent implements OnInit {
   itemToEdit(item) {
 
   }
-  populatePurchaseDetailsForm(purchaseDetails: PurchaseDetail) {
+  populatePurchaseDetailsForm(purchaseDetails: PurchaseDetail, index) {
     this.purchaseDetailsForm.patchValue({
       product_category_id: purchaseDetails.product_category_id,
       product_id: purchaseDetails.product_id,
@@ -454,7 +463,8 @@ export class PurchaseComponent implements OnInit {
       purchase_quantity: purchaseDetails.purchase_quantity,
       stock_quantity: purchaseDetails.stock_quantity,
     });
-    this.logger.warning(purchaseDetails);
+
+   this.editablePurchaseDetailItemIndex = index;
 
   }
 
@@ -607,6 +617,6 @@ export class PurchaseComponent implements OnInit {
 
 
   deleteExtraItemDetails(extraItemDetails: ExtraItemDetails[]) {
-    
+
   }
 }

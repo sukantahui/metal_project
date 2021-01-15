@@ -97,3 +97,15 @@ table td{
   box-shadow: 10px 10px 5px -7px rgba(0,0,0,0.35);
 }
 
+.editable-purchase-detail-item{
+  background-color: #f7d481;
+  td{
+    color: #020101 !important;
+    padding: 3px 12px 3px 12px !important;
+  }
+}
+#purchase-detail-list{
+  tr:hover{
+    background-color: #d7f4f7;
+  }
+}
