@@ -148,9 +148,9 @@
                             <tr [class.editable-purchase-detail-item]="indexOfElement==editablePurchaseDetailItemIndex" *ngFor="let purchaseDetail of purchaseDetails;let indexOfElement=index">
                                 <td>{{indexOfElement+1}}</td>
                                 <td>{{purchaseDetail.product.product_name}} ({{purchaseDetail.product.category_name}})</td>
-                                <td class="text-right">{{purchaseDetail.rate}}</td>
+                                <td class="text-right">{{purchaseDetail.rate | currency:"&#8377; "}}</td>
                                 <td class="text-right">{{purchaseDetail.purchase_quantity + ' (' + purchaseDetail.unit.unit_name + ')'}}</td>
-                                <td class="text-right pr-5">{{(purchaseDetail.rate * purchaseDetail.purchase_quantity) | number: '1.0-2'}}</td>
+                                <td class="text-right pr-5">{{(purchaseDetail.rate * purchaseDetail.purchase_quantity) | number: '1.2' | currency:"&#8377; "}}</td>
                                 <td class="text-right">
                                     <a [routerLink]="" (click)="populatePurchaseDetailsForm(purchaseDetail , indexOfElement)"><fa-icon class="edit" [icon]="faPencilAlt"></fa-icon></a>
                                 </td>
@@ -187,7 +187,7 @@
                         </tfoot>
                     </table>
                   <section class="example-section">
-                    <mat-checkbox class="example-margin" [(ngModel)]="isExtraItemAdded"><h3>Extra item</h3></mat-checkbox>
+                    <mat-checkbox class="example-margin" [(ngModel)]="isExtraItemAdded">Extra item</mat-checkbox>
 
                     <div *ngIf="isExtraItemAdded" class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
                       <form [formGroup]="extraItemsForm">
@@ -220,7 +220,7 @@
 
 
 
-                  <mat-checkbox class="example-margin" [(ngModel)]="isAmountPaid" (change)="setPaidAmount()"><h3>Amount Paid</h3></mat-checkbox>
+                  <mat-checkbox class="example-margin" [(ngModel)]="isAmountPaid" (change)="setPaidAmount()">Amount Paid</mat-checkbox>
                   <div *ngIf="isAmountPaid" class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
                     <form [formGroup]="paidAmountForm">
                       <mat-form-field fxFlex="30">
