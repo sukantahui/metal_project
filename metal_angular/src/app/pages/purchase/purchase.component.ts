@@ -452,9 +452,26 @@ export class PurchaseComponent implements OnInit {
 
   }
 
-  itemToEdit(item) {
+  itemToEdit() {
+    this.validatorError = null;
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Do you sure to update this customer',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Create It!'
+    }).then((result) =>{
+        if(result.isConfirmed){
 
+        }
+    })
   }
+
+
+
+
   populatePurchaseDetailsForm(purchaseDetails: PurchaseDetail, index) {
     this.purchaseDetailsForm.patchValue({
       product_category_id: purchaseDetails.product_category_id,
