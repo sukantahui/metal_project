@@ -107,7 +107,7 @@
                         </div>
                         <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
                             <button class="pull-right" mat-stroked-button (click)="addItem()">Add</button>
-                            <button class="pull-right" mat-stroked-button (click)="itemToEdit()">Update</button>
+                            <button (click)="onUpdate()" [disabled]="purchaseFrom.invalid || purchaseForm.dirty==false" *ngIf="purchaseForm.value.id" mat-button">Update</button>
                             <button class="pull-right" mat-stroked-button (click)="clearPurchaseForm()">clear</button>
                         </div>
                     </form>
@@ -171,7 +171,7 @@
                                 <td colspan="4"><b>{{extraItem.item_type==1?'Add: ' : 'Less: '}}</b>{{extraItem.item_name}}</td>
                                 <td class="text-right">{{extraItem.amount}}</td>
                                 <td colspan="1" class="text-right">
-                                  <span (click)="itemToEdit(extraItemDetails)"><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
+                                  <span><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
                                 </td>
                                 <td colspan="1" class="text-right">
                                   <span (click)="deleteExtraItemDetails(extraItemDetails)"><fa-icon class="delete" [icon]="faTrashAlt"></fa-icon></span>

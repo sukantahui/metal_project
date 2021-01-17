@@ -453,20 +453,7 @@ export class PurchaseComponent implements OnInit {
   }
 
   itemToEdit() {
-    this.validatorError = null;
-    Swal.fire({
-      title: 'Confirmation',
-      text: 'Do you sure to update this customer',
-      icon: 'info',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Create It!'
-    }).then((result) =>{
-        if(result.isConfirmed){
 
-        }
-    })
   }
 
 
@@ -547,6 +534,42 @@ export class PurchaseComponent implements OnInit {
       console.log(error);
     });
 
+  }
+  onUpdate() {
+    this.validatorError = null;
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Do you sure to update this purchase details',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#dd3333',
+      confirmButtonText: 'Yes, Create It!'
+    }).then((result) => {
+      if (result.isConfirmed){
+        this.purchaseService.updatePurchase(this.purchaseForm.value).subscribe(response => {
+          if (response.success === 1){
+            this.updateablePurchase = 0;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'purchase details updated',
+              showConfirmButton: false,
+              timer: 1000
+            });
+          }else{
+            this.validatorError = response.error;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Validation error',
+              showConfirmButton: false,
+              timer: 3000
+            });
+          }
+        });
+      }
+    });
   }
 
   handleTransactionMasterDateChange($event: MatDatepickerInputEvent<unknown>) {
