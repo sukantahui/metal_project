@@ -148,7 +148,7 @@
                             <tr [class.editable-purchase-detail-item]="indexOfElement==editablePurchaseDetailItemIndex" *ngFor="let purchaseDetail of purchaseDetails;let indexOfElement=index">
                                 <td>{{indexOfElement+1}}</td>
                                 <td>{{purchaseDetail.product.product_name}} ({{purchaseDetail.product.category_name}})</td>
-                              <td class="text-right">
+                              <td id="rate" class="text-right">
                                 <span *ngIf="purchaseDetail.isEditable">
                                   <input appAutofocus type='number'  [(ngModel)]="purchaseDetail.rate" class="cellInput">
                                   <button (click)="purchaseDetail.isEditable = false"  style="padding: 3px; margin-right: 10px; margin-left: 10px; background-color: #c4c6ca; height: 30px; width: 30px; border-radius: 5px;">
