@@ -17,6 +17,9 @@ import Swal from 'sweetalert2';
 import {PurchaseService} from '../../services/purchase.service';
 import * as cloneDeep from 'lodash/cloneDeep';
 import {NgxFancyLoggerService} from 'ngx-fancy-logger';
+import { faFacebook} from '@fortawesome/free-brands-svg-icons';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faTimes} from '@fortawesome/free-solid-svg-icons';
 
 export interface ExtraItem {
   id: number;
@@ -35,6 +38,10 @@ export interface ExtraItemDetails{
   styleUrls: ['./purchase.component.scss']
 })
 export class PurchaseComponent implements OnInit {
+  faFB = faFacebook;
+  faTimes = faTimes;
+  faCheck = faCheck;
+
   page: number;
   pageSize = 15;
   p = 1;
@@ -127,6 +134,7 @@ export class PurchaseComponent implements OnInit {
       purchase_quantity: new FormControl(null),
       stock_quantity: new FormControl(null),
       amount: new FormControl(null),
+      isEditable: new FormControl(false)
     });
     const userData: {id: number, personName: string, _authKey: string, personTypeId: number} = JSON.parse(localStorage.getItem('user'));
     this.transactionMasterForm = new FormGroup({
@@ -535,48 +543,15 @@ export class PurchaseComponent implements OnInit {
     });
 
   }
-  onUpdate() {
-    this.validatorError = null;
-    Swal.fire({
-      title: 'Confirmation',
-      text: 'Do you sure to update this purchase details',
-      icon: 'info',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#dd3333',
-      confirmButtonText: 'Yes, Create It!'
-    }).then((result) => {
-      if (result.isConfirmed){
-        this.purchaseService.updatePurchase(this.purchaseForm.value).subscribe(response => {
-          if (response.success === 1){
-            this.updateablePurchase = 0;
-            Swal.fire({
-              position: 'top-end',
-              icon: 'success',
-              title: 'purchase details updated',
-              showConfirmButton: false,
-              timer: 1000
-            });
-          }else{
-            this.validatorError = response.error;
-            Swal.fire({
-              position: 'top-end',
-              icon: 'error',
-              title: 'Validation error',
-              showConfirmButton: false,
-              timer: 3000
-            });
-          }
-        });
-      }
-    });
+  onUpdate(){
+
   }
 
-  handleTransactionMasterDateChange($event: MatDatepickerInputEvent<unknown>) {
-    let val = this.transactionMasterForm.value.transaction_date;
-    val = formatDate(val, 'yyyy-MM-dd', 'en');
-    this.transactionMasterForm.patchValue({transaction_date: val});
-  }
+  // handleTransactionMasterDateChange($event: MatDatepickerInputEvent<unknown>) {
+  //   let val = this.transactionMasterForm.value.transaction_date;
+  //   val = formatDate(val, 'yyyy-MM-dd', 'en');
+  //   this.transactionMasterForm.patchValue({transaction_date: val});
+  // }
 
   addExtraItemForPurchase() {
       const extraItem = this.extraItemsForm.value;

@@ -18,7 +18,8 @@ export class PurchaseDetail{
   stock_quantity?: number
   rate?: number;
   product?: Product;
-  unit?: Unit
+  unit?: Unit;
+  isEditable?: boolean;
 }
 
 export class PurchaseResponse{
