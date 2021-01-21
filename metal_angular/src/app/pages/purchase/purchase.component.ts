@@ -100,6 +100,7 @@ export class PurchaseComponent implements OnInit {
   // tslint:disable-next-line:max-line-length
   isAmountPaid = false;
   isExtraItemAdded: false;
+  showAllPurchaseList= false;
   // tslint:disable-next-line:max-line-length
   purchaseMasterData: { transaction_master: TransactionMaster; payment_transaction_master: TransactionMaster; purchase_master: PurchaseMaster; purchase_details: { rate: number; product_id: number; purchase_quantity: number; id: number; stock_quantity: number }[]; extra_items: ExtraItemDetails[]; payment_transaction_details: TransactionDetail[]; transaction_details: TransactionDetail[] };
 
@@ -632,6 +633,16 @@ export class PurchaseComponent implements OnInit {
 
 
   deleteExtraItemDetails(extraItemDetails: ExtraItemDetails[]) {
+
+  }
+
+  onToggle(event) {
+    console.log(event);
+    if (event.checked) {
+      this.showAllPurchaseList = true;
+    }else{
+      this.showAllPurchaseList=false;
+    }
 
   }
 }
