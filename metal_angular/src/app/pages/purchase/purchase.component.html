@@ -119,8 +119,9 @@
 
 
       <div style="min-height: 92vh; background-color: rgba(202, 199, 224, 0.81);">
-        <mat-slide-toggle (change)="onToggle($event)">Slide me!</mat-slide-toggle>
-            <mat-card *ngIf="purchaseDetails.length>0 && !showAllPurchaseList"  class="example-card">
+        <mat-slide-toggle [(ngModel)]="isShowAllPurchaseList" (change)="onToggle($event)">Slide me!</mat-slide-toggle>
+
+            <mat-card *ngIf="purchaseDetails.length>0 && !isShowAllPurchaseList"  class="example-card">
                 <mat-card-header>
                     <mat-card-title>
                         <fa-icon></fa-icon>&nbsp;Purchase details</mat-card-title>
@@ -282,7 +283,8 @@
 
 
           <!--          purchase list-->
-            <mat-card *ngIf="purchaseDetails.length==0 || showAllPurchaseList">
+            <mat-card *ngIf="purchaseDetails.length==0 || isShowAllPurchaseList">
+
               <mat-card-header>
                 <mat-card-title></mat-card-title>
               </mat-card-header>
