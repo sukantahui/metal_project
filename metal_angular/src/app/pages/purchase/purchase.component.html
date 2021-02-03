@@ -227,7 +227,7 @@
                           <mat-form-field fxFlex="30">
                             <mat-label>Extra item</mat-label>
                             <mat-select formControlName="extra_item_id" placeholder="Extra item" required>
-                              <mat-option *ngFor="let extraItem of extraItems" [value]="extraItem.id">
+                              <mat-option *ngFor="let extraItem of extraItems | slice: 1" [value]="extraItem.id">
                                 {{extraItem.item_name}}
                               </mat-option>
                             </mat-select>
@@ -357,6 +357,7 @@
             </mat-card-header>
             <mat-card-content>
               <pre>
+                extraItems= {{extraItems | json}}
                 purchaseDetailsForm= {{purchaseDetailsForm.value | json}}
               </pre>
                 <pre>
