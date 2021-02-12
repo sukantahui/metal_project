@@ -61,7 +61,6 @@ export class CustomerComponent implements OnInit {
   constructor(private http: HttpClient, private customerService: CustomerService, private logger: NgxFancyLoggerService) {
     // this.logger.registerMonitor(new MyLoggerMonitor());
 
-    this.logger.error('BLAHBLAHBLAH');
     this.customerForm = new FormGroup({
       id: new FormControl(null),
       ledger_name: new FormControl(null, [Validators.required, Validators.maxLength(25), Validators.minLength(4)]),
@@ -119,7 +118,7 @@ export class CustomerComponent implements OnInit {
             Swal.fire({
               position: 'top-end',
               icon: 'success',
-              title: 'Product saved',
+              title: 'Customer saved',
               showConfirmButton: false,
               timer: 1000
             });

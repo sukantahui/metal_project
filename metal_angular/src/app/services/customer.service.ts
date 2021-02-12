@@ -30,9 +30,11 @@ export class CustomerService {
     this.http.get(GlobalVariable.BASE_API_URL_DEV + '/customers')
       .subscribe((response: {success: number, data: Customer[]}) => {
           this.customers = response.data;
+          //sending update information to the listeners
           this.customerSubject.next([...this.customers]);
     });
   }
+  // to get customers' copy when required, this method will be called b the component
   getCustomers(){
     return [...this.customers];
   }
@@ -40,6 +42,7 @@ export class CustomerService {
   getCustomerServiceListener(){
     return this.customerSubject.asObservable();
   }
+
   saveCustomer(customer){
     return this.http.post(GlobalVariable.BASE_API_URL_DEV + '/customers', customer)
       .pipe(catchError(this.errorService.serverError), tap((response: CustomerResponseData) => {

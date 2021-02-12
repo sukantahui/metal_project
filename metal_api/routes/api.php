@@ -1,4 +1,4 @@
-<?php
+4<?php
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -85,6 +85,10 @@ Route::group(array('prefix' => 'dev'), function() {
     Route::post("purchases",[PurchaseController::class,'savePurchase']);
     Route::get("purchases",[PurchaseController::class,'getAllPurchase']);
     Route::get("purchases/{startDate}/{endDate}",[PurchaseController::class,'getAllPurchaseByDateRange']);
+
+
+    //saleMaster
+    
 
 });
 

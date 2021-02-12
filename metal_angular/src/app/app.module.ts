@@ -44,6 +44,7 @@ import { VendorComponent } from './pages/vendor/vendor.component';
 import { PurchaseComponent } from './pages/purchase/purchase.component';
 import {PopoverModule} from 'ngx-smart-popover';
 import {LogLevel, NgxFancyLoggerModule} from 'ngx-fancy-logger';
+import { SaleComponent } from './pages/sale/sale.component';
 
 
 
@@ -67,7 +68,8 @@ import {LogLevel, NgxFancyLoggerModule} from 'ngx-fancy-logger';
     CustomerComponent,
     EditInputComponent,
     VendorComponent,
-    PurchaseComponent
+    PurchaseComponent,
+    SaleComponent
   ],
     imports: [
         BrowserModule,
