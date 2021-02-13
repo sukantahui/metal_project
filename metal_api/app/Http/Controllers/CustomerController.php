@@ -16,9 +16,10 @@ class CustomerController extends Controller
     public function index()
     {
         //
-        $customers=Ledger::select('id','ledger_name','billing_name','ledger_group_id','customer_category_id','email','mobile1','mobile2'
-            ,'address1','address2','state_id','po','area','city','pin','transaction_type_id','opening_balance')
-            ->where('ledger_group_id',16)->get();
+        $customers=Ledger::select(
+            'id','ledger_name','billing_name','ledger_group_id','customer_category_id','email','mobile1','mobile2'
+            ,'address1','address2','state_id','po','area','city','pin','transaction_type_id','opening_balance'
+        )->where('ledger_group_id',16)->get();
         return response()->json(['success'=>1,'data'=>$customers], 200,[],JSON_NUMERIC_CHECK);
 
     }

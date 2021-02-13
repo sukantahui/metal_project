@@ -14,14 +14,11 @@ class SaleMasterController extends Controller
      */
     public function index()
     {
-        $saleMaster= Lodger::select(
-            'id',
-            'bill_number',
-            'order_date',
-            'delivery_date',
-            'comment'
-            );
-     return response()->json(['success'=>1, 'data'=>$saleMaster , 'error'=>null],200,[], JSON_NUMERIC_CHECK);
+        $saleMasters= SaleMaster::select(
+            'bill_number','order_date','delivery_date','comment'
+        );
+
+        return response()->json(['success'=>1,'data'=>$saleMasters], 200,[],JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -42,7 +39,16 @@ class SaleMasterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $saleMasters= new SaleMaster();
+        $saleMasters->bill_number=  $request->input('bill_number');
+        $saleMasters->order_date=  $request->input('order_date');
+        $saleMasters->delivery_date=  $request->input('delivery_date');
+        $saleMasters->comment=  $request->input('comment');
+
+        $saleMasters->save();
+        return response()->json(['success'=>1,'data'=>$saleMasters,'error'=>null], 200,[],JSON_NUMERIC_CHECK);
+
+
     }
 
     /**

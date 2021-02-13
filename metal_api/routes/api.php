@@ -13,6 +13,7 @@ use App\Http\Controllers\StateController;
 use App\Http\Controllers\TransactionTypeController;
 use App\Http\Controllers\ExtraItemController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\SaleMasterController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -88,7 +89,8 @@ Route::group(array('prefix' => 'dev'), function() {
 
 
     //saleMaster
-    
+    Route::post("saleMasters",[SaleMasterController::class,'store']);
+    Route::get("saleMasters",[SaleMasterController::class,'index']);
 
 });
 
