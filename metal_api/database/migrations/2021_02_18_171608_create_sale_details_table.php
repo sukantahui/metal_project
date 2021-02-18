@@ -15,6 +15,19 @@ class CreateSaleDetailsTable extends Migration
     {
         Schema::create('sale_details', function (Blueprint $table) {
             $table->id();
+
+            $table->bigInteger('sale_master_id')->unsigned();
+            $table->foreign('sale_master-id')->references('id')->on('sale_masters');
+
+            $table->bigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products');
+
+            $table->double('quantity')->default(0)->nullable(false);
+            $table->double('price')->default(0)->nullable(false);
+
+
+
+            $table->tinyInteger('inforce')->default('1');
             $table->timestamps();
         });
     }
