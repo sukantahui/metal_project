@@ -16,7 +16,7 @@ class SaleMasterController extends Controller
     {
         $saleMasters= SaleMaster::select(
             'bill_number','order_date','delivery_date','comment'
-        );
+        )->get();
 
         return response()->json(['success'=>1,'data'=>$saleMasters], 200,[],JSON_NUMERIC_CHECK);
     }
@@ -82,7 +82,7 @@ class SaleMasterController extends Controller
      */
     public function update(Request $request, SaleMaster $saleMaster)
     {
-        //
+        $saleMaster
     }
 
     /**

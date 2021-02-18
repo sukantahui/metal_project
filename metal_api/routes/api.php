@@ -14,6 +14,7 @@ use App\Http\Controllers\TransactionTypeController;
 use App\Http\Controllers\ExtraItemController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleMasterController;
+use App\Http\Controllers\SaleController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -86,6 +87,9 @@ Route::group(array('prefix' => 'dev'), function() {
     Route::post("purchases",[PurchaseController::class,'savePurchase']);
     Route::get("purchases",[PurchaseController::class,'getAllPurchase']);
     Route::get("purchases/{startDate}/{endDate}",[PurchaseController::class,'getAllPurchaseByDateRange']);
+
+    //Sales
+    Route::post("sales",[SaleController::class,'saveSale']);
 
 
     //saleMaster
