@@ -17,13 +17,14 @@ class CreateSaleDetailsTable extends Migration
             $table->id();
 
             $table->bigInteger('sale_master_id')->unsigned();
-            $table->foreign('sale_master-id')->references('id')->on('sale_masters');
+            $table->foreign('sale_master_id')->references('id')->on('sale_masters');
 
-            $table->bigInteger('product_id');
+            $table->bigInteger('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
 
             $table->double('quantity')->default(0)->nullable(false);
             $table->double('price')->default(0)->nullable(false);
+            $table->double('rate')->default(0)->nullable(false);
 
 
 

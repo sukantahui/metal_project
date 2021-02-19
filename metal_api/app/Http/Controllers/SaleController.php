@@ -12,6 +12,7 @@ class SaleController extends Controller
         $input=($request->json()->all());
         //separating data from $input
         $inputSaleMaster=(object)($input['sale_master']);
+        $inputSaleDetails=($input['sale_details']);
 
         // if any record is failed then whole entry will be rolled back
         //try portion execute the commands and catch execute when error.
@@ -26,6 +27,16 @@ class SaleController extends Controller
             $saleMaster->save();
 
             //saving sale details
+            foreach ($inputSaleDetails as $inputSaleDetail){
+                $saleDetail = new SaleDetail();
+                $saleDetail->sale_master_id = $saleMaster->id;
+                $saleDetail->product_id = $inputSaleDetail['product_id'];
+                $saleDetail->quantity = $inputSaleDetail['quantity'];
+                $saleDetail->price = $inputSaleDetail['price'];
+                $saleDetail->rate = $inputSaleDetail['rate'];
+                $saleDetail->save();
+
+            }
 
 
             DB::commit();
