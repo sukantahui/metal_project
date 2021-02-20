@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\SaleDetail;
+use App\Models\SaleExtra;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class SaleDetailsFactory extends Factory
+class SaleExtraFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = SaleDetail::class;
+    protected $model = SaleExtra::class;
 
     /**
      * Define the model's default state.

@@ -12,6 +12,7 @@ use App\Models\TransactionDetail;
 use App\Models\CustomVoucher;
 use Illuminate\Support\Facades\Validator;
 
+
 class PurchaseController extends Controller
 {
     public function  savePurchase(Request $request){

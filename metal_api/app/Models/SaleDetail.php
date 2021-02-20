@@ -5,28 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SaleMaster extends Model
+class SaleDetail extends Model
 {
     use HasFactory;
 
     /**
      * @var mixed
      */
-    private $bill_number;
+    private $sale_master_id;
     /**
      * @var mixed
      */
-    private $order_date;
+    private $product_id;
     /**
      * @var mixed
      */
-    private $delivery_date;
+    private $quantity;
     /**
      * @var mixed
      */
-    private $comment;
+    private $price;
     /**
      * @var mixed
      */
-    private $id;
+    private $rate;
 }

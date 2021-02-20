@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SaleMaster;
+use App\Models\SaleDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -28,14 +29,14 @@ class SaleController extends Controller
 
             //saving sale details
             foreach ($inputSaleDetails as $inputSaleDetail){
+                $detail = (object)$inputSaleDetail;
                 $saleDetail = new SaleDetail();
                 $saleDetail->sale_master_id = $saleMaster->id;
-                $saleDetail->product_id = $inputSaleDetail['product_id'];
-                $saleDetail->quantity = $inputSaleDetail['quantity'];
-                $saleDetail->price = $inputSaleDetail['price'];
-                $saleDetail->rate = $inputSaleDetail['rate'];
+                $saleDetail->product_id = $detail->product_id;
+                $saleDetail->quantity = $detail->quantity;
+                $saleDetail->price = $detail->price;
+                $saleDetail->rate = $detail->rate;
                 $saleDetail->save();
-
             }
 
 
