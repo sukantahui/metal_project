@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SaleMaster;
 use App\Models\SaleDetail;
+use App\Models\SaleExtra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,6 +15,7 @@ class SaleController extends Controller
         //separating data from $input
         $inputSaleMaster=(object)($input['sale_master']);
         $inputSaleDetails=($input['sale_details']);
+        $inputExtraItems=($input['sale_extras']);
 
         // if any record is failed then whole entry will be rolled back
         //try portion execute the commands and catch execute when error.
@@ -39,6 +41,16 @@ class SaleController extends Controller
                 $saleDetail->save();
             }
 
+            //saving sale_extras
+
+            foreach ($inputExtraItems as $inputExtraItem){
+                $extra = (object)$inputExtraItem;
+                $extraItem = new SaleExtra();
+                $extraItem->sale_master_id = $saleMaster->id;
+                $extraItem->extra_item_id = $extra->extra_item_id;
+                $extraItem->amount = $extra->amount;
+                $extraItem->save();
+            }
 
             DB::commit();
         }catch(\Exception $e){

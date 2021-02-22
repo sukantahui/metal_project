@@ -25,6 +25,7 @@ class CreateSaleExtrasTable extends Migration
             $table->double('amount')->default(0);
             $table->integer('item_type')->default(0);
 
+
             $table->tinyInteger('inforce')->default('1');
             $table->timestamps();
         });
