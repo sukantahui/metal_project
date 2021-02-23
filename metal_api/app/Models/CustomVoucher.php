@@ -25,4 +25,5 @@ class CustomVoucher extends Model
      * @var mixed|string
      */
     private $prefix;
+
 }

@@ -33,4 +33,12 @@ class TransactionMaster extends Model
      * @var mixed
      */
     private $reference_transaction_master_id;
+    /**
+     * @var mixed
+     */
+    private $sale_master_id;
+    /**
+     * @var mixed
+     */
+    private $id;
 }

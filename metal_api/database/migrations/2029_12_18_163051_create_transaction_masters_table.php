@@ -25,8 +25,23 @@ class CreateTransactionMastersTable extends Migration
             $table->unsignedBigInteger('voucher_type_id');
             $table ->foreign('voucher_type_id')->references('id')->on('voucher_types')->onDelete('CASCADE');;
 
-            $table->unsignedBigInteger('purchase_master_id');
-            $table ->foreign('purchase_master_id')->references('id')->on('purchase_masters');
+//            $table->unsignedBigInteger('purchase_master_id');
+//            $table ->foreign('purchase_master_id')->references('id')->on('purchase_masters');
+
+            $table
+                ->foreignId('purchase_master_id')
+                ->nullable() // here
+                ->references('id')
+                ->on('purchase_masters');
+
+            $table
+                ->foreignId('sale_master_id')
+                ->nullable() // here
+                ->references('id')
+                ->on('sale_masters');
+
+//            $table->unsignedBigInteger('sale_master_id');
+//            $table ->foreign('sale_master_id')->references('id')->on('sale_masters');
 
             $table->date('transaction_date');
 

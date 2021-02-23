@@ -24,7 +24,7 @@ class CreateSaleDetailsTable extends Migration
 
             $table->double('quantity')->default(0)->nullable(false);
             $table->double('price')->default(0)->nullable(false);
-            $table->double('rate')->default(0)->nullable(false);
+
 
 
 
