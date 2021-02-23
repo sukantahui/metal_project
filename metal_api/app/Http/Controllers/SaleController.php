@@ -45,13 +45,33 @@ class SaleController extends Controller
         //validating sale_extras
         $validator = Validator::make($input['sale_extras'], [
             '*.extra_item_id' => 'required|exists:extra_items,id',
-            '*.amount' => 'required|numeric|not_in:0',
+            '*.amount' => 'required|numeric',
             '*.item_type' => 'required|numeric|in:1,-1'
         ]);
 
         if($validator->fails()) {
             return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
         }
+
+        //transaction_master validation
+        $validator = Validator::make($input['transaction_master'],[
+            'user_id' => 'required|exists:users,id',
+            'transaction_date'=> 'required|date_format:Y-m-d'
+        ]);
+        if($validator->fails()){
+            return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
+        }
+
+        //transaction detail validation
+        $validator = Validator::make($input['transaction_details'], [
+            '*.ledger_id' => 'required|exists:ledgers,id',
+            '*.transaction_type_id' => 'required|exists:transaction_types,id'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
+        }
+
 
         // if any record is failed then whole entry will be rolled back
         //try portion execute the commands and catch execute when error.
