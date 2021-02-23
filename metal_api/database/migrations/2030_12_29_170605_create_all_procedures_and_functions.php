@@ -41,6 +41,30 @@ class CreateAllProceduresAndFunctions extends Migration
                     RETURN out_actual_sale;
                 END'
         );
+
+        //get sale total by sale_master_id
+        DB::unprepared(
+            'DROP FUNCTION if exists get_sale_total_by_id;
+             CREATE FUNCTION get_sale_total_by_id (in_sm_id bigint) RETURNS bigint
+                DETERMINISTIC
+                BEGIN
+                  declare out_total_sale double;
+                  declare out_total_extra double;
+                  declare out_actual_sale double;
+                  select sum(quantity*price) into out_total_sale from sale_details where sale_master_id=in_sm_id;
+                  select sum(amount*item_type) into out_total_extra from sale_extras where sale_master_id=in_sm_id;
+                  IF(out_total_sale IS NULL) THEN
+                    SET out_total_sale := 0;
+                  END IF;
+
+                  IF(out_total_extra IS NULL) THEN
+                    SET out_total_extra := 0;
+                  END IF;
+
+                  set out_actual_sale := out_total_sale + out_total_extra;
+                    RETURN out_actual_sale;
+                END'
+        );
     }
 
     public function down()

@@ -21,4 +21,8 @@ class SaleExtra extends Model
      * @var mixed
      */
     private $amount;
+    /**
+     * @var mixed
+     */
+    private $item_type;
 }

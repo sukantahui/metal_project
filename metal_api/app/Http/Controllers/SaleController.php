@@ -83,6 +83,7 @@ class SaleController extends Controller
                 $extraItem = new SaleExtra();
                 $extraItem->sale_master_id = $saleMaster->id;
                 $extraItem->extra_item_id = $extra->extra_item_id;
+                $extraItem->item_type = $extra->item_type;
                 $extraItem->amount = $extra->amount;
                 $extraItem->save();
             }
@@ -114,6 +115,10 @@ class SaleController extends Controller
             }
             $voucher_number = $customVoucher->prefix.'-'.$customVoucher->last_counter."-".$accounting_year;
 
+
+            //calculating sale bill total by calling function
+            $sale = DB::select('SELECT get_sale_total_by_id(?) AS sale_total', [$saleMaster->id])[0];
+
             //adding transaction_masters
             $transactionMaster = new TransactionMaster();
             $transactionMaster->transaction_number = $voucher_number;
@@ -125,11 +130,12 @@ class SaleController extends Controller
 
             //save data into transaction_details
             foreach($inputTransactionDetails as $inputTransactionDetail){
+                $td = (object)$inputTransactionDetail;
                 $transactionDetail = new TransactionDetail();
                 $transactionDetail->transaction_master_id = $transactionMaster->id;
-                $transactionDetail->ledger_id = $inputTransactionDetail['ledger_id'];
-                $transactionDetail->transaction_type_id = $inputTransactionDetail['transaction_type_id'];
-                $transactionDetail->amount = $inputTransactionDetail['amount'];
+                $transactionDetail->ledger_id = $td->ledger_id;
+                $transactionDetail->transaction_type_id = $td->transaction_type_id;
+                $transactionDetail->amount = $sale->sale_total; //calculated value
                 $transactionDetail->save();
             }
 
@@ -139,6 +145,6 @@ class SaleController extends Controller
             return response()->json(['success'=>0,'exception'=>$e->getMessage()], 500);
         }
 
-        return response()->json(['success'=>1,'data'=>$saleMaster, 'voucher'=>$voucher_number, 'error' => null], 200);
+        return response()->json(['success'=>1,'data'=>$saleMaster, 'sale_total'=>$sale->sale_total, 'error' => null], 200);
     }
 }
