@@ -25,7 +25,8 @@ class SaleController extends Controller
 
         //validating sale_masters
         $validator = Validator::make($input['sale_master'],[
-            'comment' => 'required'
+            'comment' => 'required',
+            'delivery_date'=> 'date_format:Y-m-d'
         ]);
         if($validator->fails()){
             return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
@@ -72,6 +73,35 @@ class SaleController extends Controller
             return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
         }
 
+        $temp_date = explode("-",$inputTransactionMaster->transaction_date);
+        $accounting_year="";
+        if($temp_date[1]>3){
+            $x = $temp_date[0]%100;
+            $accounting_year = $x*100 + ($x+1);
+        }else{
+            $x = $temp_date[0]%100;
+            $accounting_year =($x-1)*100+$x;
+        }
+
+        $customVoucher=CustomVoucher::where('voucher_name','=',"Bill")->where('accounting_year',"=",$accounting_year)->first();
+        if($customVoucher) {
+            //already exist
+            $customVoucher->last_counter = $customVoucher->last_counter + 1;
+            $customVoucher->save();
+        }else{
+            //fresh entry
+            $customVoucher= new CustomVoucher();
+            $customVoucher->voucher_name="Bill";
+            $customVoucher->accounting_year= $accounting_year;
+            $customVoucher->last_counter=1;
+            $customVoucher->delimiter='-';
+            $customVoucher->prefix='MTL';
+            $customVoucher->save();
+        }
+        //adding Zeros before number
+        $counter = str_pad($customVoucher->last_counter,5,"0",STR_PAD_LEFT);
+        //creating sale bill number
+        $bill_number = $customVoucher->prefix.'-'.$counter."-".$accounting_year;
 
         // if any record is failed then whole entry will be rolled back
         //try portion execute the commands and catch execute when error.
@@ -79,7 +109,7 @@ class SaleController extends Controller
         try{
             //saving to saleMaster Table
             $saleMaster = new SaleMaster();
-            $saleMaster->bill_number = $inputSaleMaster->bill_number;
+            $saleMaster->bill_number = $bill_number;
             $saleMaster->order_date = $inputSaleMaster->order_date;
             $saleMaster->delivery_date = $inputSaleMaster->delivery_date;
             $saleMaster->comment = $inputSaleMaster->comment;
@@ -109,15 +139,7 @@ class SaleController extends Controller
             }
 
             //save data into transaction_masters
-            $temp_date = explode("-",$inputTransactionMaster->transaction_date);
-            $accounting_year="";
-            if($temp_date[1]>3){
-                $x = $temp_date[0]%100;
-                $accounting_year = $x*100 + ($x+1);
-            }else{
-                $x = $temp_date[0]%100;
-                $accounting_year =($x-1)*100+$x;
-            }
+
             $customVoucher=CustomVoucher::where('voucher_name','=',"Transaction")->where('accounting_year',"=",$accounting_year)->first();
             if($customVoucher) {
                 //already exist
@@ -133,7 +155,8 @@ class SaleController extends Controller
                 $customVoucher->prefix='TRN';
                 $customVoucher->save();
             }
-            $voucher_number = $customVoucher->prefix.'-'.$customVoucher->last_counter."-".$accounting_year;
+            $counter = str_pad($customVoucher->last_counter,5,"0",STR_PAD_LEFT);
+            $voucher_number = $customVoucher->prefix.'-'.$counter."-".$accounting_year;
 
 
             //calculating sale bill total by calling function
