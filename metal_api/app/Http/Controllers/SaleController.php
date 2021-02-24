@@ -16,6 +16,16 @@ class SaleController extends Controller
 {
     public function  saveSale(Request $request){
         $input=($request->json()->all());
+
+        $validator = Validator::make($input,[
+            'sale_master' => 'required',
+            'sale_details' => 'required',
+            'transaction_master' => 'required',
+            'transaction_details' => 'required',
+        ]);
+        if($validator->fails()){
+            return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
+        }
         //separating data from $input
         $inputSaleMaster=(object)($input['sale_master']);
         $inputSaleDetails=($input['sale_details']);
