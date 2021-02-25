@@ -96,6 +96,7 @@ export class AuthService {
     return throwError(err);
   }
   private handleError(errorResponse: HttpErrorResponse){
+    console.log(errorResponse);
     if (errorResponse.error.message.includes('1062')){
       return throwError('Record already exists');
     }else {
