@@ -8,9 +8,53 @@
         </mat-card-header>
         <mat-card-content>
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <div fxFlex="80">
 
-            </div>
+
+                <div fxFlex="70">
+                  <!--              Transaction Details-->
+                  <form [formGroup]="transactionDetailsForm" class="transaction-detail">
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                      <ng-select [items]="customers" fxFlex="80" (change)="onSelectedCustomer($event)" bindLabel="ledger_name" class="custom" bindValue="id" formControlName="ledger_id" placeholder="Select Vendor">
+                      </ng-select>
+                      <div fxFlex="20" *ngIf="selectedLedger">
+                        <popover-content #myPopover title="{{selectedLedger.ledger_name}}" placement="right" [animation]="true" [closeOnClickOutside]="true">
+
+                          <!--                                            <b>{{selectedLedger.address1 + ' | ' + selectedLedger.address2}}</b>-->
+                          <span style="color: #00b3ee">billing_name: {{selectedLedger.billing_name}}</span><br>
+                          <span style="color: #C21F39">Address: {{selectedLedger.address1}}</span><br>
+                          <span style="color: #00b3ee">Mobile1 : {{selectedLedger.mobile1}}</span><br>
+                          <span style="color: #C21F39">Area: {{selectedLedger.area}}</span><br>
+                          <span style="color: #00b3ee">Pin: {{selectedLedger.pin}}</span>
+                          <!--                                            <b><i><span style="color: #ffc520">Popover With</span></i></b> <small>Html support</small>.-->
+                        </popover-content>
+
+
+                        <div class="example-button-container">
+                          <button mat-mini-fab color="primary" [popover]="myPopover" aria-label="Customer Details">
+                            <mat-icon>menu</mat-icon>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div fxFlex="30">
+                  <!--              Sale form here-->
+                  <form [formGroup]="transactionMasterForm">
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                      <mat-form-field class="example-full-width" fxFlex="90">
+                        <mat-label>Sale date (dd/mm/yyyy)</mat-label>
+                        <input matInput [matDatepicker]="saleDatePicker" formControlName="transaction_date" placeholder="dd/mm/yyyy">
+                        <mat-datepicker-toggle matSuffix [for]="saleDatePicker">
+                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #saleDatePicker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </form>
+                </div>
+
+
           </div>
         </mat-card-content>
       </mat-card>
@@ -34,6 +78,12 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+
 
 <!--developer div-->
 <div fxLayout.xs="column" id="developer-area" fxLayout="row" fxFlexFill *ngIf="isDeveloperAreaShowable">
