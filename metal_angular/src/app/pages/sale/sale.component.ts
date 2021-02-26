@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
-import {formatDate} from "@angular/common";
-import {Customer} from "../../models/customer.model";
-import {CustomerService} from "../../services/customer.service";
+import {FormControl, FormGroup} from '@angular/forms';
+import {formatDate} from '@angular/common';
+import {Customer} from '../../models/customer.model';
+import {CustomerService} from '../../services/customer.service';
+import {ProductCategory} from '../product/product.component';
+import {HttpClient} from '@angular/common/http';
+import {Product} from '../../models/product.model';
+import {ProductService} from '../../services/product.service';
+import {PurchaseService} from '../../services/purchase.service';
+import {StorageMap} from '@ngx-pwa/local-storage';
 
 @Component({
   selector: 'app-sale',
@@ -17,14 +23,33 @@ export class SaleComponent implements OnInit {
   transactionDetailsForm: FormGroup;
   customers: Customer[] = [];
   selectedLedger: Customer;
-  constructor(private customerService: CustomerService) {
+  selectedProductCategoryId = 1;
+  productsByCategory: Product[] = [];
+  productCategories: ProductCategory[] = [];
+  products: Product[] = [];
+  selectedProduct: Product;
+  constructor(private customerService: CustomerService
+              // tslint:disable-next-line:align
+              , private http: HttpClient
+              // tslint:disable-next-line:align
+              , private productService: ProductService
+              // tslint:disable-next-line:align
+              , private storage: StorageMap) {
     const now = new Date();
     const currentSQLDate = formatDate(now, 'yyyy-MM-dd', 'en');
 
-    //this will fill up local customers variable from customerService
+    // this will fill up local customers variable from customerService
     this.customers = this.customerService.getCustomers();
     this.customerService.getCustomerServiceListener().subscribe(response => {
       this.customers = response;
+    });
+    // getting products
+    this.products = this.productService.getProducts();
+    this.productsByCategory = this.products.filter(item => item.product_category_id === this.selectedProductCategoryId);
+    this.productService.getProductServiceListener().subscribe(response => {
+      this.products = response;
+      this.productsByCategory = this.products.filter(item => item.product_category_id === this.selectedProductCategoryId);
+
     });
 
     this.saleMasterForm = new FormGroup({
@@ -59,14 +84,29 @@ export class SaleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this will fill up local customers variable from customerService
+    // this will fill up local customers variable from customerService
     this.customers = this.customerService.getCustomers();
     this.customerService.getCustomerServiceListener().subscribe(response => {
       this.customers = response;
     });
+
+    // getting product categories
+    this.http.get('http://127.0.0.1:8000/api/dev/productCategories')
+      .subscribe((response: {success: number, data: ProductCategory[]}) => {
+        this.productCategories = response.data;
+      });
+
+
   }
 
   onSelectedCustomer(value) {
     this.selectedLedger = value;
+  }
+  onProductCategorySelected(value){
+    this.selectedProductCategoryId = value;
+    this.productsByCategory = this.products.filter(item => item.product_category_id === this.selectedProductCategoryId);
+  }
+  onSelectedProduct(value) {
+    this.selectedProduct = value;
   }
 }

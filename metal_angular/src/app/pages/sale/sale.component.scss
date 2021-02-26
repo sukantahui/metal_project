@@ -1,0 +1,27 @@
+
+#left-div{
+  background: linear-gradient(90deg, rgba(226, 221, 225, 0.56) 0%, rgb(232, 219, 97) 35%, rgb(202, 226, 218) 80%);
+}
+#right-div{
+  background: linear-gradient(90deg, rgba(226, 221, 225, 0.56) 0%, rgb(232, 219, 97) 35%, rgb(202, 226, 218) 80%);
+}
+.mat-card{
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+  position: relative;
+  padding: 16px;
+  border-radius: 4px;
+  //background: none;
+  background: linear-gradient(90deg, rgba(255, 248, 248, 0.56) 0%, rgba(255, 248, 248, 0.96) 35%, rgba(211, 188, 147, 0.56) 80%);
+}
+
+mat-card-content{
+  width: inherit;
+  padding: 5px;
+  border: 2px solid rgba(154, 137, 107, 0.32);
+  border-radius: 5px;
+  -webkit-box-shadow: 10px 10px 5px -7px rgba(0,0,0,0.35);
+  -moz-box-shadow: 10px 10px 5px -7px rgba(0,0,0,0.35);
+  box-shadow: 10px 10px 5px -7px rgba(0,0,0,0.35);
+  background: linear-gradient(90deg, rgba(247, 253, 228, 0.2) 0%, rgba(251, 254, 255, 0.2) 35%, rgba(247, 253, 228, 0.2) 100%);
+}

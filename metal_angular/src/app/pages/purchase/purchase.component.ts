@@ -100,7 +100,7 @@ export class PurchaseComponent implements OnInit {
   // tslint:disable-next-line:max-line-length
   isAmountPaid = false;
   isExtraItemAdded: false;
-  isShowAllPurchaseList= false;
+  isShowAllPurchaseList = false;
   // tslint:disable-next-line:max-line-length
   purchaseMasterData: { transaction_master: TransactionMaster; payment_transaction_master: TransactionMaster; purchase_master: PurchaseMaster; purchase_details: { rate: number; product_id: number; purchase_quantity: number; id: number; stock_quantity: number }[]; extra_items: ExtraItemDetails[]; payment_transaction_details: TransactionDetail[]; transaction_details: TransactionDetail[] };
 
@@ -430,7 +430,7 @@ export class PurchaseComponent implements OnInit {
   }
 
 
-  //update item when update button is pushed
+  // update item when update button is pushed
   updateItem(){
 
   }
@@ -477,7 +477,7 @@ export class PurchaseComponent implements OnInit {
       stock_quantity: purchaseDetails.stock_quantity,
     });
 
-   this.editablePurchaseDetailItemIndex = index;
+    this.editablePurchaseDetailItemIndex = index;
 
   }
 

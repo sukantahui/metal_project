@@ -1,5 +1,5 @@
 <div fxLayout.xs="column" fxLayout="row" fxFlexFill>
-  <div fxFlex="40">
+  <div fxFlex="40" id="left-div">
     <div style="min-height: 92vh; background-color: rgba(202, 199, 224, 0.81);">
       <mat-card class="example-card">
         <mat-card-header>
@@ -8,8 +8,6 @@
         </mat-card-header>
         <mat-card-content>
           <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-
-
                 <div fxFlex="70">
                   <!--              Transaction Details-->
                   <form [formGroup]="transactionDetailsForm" class="transaction-detail">
@@ -18,14 +16,12 @@
                       </ng-select>
                       <div fxFlex="20" *ngIf="selectedLedger">
                         <popover-content #myPopover title="{{selectedLedger.ledger_name}}" placement="right" [animation]="true" [closeOnClickOutside]="true">
-
-                          <!--                                            <b>{{selectedLedger.address1 + ' | ' + selectedLedger.address2}}</b>-->
                           <span style=""><b> Name: </b>{{selectedLedger.billing_name}}</span><br>
-                          <span style=""><b>Address: </b>{{selectedLedger.address1}}</span><br>
-                          <span style=""><b>Mobile1 : </b>{{selectedLedger.mobile1}}</span><br>
-                          <span style=""> <b> Area: </b>{{selectedLedger.area}}</span><br>
+                          <span *ngIf="selectedLedger.address1" style=""><b>Address: </b>{{selectedLedger.address1}}</span><br>
+                          <div *ngIf="selectedLedger.mobile1" style=""><b>Mobile1 : </b>{{selectedLedger.mobile1}}</div>
+                          <div *ngIf="selectedLedger.mobile2"><b>Mobile2 : </b>{{selectedLedger.mobile2}}</div>
+                          <div *ngIf="selectedLedger.area" style=""> <b> Area: </b>{{selectedLedger.area}}</div>
                           <span style=""><b> Pin: </b>{{selectedLedger.pin}}</span>
-                          <!--                                            <b><i><span style="color: #ffc520">Popover With</span></i></b> <small>Html support</small>.-->
                         </popover-content>
 
 
@@ -56,11 +52,59 @@
 
 
           </div>
+          <hr size="10">
+          <!--          sale details are here-->
+          <form [formGroup]="saleDetailsForm" class="purchase-details">
+
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <mat-form-field fxFlex="30">
+                <mat-label>Product category</mat-label>
+                <mat-select formControlName="product_category_id" placeholder="Product category" (ngModelChange)="onProductCategorySelected($event)">
+                  <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.id">
+                    {{productCategory.category_name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <ng-select [items]="productsByCategory" fxFlex="30" (change)="onSelectedProduct($event)" bindLabel="product_name" class="custom" bindValue="id" formControlName="product_id" placeholder="Product">
+              </ng-select>
+            </div>
+
+
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <mat-form-field fxFlex="20">
+                <mat-label>Rate</mat-label>
+                <input type="number" class="text-right" matInput formControlName="rate" placeholder="Rate">
+              </mat-form-field>
+
+              <mat-form-field fxFlex="20" *ngIf="selectedProduct">
+                <mat-label>Qty <b>{{selectedProduct.purchase_unit_name}}</b></mat-label>
+                <input type="number" class="text-right" matInput formControlName="purchase_quantity" (change)="setStockQuantity()" placeholder="Quantity">
+
+              </mat-form-field>
+
+              <mat-form-field fxFlex="20">
+                <mat-label>Amount</mat-label>
+                <input matInput [value]="currentItemAmount" readonly>
+              </mat-form-field>
+
+              <mat-form-field fxFlex="20" *ngIf="selectedProduct && selectedProduct.purchase_unit_id!=selectedProduct.sale_unit_id">
+                <mat-label>Stock Qty <b>{{selectedProduct.sale_unit_name}}</b></mat-label>
+                <input type="number" class="text-right" matInput formControlName="stock_quantity" placeholder="Stock quantity">
+
+              </mat-form-field>
+            </div>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <button class="pull-right" mat-stroked-button (click)="addItem()">Add</button>
+              <button class="pull-right" mat-stroked-button (click)="clearPurchaseForm()">clear</button>
+            </div>
+          </form>
         </mat-card-content>
       </mat-card>
     </div>
   </div>
-  <div fxFlex="60">
+
+  <div fxFlex="60" id="right-div">
     <div style="min-height: 92vh; background-color: rgba(202, 199, 224, 0.81);">
       <mat-card class="example-card">
         <mat-card-header>
@@ -77,6 +121,7 @@
       </mat-card>
     </div>
   </div>
+
 </div>
 
 
