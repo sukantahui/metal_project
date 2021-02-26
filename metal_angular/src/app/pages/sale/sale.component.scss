@@ -1,3 +1,21 @@
+$lightGray: #c8c8c8;
+$amount: .7;
+//to show number field as text
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+
+
 
 #left-div{
   background: linear-gradient(90deg, rgba(226, 221, 225, 0.56) 0%, rgb(232, 219, 97) 35%, rgb(202, 226, 218) 80%);

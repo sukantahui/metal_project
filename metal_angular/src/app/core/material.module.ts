@@ -30,7 +30,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
-
+import {MatBadgeModule} from '@angular/material/badge';
 
 
 // @ts-ignore
@@ -68,7 +68,8 @@ import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
     MatSortModule,
     MatPaginatorModule,
     MatRippleModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatBadgeModule
   ]
 })
 export class MaterialModule {

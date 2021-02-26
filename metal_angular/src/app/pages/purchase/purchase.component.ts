@@ -244,9 +244,7 @@ export class PurchaseComponent implements OnInit {
       if (val.rate && val.purchase_quantity){
         const ans = val.rate * val.purchase_quantity;
         this.currentItemAmount = +ans.toFixed(2);
-
         // @ts-ignore
-
       }
     });
     this.paidAmountForm.valueChanges.subscribe(val => {

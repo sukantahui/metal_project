@@ -28,6 +28,7 @@ export class SaleComponent implements OnInit {
   productCategories: ProductCategory[] = [];
   products: Product[] = [];
   selectedProduct: Product;
+  currentItemAmount = 0;
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
               , private http: HttpClient
@@ -95,7 +96,13 @@ export class SaleComponent implements OnInit {
       .subscribe((response: {success: number, data: ProductCategory[]}) => {
         this.productCategories = response.data;
       });
-
+    this.saleDetailsForm.valueChanges.subscribe(val => {
+      if (val.rate && val.sale_quantity){
+        const ans = val.rate * val.purchase_quantity;
+        this.currentItemAmount = +ans.toFixed(2);
+        // @ts-ignore
+      }
+    });
 
   }
 
@@ -109,4 +116,5 @@ export class SaleComponent implements OnInit {
   onSelectedProduct(value) {
     this.selectedProduct = value;
   }
+
 }

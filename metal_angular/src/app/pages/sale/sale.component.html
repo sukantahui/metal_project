@@ -70,35 +70,21 @@
               </ng-select>
             </div>
 
-
             <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <!--Rate-->
               <mat-form-field fxFlex="20">
                 <mat-label>Rate</mat-label>
                 <input type="number" class="text-right" matInput formControlName="rate" placeholder="Rate">
               </mat-form-field>
-
+              <!--Quantity-->
               <mat-form-field fxFlex="20" *ngIf="selectedProduct">
-                <mat-label>Qty <b>{{selectedProduct.purchase_unit_name}}</b></mat-label>
-                <input type="number" class="text-right" matInput formControlName="purchase_quantity" (change)="setStockQuantity()" placeholder="Quantity">
-
-              </mat-form-field>
-
-              <mat-form-field fxFlex="20">
-                <mat-label>Amount</mat-label>
-                <input matInput [value]="currentItemAmount" readonly>
-              </mat-form-field>
-
-              <mat-form-field fxFlex="20" *ngIf="selectedProduct && selectedProduct.purchase_unit_id!=selectedProduct.sale_unit_id">
-                <mat-label>Stock Qty <b>{{selectedProduct.sale_unit_name}}</b></mat-label>
-                <input type="number" class="text-right" matInput formControlName="stock_quantity" placeholder="Stock quantity">
-
+                <mat-label>Qty <b>{{selectedProduct.sale_unit_name}}</b></mat-label>
+                <input type="number" class="text-right" matInput formControlName="sale_quantity"  placeholder="Quantity">
               </mat-form-field>
             </div>
-            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-              <button class="pull-right" mat-stroked-button (click)="addItem()">Add</button>
-              <button class="pull-right" mat-stroked-button (click)="clearPurchaseForm()">clear</button>
-            </div>
-          </form>
+
+
+            </form>
         </mat-card-content>
       </mat-card>
     </div>
