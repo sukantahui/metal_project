@@ -16,7 +16,7 @@ import {StorageMap} from '@ngx-pwa/local-storage';
   styleUrls: ['./sale.component.scss']
 })
 export class SaleComponent implements OnInit {
-  isDeveloperAreaShowable = false;
+  isDeveloperAreaShowable = true;
   saleMasterForm: FormGroup;
   saleDetailsForm: FormGroup;
   transactionMasterForm: FormGroup;
@@ -98,7 +98,7 @@ export class SaleComponent implements OnInit {
       });
     this.saleDetailsForm.valueChanges.subscribe(val => {
       if (val.rate && val.sale_quantity){
-        const ans = val.rate * val.purchase_quantity;
+        const ans = val.rate * val.sale_quantity;
         this.currentItemAmount = +ans.toFixed(2);
         // @ts-ignore
       }

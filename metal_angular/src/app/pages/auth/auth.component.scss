@@ -28,7 +28,7 @@ mat-card-content {
 }
 
 body{
-  background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgb(48, 48, 161) 35%, rgba(0,212,255,1) 100%);
+  background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgb(229, 229, 240) 35%, rgba(0,212,255,1) 100%);
 }
 
 mat-card{
@@ -36,7 +36,7 @@ mat-card{
 }
 #login-outer-div{
   padding: 40px;
-  background: linear-gradient(90deg, rgba(10, 22, 36, 0.3) 0%, rgba(11, 98, 121,.3) 35%, rgba(24, 56, 96,.3) 80%);
+  background: linear-gradient(90deg, rgba(10, 22, 36, 0.3) 0%, rgba(43, 42, 38, 0.3) 35%, rgba(24, 56, 96,.3) 80%);
   border-radius: 5px;
 }
 
@@ -269,6 +269,11 @@ form:after {
   margin: 30px 15px 0 0;
   text-decoration: underline;
 }
+#content{
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
 .button {
   background: rgb(247,249,250);
   background: -moz-linear-gradient(top,  rgba(247,249,250,1) 0%, rgba(240,240,240,1) 100%);
@@ -309,6 +314,10 @@ form:after {
 
 router-outlet{
   height: 100%;
+}
+
+#spinner-content{
+  width: 200px;
 }
 
 

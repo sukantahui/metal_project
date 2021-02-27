@@ -52,7 +52,14 @@ export class AuthComponent implements OnInit {
         this.isLoading = false;
       }
     }, (error) => {
-      console.log(error);
+      console.log(error.message);
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: error.message,
+        showConfirmButton: false,
+        timer: 2000
+      });
       this.isLoading = false;
     });
   }

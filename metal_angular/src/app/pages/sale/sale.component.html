@@ -15,7 +15,7 @@
                       <ng-select [items]="customers" fxFlex="80" (change)="onSelectedCustomer($event)" bindLabel="ledger_name" class="custom" bindValue="id" formControlName="ledger_id" placeholder="Select Vendor">
                       </ng-select>
                       <div fxFlex="20" *ngIf="selectedLedger">
-                        <popover-content #myPopover title="{{selectedLedger.ledger_name}}" placement="right" [animation]="true" [closeOnClickOutside]="true">
+                        <popover-content #popoverCustomer title="{{selectedLedger.ledger_name}}" placement="right" [animation]="true" [closeOnClickOutside]="true">
                           <span style=""><b> Name: </b>{{selectedLedger.billing_name}}</span><br>
                           <span *ngIf="selectedLedger.address1" style=""><b>Address: </b>{{selectedLedger.address1}}</span><br>
                           <div *ngIf="selectedLedger.mobile1" style=""><b>Mobile1 : </b>{{selectedLedger.mobile1}}</div>
@@ -26,7 +26,7 @@
 
 
                         <div class="example-button-container">
-                          <button mat-mini-fab color="primary" [popover]="myPopover" aria-label="Customer Details">
+                          <button mat-mini-fab color="primary" [popover]="popoverCustomer" aria-label="Customer Details">
                             <mat-icon>menu</mat-icon>
                           </button>
                         </div>
@@ -68,6 +68,15 @@
 
               <ng-select [items]="productsByCategory" fxFlex="30" (change)="onSelectedProduct($event)" bindLabel="product_name" class="custom" bindValue="id" formControlName="product_id" placeholder="Product">
               </ng-select>
+              <div fxFlex="20" *ngIf="selectedProduct">
+                <div class="example-button-container">
+                  <button mat-mini-fab color="accent" [popover]="popoverProduct" aria-label="Customer Details">
+                    <mat-icon>menu</mat-icon>
+                  </button>
+                </div>
+                <popover-content #popoverProduct title="{{selectedProduct.product_name}}" placement="right" [animation]="true" [closeOnClickOutside]="true">
+                </popover-content>
+              </div>
             </div>
 
             <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
@@ -80,6 +89,11 @@
               <mat-form-field fxFlex="20" *ngIf="selectedProduct">
                 <mat-label>Qty <b>{{selectedProduct.sale_unit_name}}</b></mat-label>
                 <input type="number" class="text-right" matInput formControlName="sale_quantity"  placeholder="Quantity">
+              </mat-form-field>
+              <!--Amount-->
+              <mat-form-field fxFlex="20">
+                <mat-label>Amount</mat-label>
+                <input matInput [value]="currentItemAmount" readonly>
               </mat-form-field>
             </div>
 
@@ -125,9 +139,9 @@
         <h2 style="color: #c4c6ca;">Developer Area 1</h2>
       </mat-card-header>
       <mat-card-content>
-
-
-
+        <pre>
+          products = {{products | json}}
+        </pre>
       </mat-card-content>
     </mat-card>
   </div>
