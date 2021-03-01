@@ -7,6 +7,7 @@ import {ProductCategory} from '../product/product.component';
 import {HttpClient} from '@angular/common/http';
 import {Product} from '../../models/product.model';
 import {ProductService} from '../../services/product.service';
+import {HotkeysService} from '../../services/hotkeys.service';
 import {PurchaseService} from '../../services/purchase.service';
 import {StorageMap} from '@ngx-pwa/local-storage';
 
@@ -35,7 +36,9 @@ export class SaleComponent implements OnInit {
               // tslint:disable-next-line:align
               , private productService: ProductService
               // tslint:disable-next-line:align
-              , private storage: StorageMap) {
+              , private storage: StorageMap
+              // tslint:disable-next-line:align
+              , private hotkeys: HotkeysService) {
     const now = new Date();
     const currentSQLDate = formatDate(now, 'yyyy-MM-dd', 'en');
 
