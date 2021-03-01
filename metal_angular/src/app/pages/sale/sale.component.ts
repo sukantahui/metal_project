@@ -3,12 +3,13 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {formatDate} from '@angular/common';
 import {Customer} from '../../models/customer.model';
 import {CustomerService} from '../../services/customer.service';
-import {ProductCategory} from '../product/product.component';
+import {ProductCategory, Unit} from '../product/product.component';
 import {HttpClient} from '@angular/common/http';
 import {Product} from '../../models/product.model';
 import {ProductService} from '../../services/product.service';
 import {PurchaseService} from '../../services/purchase.service';
 import {StorageMap} from '@ngx-pwa/local-storage';
+import {SaleDetail} from "../../models/sale.model";
 
 @Component({
   selector: 'app-sale',
@@ -29,6 +30,8 @@ export class SaleComponent implements OnInit {
   products: Product[] = [];
   selectedProduct: Product;
   currentItemAmount = 0;
+  units: Unit[];
+  saleDetails: SaleDetail[] = [];
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
               , private http: HttpClient
@@ -64,8 +67,7 @@ export class SaleComponent implements OnInit {
       product_category_id: new FormControl(1),
       product_id: new FormControl(null),
       rate: new FormControl(null),
-      sale_quantity: new FormControl(null),
-      amount: new FormControl(null)
+      sale_quantity: new FormControl(null)
     });
     const userData: {id: number, personName: string, _authKey: string, personTypeId: number} = JSON.parse(localStorage.getItem('user'));
     this.transactionMasterForm = new FormGroup({
@@ -104,6 +106,12 @@ export class SaleComponent implements OnInit {
       }
     });
 
+    //getting units
+    this.http.get('http://127.0.0.1:8000/api/dev/units')
+      .subscribe((response: {success: number, data: Unit[]}) => {
+        this.units = response.data;
+      });
+
   }
 
   onSelectedCustomer(value) {
@@ -117,4 +125,13 @@ export class SaleComponent implements OnInit {
     this.selectedProduct = value;
   }
 
+  addItem() {
+    //copying object
+    const tempSaleDetailsObj = {...this.saleDetailsForm.value};
+    const index = this.products.findIndex(x => x.id === tempSaleDetailsObj.product_id);
+    tempSaleDetailsObj.product = this.products[index];
+
+    tempSaleDetailsObj.unit = this.units.find(x => x.id === tempSaleDetailsObj.product.purchase_unit_id);
+    this.saleDetails.unshift(tempSaleDetailsObj);
+  }
 }
