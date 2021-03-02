@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {formatDate} from '@angular/common';
 import {Customer} from '../../models/customer.model';
@@ -33,13 +33,9 @@ export class SaleComponent implements OnInit, OnDestroy {
   currentItemAmount = 0;
   units: Unit[];
   saleDetails: SaleDetail[] = [];
-
   clickedAt = null;
-  keypressed: string[] = [];
-  keysBound = '? | esc | up up down down | command+shift+k | ctrl+s | command+s | alt+r | h e l l o';
   private subscription: Subscription;
-  @ViewChild('demoArea', { read: ElementRef, static: true })
-  demoArea: ElementRef;
+
 
 
   constructor(private customerService: CustomerService
@@ -99,9 +95,7 @@ export class SaleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription = this.service.register(this.keysBound, this.demoArea.nativeElement).subscribe(evt => {
-      this.keypressed.push(`Detected ${evt.key}`);
-    });
+
     // this will fill up local customers variable from customerService
     this.customers = this.customerService.getCustomers();
     this.customerService.getCustomerServiceListener().subscribe(response => {
@@ -113,6 +107,7 @@ export class SaleComponent implements OnInit, OnDestroy {
       .subscribe((response: {success: number, data: ProductCategory[]}) => {
         this.productCategories = response.data;
       });
+
     this.saleDetailsForm.valueChanges.subscribe(val => {
       if (val.rate && val.sale_quantity){
         const ans = val.rate * val.sale_quantity;
@@ -126,8 +121,9 @@ export class SaleComponent implements OnInit, OnDestroy {
       .subscribe((response: {success: number, data: Unit[]}) => {
         this.units = response.data;
       });
-
   }
+
+
 
   onSelectedCustomer(value) {
     this.selectedLedger = value;
