@@ -44,6 +44,7 @@
     "ng2-completer": "^9.0.1",
     "ng2-search-filter": "^0.5.1",
     "ng2-smart-table": "^1.7.2",
+    "ng2-tooltip-directive": "^2.9.22",
     "ngx-fancy-logger": "^1.0.2",
     "ngx-mat-select-search": "^3.1.0",
     "ngx-mousetrap": "^1.0.0",

@@ -46,6 +46,7 @@ import {PopoverModule} from 'ngx-smart-popover';
 import {LogLevel, NgxFancyLoggerModule} from 'ngx-fancy-logger';
 import { SaleComponent } from './pages/sale/sale.component';
 import {NgxMousetrapModule} from 'ngx-mousetrap';
+import {TooltipModule} from 'ng2-tooltip-directive';
 
 
 
@@ -98,6 +99,7 @@ import {NgxMousetrapModule} from 'ngx-mousetrap';
       }
     }),
     NgxMousetrapModule.forRoot(),
+    TooltipModule,
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorInterceptor, multi: true},
               {provide: DateAdapter, useClass: DateFormat} ],
