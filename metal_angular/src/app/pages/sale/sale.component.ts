@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {formatDate} from '@angular/common';
 import {Customer} from '../../models/customer.model';
@@ -7,17 +7,17 @@ import {ProductCategory, Unit} from '../product/product.component';
 import {HttpClient} from '@angular/common/http';
 import {Product} from '../../models/product.model';
 import {ProductService} from '../../services/product.service';
-import {HotkeysService} from '../../services/hotkeys.service';
-import {PurchaseService} from '../../services/purchase.service';
 import {StorageMap} from '@ngx-pwa/local-storage';
-import {SaleDetail} from "../../models/sale.model";
+import {SaleDetail} from '../../models/sale.model';
+import {NgxMousetrapService} from 'ngx-mousetrap';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-sale',
   templateUrl: './sale.component.html',
   styleUrls: ['./sale.component.scss']
 })
-export class SaleComponent implements OnInit {
+export class SaleComponent implements OnInit, OnDestroy {
   isDeveloperAreaShowable = true;
   saleMasterForm: FormGroup;
   saleDetailsForm: FormGroup;
@@ -33,6 +33,15 @@ export class SaleComponent implements OnInit {
   currentItemAmount = 0;
   units: Unit[];
   saleDetails: SaleDetail[] = [];
+
+  clickedAt = null;
+  keypressed: string[] = [];
+  keysBound = '? | esc | up up down down | command+shift+k | ctrl+s | command+s | alt+r | h e l l o';
+  private subscription: Subscription;
+  @ViewChild('demoArea', { read: ElementRef, static: true })
+  demoArea: ElementRef;
+
+
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
               , private http: HttpClient
@@ -41,7 +50,7 @@ export class SaleComponent implements OnInit {
               // tslint:disable-next-line:align
               , private storage: StorageMap
               // tslint:disable-next-line:align
-              , private hotkeys: HotkeysService) {
+              , private service: NgxMousetrapService) {
     const now = new Date();
     const currentSQLDate = formatDate(now, 'yyyy-MM-dd', 'en');
 
@@ -90,6 +99,9 @@ export class SaleComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subscription = this.service.register(this.keysBound, this.demoArea.nativeElement).subscribe(evt => {
+      this.keypressed.push(`Detected ${evt.key}`);
+    });
     // this will fill up local customers variable from customerService
     this.customers = this.customerService.getCustomers();
     this.customerService.getCustomerServiceListener().subscribe(response => {
@@ -109,7 +121,7 @@ export class SaleComponent implements OnInit {
       }
     });
 
-    //getting units
+    // getting units
     this.http.get('http://127.0.0.1:8000/api/dev/units')
       .subscribe((response: {success: number, data: Unit[]}) => {
         this.units = response.data;
@@ -129,12 +141,25 @@ export class SaleComponent implements OnInit {
   }
 
   addItem() {
-    //copying object
+    // copying object
     const tempSaleDetailsObj = {...this.saleDetailsForm.value};
     const index = this.products.findIndex(x => x.id === tempSaleDetailsObj.product_id);
     tempSaleDetailsObj.product = this.products[index];
 
     tempSaleDetailsObj.unit = this.units.find(x => x.id === tempSaleDetailsObj.product.purchase_unit_id);
     this.saleDetails.unshift(tempSaleDetailsObj);
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+  onClick() {
+    this.clickedAt = new Date();
+  }
+
+  onClick2() {
+    console.log('testing');
   }
 }
