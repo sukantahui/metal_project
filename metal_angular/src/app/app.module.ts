@@ -47,6 +47,7 @@ import {LogLevel, NgxFancyLoggerModule} from 'ngx-fancy-logger';
 import { SaleComponent } from './pages/sale/sale.component';
 import {NgxMousetrapModule} from 'ngx-mousetrap';
 import {TooltipModule} from 'ng2-tooltip-directive';
+import { HighlightDirective } from './directives/highlight.directive';
 
 
 
@@ -71,7 +72,8 @@ import {TooltipModule} from 'ng2-tooltip-directive';
     EditInputComponent,
     VendorComponent,
     PurchaseComponent,
-    SaleComponent
+    SaleComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,
