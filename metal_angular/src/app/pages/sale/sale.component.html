@@ -188,6 +188,9 @@
           Tooltip with HTML content
         </span>
         <p appHighlight>This is invalid</p>
+
+        <h3>Click the button to change its color!</h3>
+        <button (click)="toggleIsCorrect()"  [@toggleClick]="isGreen">Toggle Me!</button>
       </mat-card-content>
     </mat-card>
   </div>

@@ -11,11 +11,23 @@ import {StorageMap} from '@ngx-pwa/local-storage';
 import {SaleDetail} from '../../models/sale.model';
 import {NgxMousetrapService} from 'ngx-mousetrap';
 import {Subscription} from 'rxjs';
-
+import { trigger, state, style, animate, transition} from '@angular/animations';
 @Component({
   selector: 'app-sale',
   templateUrl: './sale.component.html',
-  styleUrls: ['./sale.component.scss']
+  styleUrls: ['./sale.component.scss'],
+  animations: [       // metadata array
+    trigger('toggleClick', [     // trigger block
+      state('true', style({      // final CSS following animation
+        backgroundColor: 'green'
+      })),
+      state('false', style({
+        backgroundColor: 'red'
+      })),
+      transition('true => false', animate('1000ms linear')),  // animation timing
+      transition('false => true', animate('1000ms linear'))
+    ]) // end of trigger block
+  ]
 })
 export class SaleComponent implements OnInit, OnDestroy {
   isDeveloperAreaShowable = true;
@@ -37,6 +49,7 @@ export class SaleComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
 
+  isGreen = 'true';
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -157,5 +170,8 @@ export class SaleComponent implements OnInit, OnDestroy {
 
   onClick2() {
     console.log('testing');
+  }
+  toggleIsCorrect() {
+    this.isGreen = this.isGreen === 'true' ? 'false' : 'true'; // change in data-bound value
   }
 }
