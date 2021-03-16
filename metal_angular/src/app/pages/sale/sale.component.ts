@@ -11,7 +11,7 @@ import {StorageMap} from '@ngx-pwa/local-storage';
 import {SaleDetail} from '../../models/sale.model';
 import {NgxMousetrapService} from 'ngx-mousetrap';
 import {Subscription} from 'rxjs';
-import { trigger, state, style, animate, transition} from '@angular/animations';
+import {trigger, state, style, animate, transition, keyframes} from '@angular/animations';
 @Component({
   selector: 'app-sale',
   templateUrl: './sale.component.html',
@@ -26,7 +26,36 @@ import { trigger, state, style, animate, transition} from '@angular/animations';
       })),
       transition('true => false', animate('1000ms linear')),  // animation timing
       transition('false => true', animate('1000ms linear'))
-    ]) // end of trigger block
+    ]), // end of trigger block
+    trigger('animateArc', [
+      state('true', style({
+        left: '400px',
+        top: '200px'
+      })),
+      state('false', style({
+        left: '0',
+        top: '200px'
+      })),
+      transition('false => true', animate('1000ms linear', keyframes([
+        style({ left: '0',     top: '200px', offset: 0 }),
+        style({ left: '200px', top: '100px', offset: 0.50 }),
+        style({ left: '400px', top: '200px', offset: 1 })
+      ]))),
+      transition('true => false', animate('1000ms linear', keyframes([
+        style({ left: '400px', top: '200px', offset: 0 }),
+        style({ left: '200px', top: '100px', offset: 0.50 }),
+        style({ left: '0',     top: '200px', offset: 1 })
+      ])))
+    ]), // end of trigger
+    trigger('fadeSlideInOut', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(10px)' }),
+        animate('1000ms', style({ opacity: .3, transform: 'translateY(0)' })),
+      ]),
+      transition(':leave', [
+        animate('1000ms', style({ opacity: 0, transform: 'translateY(10px)' })),
+      ]),
+    ])
   ]
 })
 export class SaleComponent implements OnInit, OnDestroy {
@@ -50,6 +79,7 @@ export class SaleComponent implements OnInit, OnDestroy {
 
 
   isGreen = 'true';
+  arc = 'false';
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -173,5 +203,8 @@ export class SaleComponent implements OnInit, OnDestroy {
   }
   toggleIsCorrect() {
     this.isGreen = this.isGreen === 'true' ? 'false' : 'true'; // change in data-bound value
+  }
+  toggleBounce(){
+    this.arc = this.arc === 'false' ? 'true' : 'false';
   }
 }
