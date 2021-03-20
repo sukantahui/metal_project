@@ -13,6 +13,10 @@ import {NgxMousetrapService} from 'ngx-mousetrap';
 import {Subscription} from 'rxjs';
 import {trigger, state, style, animate, transition, keyframes} from '@angular/animations';
 import {SaleAnimation} from './animation.sale';
+import { faUserEdit, faTrashAlt, faPencilAlt} from '@fortawesome/free-solid-svg-icons';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import Swal from "sweetalert2";
+import {PurchaseDetail} from "../../models/purchase.model";
 @Component({
   selector: 'app-sale',
   templateUrl: './sale.component.html',
@@ -20,6 +24,12 @@ import {SaleAnimation} from './animation.sale';
   animations: [SaleAnimation]
 })
 export class SaleComponent implements OnInit, OnDestroy {
+
+  faUserEdit = faUserEdit;
+  faTrashAlt = faTrashAlt;
+  faPencilAlt = faPencilAlt;
+  faCheck = faCheck;
+
   isDeveloperAreaShowable = true;
   saleMasterForm: FormGroup;
   saleDetailsForm: FormGroup;
@@ -38,9 +48,17 @@ export class SaleComponent implements OnInit, OnDestroy {
   clickedAt = null;
   private subscription: Subscription;
 
+  editableSaleDetailItemIndex = -1;
 
   isGreen = 'true';
   arc = 'false';
+  pageSize = 10;
+  p = 1;
+  isShowAllSalesList = false;
+  currentSaleTotal = 0;
+  roundedOff = 0;
+  grossTotal = 0;
+
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -79,7 +97,8 @@ export class SaleComponent implements OnInit, OnDestroy {
       product_category_id: new FormControl(1),
       product_id: new FormControl(null),
       rate: new FormControl(null),
-      sale_quantity: new FormControl(null)
+      sale_quantity: new FormControl(null),
+      isEditable: new FormControl(false)
     });
     const userData: {id: number, personName: string, _authKey: string, personTypeId: number} = JSON.parse(localStorage.getItem('user'));
     this.transactionMasterForm = new FormGroup({
@@ -148,6 +167,23 @@ export class SaleComponent implements OnInit, OnDestroy {
 
     tempSaleDetailsObj.unit = this.units.find(x => x.id === tempSaleDetailsObj.product.purchase_unit_id);
     this.saleDetails.unshift(tempSaleDetailsObj);
+
+    this.saleDetailsForm.patchValue({
+      product_category_id: null,
+      product_id: null,
+      rate: null,
+      sale_quantity: null
+    });
+    this.currentItemAmount = null;
+    this.selectedProduct = null;
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Product adding successful',
+      showConfirmButton: false,
+      timer: 1000
+    });
+
   }
 
   ngOnDestroy(): void {
@@ -167,5 +203,55 @@ export class SaleComponent implements OnInit, OnDestroy {
   }
   toggleBounce(){
     this.arc = this.arc === 'false' ? 'true' : 'false';
+  }
+
+  onToggle(event) {
+    console.log(event);
+    if (event.checked) {
+      this.isShowAllSalesList = true;
+    }else{
+      this.isShowAllSalesList=false;
+    }
+  }
+
+  populateSaleDetailsForm(saleDetails: SaleDetail, index) {
+    this.saleDetailsForm.patchValue({
+      product_category_id: saleDetails.product_category_id,
+      product_id: saleDetails.product_id,
+      rate: saleDetails.rate,
+      sale_quantity: saleDetails.sale_quantity
+    });
+
+    this.editableSaleDetailItemIndex = index;
+  }
+
+  deleteSaleDetailItem(saleDetail) {
+    const productName = saleDetail.product.product_name;
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Are you sure to delete ' + productName,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,Delete It!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let productId = saleDetail.product.id;
+        let itemIndex = this.saleDetails.findIndex(x => x.product_id === productId);
+        this.saleDetails.splice(itemIndex, 1);
+        //calculating total again after deletion
+        const tempSaleTotal = this.saleDetails.reduce((total, record) => {
+          // @ts-ignore
+          return total + (record.rate * record.sale_quantity);
+        }, 0);
+
+        // this.currentPurchaseTotal = tempPurchaseTotal;
+        this.currentSaleTotal = parseFloat(tempSaleTotal.toFixed(2));
+        const round = Math.round(this.currentSaleTotal) - this.currentSaleTotal;
+        this.roundedOff = parseFloat(round.toFixed(2));
+        this.grossTotal = this.currentSaleTotal + this.roundedOff;
+      }
+    });
   }
 }

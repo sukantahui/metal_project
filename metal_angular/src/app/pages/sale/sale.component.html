@@ -68,7 +68,7 @@
 
               <ng-select [items]="productsByCategory" fxFlex="30" (change)="onSelectedProduct($event)" bindLabel="product_name" class="custom" bindValue="id" formControlName="product_id" placeholder="Product">
               </ng-select>
-              <div fxFlex="20" *ngIf="selectedProduct">
+              <div fxFlex="20" *ngIf="selectedProduct" @fadeSlideInOut>
                 <div class="example-button-container">
                   <button mat-mini-fab color="accent" [popover]="popoverProduct" aria-label="Customer Details">
                     <mat-icon>menu</mat-icon>
@@ -109,26 +109,81 @@
 
   <div fxFlex="60" id="right-div">
     <div style="min-height: 92vh; background-color: rgba(202, 199, 224, 0.81);">
-      <mat-card class="example-card">
+      <mat-slide-toggle [(ngModel)]="isShowAllSalesList" (change)="onToggle($event)">Slide me!</mat-slide-toggle>
+
+      <mat-card *ngIf="saleDetails.length>0 && !isShowAllSalesList"  class="example-card">
         <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-title>Sale Form</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <div fxFlex="80">
-              <button class="btn btn-primary" (click)="onClick()" [ngxMousetrapKey]="'alt+enter | alt+enter'">Click or press alt+enter</button>
-              <button class="btn btn-primary" (click)="onClick2()" [ngxMousetrapKey]="'alt+i | alt+i'">Click or press alt+i</button>
-              <div *ngIf="clickedAt">
-                Clicked at {{clickedAt}}
-              </div>
+          <mat-card-title>
+            <fa-icon></fa-icon>&nbsp;Sale Details</mat-card-title>
+          <mat-card-subtitle>
+            <div *ngIf="selectedLedger">
+              <span><h3>{{selectedLedger.billing_name}}</h3></span>
+              <span>Address: {{selectedLedger.address1}},Mob: {{selectedLedger.mobile1}}</span><br>
             </div>
-          </div>
+          </mat-card-subtitle>
+
+        </mat-card-header>
+
+        <mat-card-content>
+          <table class="table table-bordered" id="sale-detail-list">
+            <thead>
+            <tr>
+              <th class="w-10">SL</th>
+              <th class="w-30">Product</th>
+              <th class="w-10">Rate</th>
+              <th class="w-10">Qty</th>
+              <th class="w-10">Amount</th>
+              <th class="w-30 text-center" colspan="2">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr [class.editable-purchase-detail-item]="indexOfElement==editableSaleDetailItemIndex" *ngFor="let saleDetail of saleDetails;let indexOfElement=index">
+              <td>{{indexOfElement+1}}</td>
+              <td>{{saleDetail.product.product_name}} ({{saleDetail.product.category_name}})</td>
+              <!--              Rate-->
+              <td id="rate" class="text-right">
+                                <span *ngIf="saleDetail.isEditable">
+                                  <input appAutofocus type='number'  [(ngModel)]="saleDetail.rate" class="cellInput">
+                                  <button (click)="saleDetail.isEditable = false"  style="background-color: #c4c6ca; height: 30px; width: 30px; border-radius: 5px;">
+                                    <fa-icon [icon]="faCheck"></fa-icon>
+                                  </button>
+                                </span>
+                <a *ngIf="!saleDetail.isEditable" [routerLink]="" (click)="saleDetail.isEditable = true" >{{saleDetail.rate | currency:"&#8377; "}}</a>
+
+              </td>
+              <!--              Quantity-->
+              <td class="text-right">
+                <!--                                  {{purchaseDetail.purchase_quantity + ' (' + purchaseDetail.unit.unit_name + ')'}}-->
+                <a *ngIf="!saleDetail.isEditable" [routerLink]="" (click)="saleDetail.isEditable = true">{{saleDetail.sale_quantity + ' (' + saleDetail.unit.unit_name + ')'}}</a>
+                <span *ngIf="saleDetail.isEditable">
+                                  <input appautofocus type='number' [(ngModel)]="saleDetail.sale_quantity" class="cellInput">
+                                  <button (click)="saleDetail.isEditable = false" style="background-color: #c4c6ca; height: 30px; width: 30px; border-radius: 5px;">
+                                     <fa-icon [icon]="faCheck"></fa-icon>
+                                  </button>
+                </span>
+              </td>
+
+                <!--                Amount-->
+              <td class="text-right pr-5">{{(saleDetail.rate * saleDetail.sale_quantity) | number: '1.2' | currency:"&#8377; "}}</td>
+
+              <!--              Action-->
+              <td class="text-right">
+                <a [routerLink]="" (click)="populateSaleDetailsForm(saleDetail , indexOfElement)"><fa-icon class="edit" [icon]="faPencilAlt"></fa-icon></a>
+              </td>
+              <td class="text-right">
+                <a [routerLink]="" (click)="deleteSaleDetailItem(saleDetail)"><fa-icon class="edit" [icon]="faTrashAlt"></fa-icon></a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
         </mat-card-content>
       </mat-card>
+
+
+      <!--          purchase list-->
+
     </div>
   </div>
-
 </div>
 
 
