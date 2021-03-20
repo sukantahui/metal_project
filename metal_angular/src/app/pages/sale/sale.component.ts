@@ -11,11 +11,13 @@ import {StorageMap} from '@ngx-pwa/local-storage';
 import {SaleDetail} from '../../models/sale.model';
 import {NgxMousetrapService} from 'ngx-mousetrap';
 import {Subscription} from 'rxjs';
-
+import {trigger, state, style, animate, transition, keyframes} from '@angular/animations';
+import {SaleAnimation} from './animation.sale';
 @Component({
   selector: 'app-sale',
   templateUrl: './sale.component.html',
-  styleUrls: ['./sale.component.scss']
+  styleUrls: ['./sale.component.scss'],
+  animations: [SaleAnimation]
 })
 export class SaleComponent implements OnInit, OnDestroy {
   isDeveloperAreaShowable = true;
@@ -37,6 +39,8 @@ export class SaleComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
 
+  isGreen = 'true';
+  arc = 'false';
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -157,5 +161,11 @@ export class SaleComponent implements OnInit, OnDestroy {
 
   onClick2() {
     console.log('testing');
+  }
+  toggleIsCorrect() {
+    this.isGreen = this.isGreen === 'true' ? 'false' : 'true'; // change in data-bound value
+  }
+  toggleBounce(){
+    this.arc = this.arc === 'false' ? 'true' : 'false';
   }
 }

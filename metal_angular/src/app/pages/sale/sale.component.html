@@ -14,7 +14,7 @@
                     <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
                       <ng-select [items]="customers" fxFlex="80" (change)="onSelectedCustomer($event)" bindLabel="ledger_name" class="custom" bindValue="id" formControlName="ledger_id" placeholder="Select Vendor">
                       </ng-select>
-                      <div fxFlex="20" *ngIf="selectedLedger">
+                      <div fxFlex="20" *ngIf="selectedLedger" @fadeSlideInOut>
                         <popover-content #popoverCustomer title="{{selectedLedger.ledger_name}}" placement="right" [animation]="true" [closeOnClickOutside]="true">
                           <span style=""><b> Name: </b>{{selectedLedger.billing_name}}</span><br>
                           <span *ngIf="selectedLedger.address1" style=""><b>Address: </b>{{selectedLedger.address1}}</span><br>
@@ -188,6 +188,13 @@
           Tooltip with HTML content
         </span>
         <p appHighlight>This is invalid</p>
+
+        <h3>Click the button to change its color!</h3>
+        <button (click)="toggleIsCorrect()"  [@toggleClick]="isGreen">Toggle Me!</button>
+
+        <h3>Arcing Ball Animation</h3>
+        <button (click)="toggleBounce()">Arc the Ball!</button>
+        <div [@animateArc]="arc" class="ball"></div>
       </mat-card-content>
     </mat-card>
   </div>
