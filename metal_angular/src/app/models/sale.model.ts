@@ -1,6 +1,15 @@
 import {Product} from "./product.model";
 import {Unit} from "../pages/product/product.component";
 
+export class SaleMaster{
+  id?: number;
+  bill_number?: string;
+  order_date?: string;
+  delivery_date?: string;
+  comment?: string
+}
+
+
 export class SaleDetail{
   id?: number;
   sale_master_id?: number;

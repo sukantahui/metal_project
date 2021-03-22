@@ -8,7 +8,7 @@ import {HttpClient} from '@angular/common/http';
 import {Product} from '../../models/product.model';
 import {ProductService} from '../../services/product.service';
 import {StorageMap} from '@ngx-pwa/local-storage';
-import {SaleDetail} from '../../models/sale.model';
+import {SaleDetail, SaleMaster} from '../../models/sale.model';
 import {NgxMousetrapService} from 'ngx-mousetrap';
 import {Subscription} from 'rxjs';
 import {trigger, state, style, animate, transition, keyframes} from '@angular/animations';
@@ -16,7 +16,8 @@ import {SaleAnimation} from './animation.sale';
 import { faUserEdit, faTrashAlt, faPencilAlt} from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import Swal from "sweetalert2";
-import {PurchaseDetail} from "../../models/purchase.model";
+import {PurchaseDetail, PurchaseMaster} from "../../models/purchase.model";
+import {TransactionDetail, TransactionMaster} from "../../models/transaction.model";
 @Component({
   selector: 'app-sale',
   templateUrl: './sale.component.html',
@@ -59,6 +60,7 @@ export class SaleComponent implements OnInit, OnDestroy {
   roundedOff = 0;
   grossTotal = 0;
 
+  saleContainer: { sd: SaleDetail[] };
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -116,8 +118,49 @@ export class SaleComponent implements OnInit, OnDestroy {
       amount: new FormControl(0),
     });
   }
+  updateItem(){
+    //here we are going to update the current item
+    const tempSaleDetailsObj = {...this.saleDetailsForm.value};
+    const index = this.products.findIndex(x => x.id === tempSaleDetailsObj.product_id);
+    tempSaleDetailsObj.product = this.products[index];
+
+    tempSaleDetailsObj.unit = this.units.find(x => x.id === tempSaleDetailsObj.product.purchase_unit_id);
+
+    this.saleDetails[this.editableSaleDetailItemIndex]=tempSaleDetailsObj;
+
+    this.saleDetailsForm.patchValue({
+      product_category_id: null,
+      product_id: null,
+      rate: null,
+      sale_quantity: null
+    });
+    this.currentItemAmount = null;
+    this.selectedProduct = null;
+    this.editableSaleDetailItemIndex=-1;
+    //adding data to local storage
+    this.saleContainer = {
+      sd: this.saleDetails
+    };
+    this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
+
+    });
+  }
 
   ngOnInit(): void {
+
+    this.storage.get('saleContainer').subscribe((tempSaleContainer: any) => {
+      if(tempSaleContainer){
+        this.saleContainer = tempSaleContainer;
+        if(this.saleContainer.sd){
+          this.saleDetails = this.saleContainer.sd;
+        }else{
+          this.saleDetails = [];
+        }
+      }else{
+
+      }
+
+    });
 
     // this will fill up local customers variable from customerService
     this.customers = this.customerService.getCustomers();
@@ -145,6 +188,7 @@ export class SaleComponent implements OnInit, OnDestroy {
         this.units = response.data;
       });
   }
+
 
 
 
@@ -176,6 +220,16 @@ export class SaleComponent implements OnInit, OnDestroy {
     });
     this.currentItemAmount = null;
     this.selectedProduct = null;
+
+    //adding data to local storage
+    this.saleContainer = {
+      sd: this.saleDetails
+    };
+    this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
+
+    });
+
+
     Swal.fire({
       position: 'top-end',
       icon: 'success',
@@ -221,9 +275,10 @@ export class SaleComponent implements OnInit, OnDestroy {
       rate: saleDetails.rate,
       sale_quantity: saleDetails.sale_quantity
     });
-
+    //storing the current editable item to variable
     this.editableSaleDetailItemIndex = index;
   }
+
 
   deleteSaleDetailItem(saleDetail) {
     const productName = saleDetail.product.product_name;

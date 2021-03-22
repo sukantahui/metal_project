@@ -53,3 +53,11 @@ mat-card-content{
   height: 25px;
   width: 25px;
 }
+
+.editable-sale-detail-item{
+  background-color: #f7d481;
+  td{
+    color: #020101 !important;
+    padding: 3px 12px 3px 12px !important;
+  }
+}
