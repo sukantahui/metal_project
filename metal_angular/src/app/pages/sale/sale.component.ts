@@ -128,6 +128,7 @@ export class SaleComponent implements OnInit, OnDestroy {
 
     this.saleDetails[this.editableSaleDetailItemIndex]=tempSaleDetailsObj;
 
+
     this.saleDetailsForm.patchValue({
       product_category_id: null,
       product_id: null,
@@ -137,6 +138,7 @@ export class SaleComponent implements OnInit, OnDestroy {
     this.currentItemAmount = null;
     this.selectedProduct = null;
     this.editableSaleDetailItemIndex=-1;
+    this.selectedProduct= null;
     //adding data to local storage
     this.saleContainer = {
       sd: this.saleDetails
@@ -201,6 +203,7 @@ export class SaleComponent implements OnInit, OnDestroy {
   }
   onSelectedProduct(value) {
     this.selectedProduct = value;
+    console.log(this.selectedProduct);
   }
 
   addItem() {
@@ -275,6 +278,7 @@ export class SaleComponent implements OnInit, OnDestroy {
       rate: saleDetails.rate,
       sale_quantity: saleDetails.sale_quantity
     });
+    this.selectedProduct= saleDetails.product;
     //storing the current editable item to variable
     this.editableSaleDetailItemIndex = index;
   }
