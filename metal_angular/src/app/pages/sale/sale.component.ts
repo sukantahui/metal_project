@@ -33,6 +33,7 @@ export class SaleComponent implements OnInit, OnDestroy {
 
   isDeveloperAreaShowable = true;
   saleMasterForm: FormGroup;
+  saleForm: FormGroup;
   saleDetailsForm: FormGroup;
   transactionMasterForm: FormGroup;
   transactionDetailsForm: FormGroup;
@@ -49,6 +50,9 @@ export class SaleComponent implements OnInit, OnDestroy {
   clickedAt = null;
   private subscription: Subscription;
 
+  transactionMaster: TransactionMaster = null;
+  transactionDetails: TransactionDetail[] = [];
+
   editableSaleDetailItemIndex = -1;
 
   isGreen = 'true';
@@ -59,8 +63,7 @@ export class SaleComponent implements OnInit, OnDestroy {
   currentSaleTotal = 0;
   roundedOff = 0;
   grossTotal = 0;
-
-  saleContainer: { sd: SaleDetail[] };
+  saleContainer: { sd?: SaleDetail[], tm?: TransactionMaster, td?: TransactionDetail[] };
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -114,7 +117,7 @@ export class SaleComponent implements OnInit, OnDestroy {
       id: new FormControl(null),
       transaction_master_id: new FormControl(null),
       ledger_id: new FormControl(null),
-      transaction_type_id: new FormControl(2),
+      transaction_type_id: new FormControl(1),
       amount: new FormControl(0),
     });
   }
@@ -141,6 +144,8 @@ export class SaleComponent implements OnInit, OnDestroy {
     this.selectedProduct= null;
     //adding data to local storage
     this.saleContainer = {
+      tm: this.transactionMaster,
+      td: this.transactionDetails,
       sd: this.saleDetails
     };
     this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
@@ -188,7 +193,35 @@ export class SaleComponent implements OnInit, OnDestroy {
     this.http.get('http://127.0.0.1:8000/api/dev/units')
       .subscribe((response: {success: number, data: Unit[]}) => {
         this.units = response.data;
-      });
+    });
+
+    /* Transaction detail will be updated if vendor is selected */
+    this.transactionDetailsForm.valueChanges.subscribe(val => {
+      /* first it will erase all previous data, then it will first push the purchase ledger, its id is 5 and it is  permanent */
+      /* in step2 i am pushing the vendor ledger */
+      /*
+      * In purchase Journal is:-
+      * Purchase account Dr.
+      * Vendor/Cash/Bank A/C Cr.
+      * Amount to be adjusted latter
+      */
+      this.transactionDetails = [];
+      // when we are loading data from storage, purchaseContainer, changing the transactionDetailsForm to reflect the venture
+      // hence transactionDetails are initialising again with amount 0 for position 0
+      // we need to resolve it #problem 2
+      let transactionAmount = 0;
+      // if (this.saleContainer && this.saleContainer.td){
+      //   transactionAmount = this.saleContainer.td[0].amount;
+      // }
+
+
+      // tslint:disable-next-line:max-line-length
+      this.transactionDetails.push(val);
+      this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 6, transaction_type_id: 2, amount: transactionAmount});
+
+
+
+    });
   }
 
 
@@ -215,6 +248,9 @@ export class SaleComponent implements OnInit, OnDestroy {
     tempSaleDetailsObj.unit = this.units.find(x => x.id === tempSaleDetailsObj.product.purchase_unit_id);
     this.saleDetails.unshift(tempSaleDetailsObj);
 
+    this.transactionMaster = this.transactionMasterForm.value;
+
+
     this.saleDetailsForm.patchValue({
       product_category_id: null,
       product_id: null,
@@ -226,6 +262,8 @@ export class SaleComponent implements OnInit, OnDestroy {
 
     //adding data to local storage
     this.saleContainer = {
+      tm: this.transactionMaster,
+      td: this.transactionDetails,
       sd: this.saleDetails
     };
     this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
