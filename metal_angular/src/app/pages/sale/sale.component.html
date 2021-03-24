@@ -178,6 +178,13 @@
               </td>
             </tr>
             </tbody>
+            <tfoot>
+            <tr>
+              <td colspan="4">Total</td>
+              <td class="text-right">{{currentSaleTotal | number: '1.2' | currency: "&#8377; "}}</td>
+              <td colspan="2"></td>
+            </tr>
+            </tfoot>
           </table>
         </mat-card-content>
       </mat-card>
@@ -240,6 +247,16 @@
         <h3>Transaction Detail</h3>
         <pre>
           transactionDetailsForm={{transactionDetailsForm.value | json}}
+        </pre>
+
+        <h3>Sale Master Form</h3>
+        <pre>
+          saleMasterForm={{saleMasterForm.value | json}}
+        </pre>
+
+        <h3>Sale Master Detail</h3>
+        <pre>
+          saleDetailsForm={{saleDetailsForm.value | json}}
         </pre>
       </mat-card-content>
     </mat-card>

@@ -46,12 +46,14 @@ export class SaleComponent implements OnInit, OnDestroy {
   selectedProduct: Product;
   currentItemAmount = 0;
   units: Unit[];
-  saleDetails: SaleDetail[] = [];
+
   clickedAt = null;
   private subscription: Subscription;
 
   transactionMaster: TransactionMaster = null;
   transactionDetails: TransactionDetail[] = [];
+  saleMaster: SaleMaster;
+  saleDetails: SaleDetail[] = [];
 
   editableSaleDetailItemIndex = -1;
 
@@ -63,7 +65,8 @@ export class SaleComponent implements OnInit, OnDestroy {
   currentSaleTotal = 0;
   roundedOff = 0;
   grossTotal = 0;
-  saleContainer: { sd?: SaleDetail[], tm?: TransactionMaster, td?: TransactionDetail[] };
+  saleContainer: { tm?: TransactionMaster, td?: TransactionDetail[], sm?: SaleMaster, sd?: SaleDetail[]};
+
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -155,7 +158,7 @@ export class SaleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // The following code is used to fetch data from local storage
-    this.storage.get('saleContainer').subscribe((tempSaleContainer: {sd?: SaleDetail[], tm?: TransactionMaster, td?: TransactionDetail[] }) => {
+    this.storage.get('saleContainer').subscribe((tempSaleContainer: { tm?: TransactionMaster, td?: TransactionDetail[], sm?: SaleMaster,sd?: SaleDetail[]}) => {
       if(tempSaleContainer){
         this.saleContainer = tempSaleContainer;
         //updating transaction master from storage
@@ -177,8 +180,14 @@ export class SaleComponent implements OnInit, OnDestroy {
         //updating saleDetails from storage
         if(this.saleContainer.sd){
           this.saleDetails = this.saleContainer.sd;
+          const tempSaleTotal = this.saleDetails.reduce( (total, record) => {
+            // @ts-ignore
+            return total + (record.rate * record.sale_quantity);
+          }, 0);
+          this.currentSaleTotal = tempSaleTotal;
         }else{
           this.saleDetails = [];
+          this.currentSaleTotal=0;
         }
       }else{
 
@@ -266,6 +275,7 @@ export class SaleComponent implements OnInit, OnDestroy {
     this.saleDetails.unshift(tempSaleDetailsObj);
 
     this.transactionMaster = this.transactionMasterForm.value;
+    this.saleMaster = this.saleMasterForm.value;
 
 
     this.saleDetailsForm.patchValue({
@@ -277,10 +287,16 @@ export class SaleComponent implements OnInit, OnDestroy {
     this.currentItemAmount = null;
     this.selectedProduct = null;
 
+    const tempSaleTotal = this.saleDetails.reduce( (total, record) => {
+      // @ts-ignore
+      return total + (record.rate * record.sale_quantity);
+    }, 0);
+    this.currentSaleTotal = tempSaleTotal;
     //adding data to local storage
     this.saleContainer = {
       tm: this.transactionMaster,
       td: this.transactionDetails,
+      sm: this.saleMaster,
       sd: this.saleDetails
     };
     this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
