@@ -18,6 +18,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import Swal from "sweetalert2";
 import {PurchaseDetail, PurchaseMaster} from "../../models/purchase.model";
 import {TransactionDetail, TransactionMaster} from "../../models/transaction.model";
+import {ExtraItem, ExtraItemDetails} from '../purchase/purchase.component';
 @Component({
   selector: 'app-sale',
   templateUrl: './sale.component.html',
@@ -32,11 +33,13 @@ export class SaleComponent implements OnInit, OnDestroy {
   faCheck = faCheck;
 
   isDeveloperAreaShowable = true;
-  saleMasterForm: FormGroup;
-  saleForm: FormGroup;
-  saleDetailsForm: FormGroup;
+
   transactionMasterForm: FormGroup;
   transactionDetailsForm: FormGroup;
+  saleMasterForm: FormGroup;
+  saleDetailsForm: FormGroup;
+  extraItemsForm: FormGroup;
+
   customers: Customer[] = [];
   selectedLedger: Customer;
   selectedProductCategoryId = 1;
@@ -54,6 +57,9 @@ export class SaleComponent implements OnInit, OnDestroy {
   transactionDetails: TransactionDetail[] = [];
   saleMaster: SaleMaster;
   saleDetails: SaleDetail[] = [];
+  extraItems: ExtraItem[] = [];
+
+  extraItemTypes = [{value: 1, name: 'Add'}, {value: -1, name: 'Less'}];
 
   editableSaleDetailItemIndex = -1;
 
@@ -66,6 +72,7 @@ export class SaleComponent implements OnInit, OnDestroy {
   roundedOff = 0;
   grossTotal = 0;
   saleContainer: { tm?: TransactionMaster, td?: TransactionDetail[], sm?: SaleMaster, sd?: SaleDetail[]};
+
 
 
   constructor(private customerService: CustomerService
@@ -123,16 +130,22 @@ export class SaleComponent implements OnInit, OnDestroy {
       transaction_type_id: new FormControl(1),
       amount: new FormControl(0),
     });
+    this.extraItemsForm = new FormGroup({
+      id: new FormControl(null),
+      extra_item_id: new FormControl(null),
+      amount: new FormControl(null),
+      item_type: new FormControl(1),
+    });
   }
   updateItem(){
-    //here we are going to update the current item
+    // here we are going to update the current item
     const tempSaleDetailsObj = {...this.saleDetailsForm.value};
     const index = this.products.findIndex(x => x.id === tempSaleDetailsObj.product_id);
     tempSaleDetailsObj.product = this.products[index];
 
     tempSaleDetailsObj.unit = this.units.find(x => x.id === tempSaleDetailsObj.product.purchase_unit_id);
 
-    this.saleDetails[this.editableSaleDetailItemIndex]=tempSaleDetailsObj;
+    this.saleDetails[this.editableSaleDetailItemIndex] = tempSaleDetailsObj;
 
 
     this.saleDetailsForm.patchValue({
@@ -143,9 +156,9 @@ export class SaleComponent implements OnInit, OnDestroy {
     });
     this.currentItemAmount = null;
     this.selectedProduct = null;
-    this.editableSaleDetailItemIndex=-1;
-    this.selectedProduct= null;
-    //adding data to local storage
+    this.editableSaleDetailItemIndex = -1;
+    this.selectedProduct = null;
+    // adding data to local storage
     this.saleContainer = {
       tm: this.transactionMaster,
       td: this.transactionDetails,
@@ -158,27 +171,28 @@ export class SaleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // The following code is used to fetch data from local storage
+    // tslint:disable-next-line:max-line-length
     this.storage.get('saleContainer').subscribe((tempSaleContainer: { tm?: TransactionMaster, td?: TransactionDetail[], sm?: SaleMaster,sd?: SaleDetail[]}) => {
-      if(tempSaleContainer){
+      if (tempSaleContainer){
         this.saleContainer = tempSaleContainer;
-        //updating transaction master from storage
-        if(this.saleContainer.tm){
-          this.transactionMaster=this.saleContainer.tm;
+        // updating transaction master from storage
+        if (this.saleContainer.tm){
+          this.transactionMaster = this.saleContainer.tm;
           this.transactionMasterForm.patchValue(this.transactionMaster);
         }else{
 
         }
 
-        //updating transaction detail
-        if(this.saleContainer.td){
+        // updating transaction detail
+        if (this.saleContainer.td){
           this.transactionDetails = this.saleContainer.td;
           this.transactionDetailsForm.patchValue({ledger_id: this.transactionDetails[0].ledger_id});
         }else{
           this.transactionDetails = [];
         }
 
-        //updating saleDetails from storage
-        if(this.saleContainer.sd){
+        // updating saleDetails from storage
+        if (this.saleContainer.sd){
           this.saleDetails = this.saleContainer.sd;
           const tempSaleTotal = this.saleDetails.reduce( (total, record) => {
             // @ts-ignore
@@ -187,12 +201,18 @@ export class SaleComponent implements OnInit, OnDestroy {
           this.currentSaleTotal = tempSaleTotal;
         }else{
           this.saleDetails = [];
-          this.currentSaleTotal=0;
+          this.currentSaleTotal = 0;
         }
       }else{
 
       }
 
+    });
+
+    this.transactionMasterForm.valueChanges.subscribe( val => {
+      const x = val.transaction_date;
+      val.transaction_date =  formatDate(x, 'yyyy-MM-dd', 'en');
+      this.transactionMaster = val;
     });
 
     // this will fill up local customers variable from customerService
@@ -292,7 +312,7 @@ export class SaleComponent implements OnInit, OnDestroy {
       return total + (record.rate * record.sale_quantity);
     }, 0);
     this.currentSaleTotal = tempSaleTotal;
-    //adding data to local storage
+    // adding data to local storage
     this.saleContainer = {
       tm: this.transactionMaster,
       td: this.transactionDetails,
@@ -350,7 +370,7 @@ export class SaleComponent implements OnInit, OnDestroy {
       sale_quantity: saleDetails.sale_quantity
     });
     this.selectedProduct= saleDetails.product;
-    //storing the current editable item to variable
+    // storing the current editable item to variable
     this.editableSaleDetailItemIndex = index;
   }
 
