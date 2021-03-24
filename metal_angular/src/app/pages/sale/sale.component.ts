@@ -154,10 +154,27 @@ export class SaleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
-    this.storage.get('saleContainer').subscribe((tempSaleContainer: any) => {
+    // The following code is used to fetch data from local storage
+    this.storage.get('saleContainer').subscribe((tempSaleContainer: {sd?: SaleDetail[], tm?: TransactionMaster, td?: TransactionDetail[] }) => {
       if(tempSaleContainer){
         this.saleContainer = tempSaleContainer;
+        //updating transaction master from storage
+        if(this.saleContainer.tm){
+          this.transactionMaster=this.saleContainer.tm;
+          this.transactionMasterForm.patchValue(this.transactionMaster);
+        }else{
+
+        }
+
+        //updating transaction detail
+        if(this.saleContainer.td){
+          this.transactionDetails = this.saleContainer.td;
+          this.transactionDetailsForm.patchValue({ledger_id: this.transactionDetails[0].ledger_id});
+        }else{
+          this.transactionDetails = [];
+        }
+
+        //updating saleDetails from storage
         if(this.saleContainer.sd){
           this.saleDetails = this.saleContainer.sd;
         }else{
