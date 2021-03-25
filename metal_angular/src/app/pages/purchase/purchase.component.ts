@@ -179,7 +179,7 @@ export class PurchaseComponent implements OnInit {
       extraItemsFormValue: this.extraItemsForm.value
     };
 
-    // Transaction master will be updated
+
     this.http.get('http://127.0.0.1:8000/api/dev/extraItems').subscribe((response: {success: number, data: ExtraItem[]}) => {
       this.extraItems = response.data;
     });
@@ -348,7 +348,7 @@ export class PurchaseComponent implements OnInit {
 
   onSelectedVendor(value){
     this.selectedLedger = value;
-    if(!this.paymentTransactionMaster){
+    if (!this.paymentTransactionMaster){
       const now = new Date();
       const currentSQLDate = formatDate(now, 'yyyy-MM-dd', 'en');
       this.transactionMasterForm.patchValue({transaction_date: currentSQLDate});
@@ -594,10 +594,10 @@ export class PurchaseComponent implements OnInit {
       confirmButtonText: 'Yes,Delete It!'
     }).then((result) => {
       if (result.isConfirmed) {
-        let productId = purchaseDetail.product.id;
-        let itemIndex = this.purchaseDetails.findIndex(x => x.product_id === productId);
+        const productId = purchaseDetail.product.id;
+        const itemIndex = this.purchaseDetails.findIndex(x => x.product_id === productId);
         this.purchaseDetails.splice(itemIndex, 1);
-        //calculating total again after deletion
+        // calculating total again after deletion
         const tempPurchaseTotal = this.purchaseDetails.reduce((total, record) => {
           // @ts-ignore
           return total + (record.rate * record.purchase_quantity);
@@ -612,7 +612,7 @@ export class PurchaseComponent implements OnInit {
         this.roundedOff = parseFloat(round.toFixed(2));
         this.logger.error(this.roundedOff);
         this.grossTotal = this.currentPurchaseTotal + this.roundedOff;
-        const tempExtraItemIndex = this.extraItemDetails.findIndex(x=>x.extra_item_id === 1);
+        const tempExtraItemIndex = this.extraItemDetails.findIndex(x => x.extra_item_id === 1);
         this.extraItemDetails[tempExtraItemIndex].amount = this.roundedOff;
 
         this.transactionDetails[0].amount = this.grossTotal;

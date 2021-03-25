@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, DoCheck, ElementRef, IterableDiffer, IterableDiffers, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {formatDate} from '@angular/common';
 import {Customer} from '../../models/customer.model';
@@ -15,17 +15,20 @@ import {trigger, state, style, animate, transition, keyframes} from '@angular/an
 import {SaleAnimation} from './animation.sale';
 import { faUserEdit, faTrashAlt, faPencilAlt} from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import Swal from "sweetalert2";
-import {PurchaseDetail, PurchaseMaster} from "../../models/purchase.model";
-import {TransactionDetail, TransactionMaster} from "../../models/transaction.model";
+import Swal from 'sweetalert2';
+import {PurchaseDetail, PurchaseMaster} from '../../models/purchase.model';
+import {TransactionDetail, TransactionMaster} from '../../models/transaction.model';
 import {ExtraItem, ExtraItemDetails} from '../purchase/purchase.component';
+
+
+
 @Component({
   selector: 'app-sale',
   templateUrl: './sale.component.html',
   styleUrls: ['./sale.component.scss'],
   animations: [SaleAnimation]
 })
-export class SaleComponent implements OnInit, OnDestroy {
+export class SaleComponent implements OnInit, OnDestroy, DoCheck {
 
   faUserEdit = faUserEdit;
   faTrashAlt = faTrashAlt;
@@ -57,6 +60,7 @@ export class SaleComponent implements OnInit, OnDestroy {
   transactionDetails: TransactionDetail[] = [];
   saleMaster: SaleMaster;
   saleDetails: SaleDetail[] = [];
+  extraItemDetails: ExtraItemDetails[] = [];
   extraItems: ExtraItem[] = [];
 
   extraItemTypes = [{value: 1, name: 'Add'}, {value: -1, name: 'Less'}];
@@ -71,8 +75,17 @@ export class SaleComponent implements OnInit, OnDestroy {
   currentSaleTotal = 0;
   roundedOff = 0;
   grossTotal = 0;
-  saleContainer: { tm?: TransactionMaster, td?: TransactionDetail[], sm?: SaleMaster, sd?: SaleDetail[]};
-
+  saleContainer: {
+    tm?: TransactionMaster,
+    td?: TransactionDetail[],
+    sm?: SaleMaster,
+    sd?: SaleDetail[],
+    currentSaleTotal?: number,
+    roundedOff?: number,
+    grossTotal?: number,
+    extraItems?: ExtraItemDetails[]
+  };
+  private differ: IterableDiffer<SaleDetail>;
 
 
   constructor(private customerService: CustomerService
@@ -83,7 +96,10 @@ export class SaleComponent implements OnInit, OnDestroy {
               // tslint:disable-next-line:align
               , private storage: StorageMap
               // tslint:disable-next-line:align
-              , private service: NgxMousetrapService) {
+              , private service: NgxMousetrapService
+              // tslint:disable-next-line:align
+              , private iterableDiff: IterableDiffers) {
+    this.differ = this.iterableDiff.find(this.saleDetails).create();
     const now = new Date();
     const currentSQLDate = formatDate(now, 'yyyy-MM-dd', 'en');
 
@@ -170,6 +186,10 @@ export class SaleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.http.get('http://127.0.0.1:8000/api/dev/extraItems').subscribe((response: {success: number, data: ExtraItem[]}) => {
+      this.extraItems = response.data;
+    });
+
     // The following code is used to fetch data from local storage
     // tslint:disable-next-line:max-line-length
     this.storage.get('saleContainer').subscribe((tempSaleContainer: { tm?: TransactionMaster, td?: TransactionDetail[], sm?: SaleMaster,sd?: SaleDetail[]}) => {
@@ -180,7 +200,7 @@ export class SaleComponent implements OnInit, OnDestroy {
           this.transactionMaster = this.saleContainer.tm;
           this.transactionMasterForm.patchValue(this.transactionMaster);
         }else{
-
+          this.transactionMaster = null;
         }
 
         // updating transaction detail
@@ -189,6 +209,13 @@ export class SaleComponent implements OnInit, OnDestroy {
           this.transactionDetailsForm.patchValue({ledger_id: this.transactionDetails[0].ledger_id});
         }else{
           this.transactionDetails = [];
+        }
+
+        // updating saleMaster
+        if (this.saleContainer.sm){
+          this.saleMaster = this.saleContainer.sm;
+        }else{
+          this.saleMaster = null;
         }
 
         // updating saleDetails from storage
@@ -203,8 +230,17 @@ export class SaleComponent implements OnInit, OnDestroy {
           this.saleDetails = [];
           this.currentSaleTotal = 0;
         }
-      }else{
 
+        // updating extraItemDetails
+        if (this.saleContainer.extraItems){
+          this.extraItemDetails = this.saleContainer.extraItems;
+        }else{
+          this.extraItemDetails = [];
+        }
+
+      }else{
+        // storage is empty for saleContainer
+        this.saleContainer = null;
       }
 
     });
@@ -255,7 +291,7 @@ export class SaleComponent implements OnInit, OnDestroy {
       // when we are loading data from storage, purchaseContainer, changing the transactionDetailsForm to reflect the venture
       // hence transactionDetails are initialising again with amount 0 for position 0
       // we need to resolve it #problem 2
-      let transactionAmount = 0;
+      const transactionAmount = 0;
       // if (this.saleContainer && this.saleContainer.td){
       //   transactionAmount = this.saleContainer.td[0].amount;
       // }
@@ -263,10 +299,8 @@ export class SaleComponent implements OnInit, OnDestroy {
 
       // tslint:disable-next-line:max-line-length
       this.transactionDetails.push(val);
+      // tslint:disable-next-line:max-line-length
       this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 6, transaction_type_id: 2, amount: transactionAmount});
-
-
-
     });
   }
 
@@ -311,13 +345,23 @@ export class SaleComponent implements OnInit, OnDestroy {
       // @ts-ignore
       return total + (record.rate * record.sale_quantity);
     }, 0);
-    this.currentSaleTotal = tempSaleTotal;
+
+    this.currentSaleTotal = parseFloat(tempSaleTotal.toFixed(2));
+    const round = Math.round(this.currentSaleTotal) - this.currentSaleTotal;
+    this.roundedOff = parseFloat(round.toFixed(2));
+    this.grossTotal = this.currentSaleTotal + this.roundedOff;
+    this.extraItemDetails[0] = {extra_item_id: 1, amount: this.roundedOff, item_type: 1, item_name: 'Rounded off'};
+
     // adding data to local storage
     this.saleContainer = {
       tm: this.transactionMaster,
       td: this.transactionDetails,
       sm: this.saleMaster,
-      sd: this.saleDetails
+      sd: this.saleDetails,
+      currentSaleTotal: this.currentSaleTotal,
+      roundedOff: this.roundedOff,
+      grossTotal: this.grossTotal,
+      extraItems: this.extraItemDetails
     };
     this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
 
@@ -358,7 +402,7 @@ export class SaleComponent implements OnInit, OnDestroy {
     if (event.checked) {
       this.isShowAllSalesList = true;
     }else{
-      this.isShowAllSalesList=false;
+      this.isShowAllSalesList = false;
     }
   }
 
@@ -369,7 +413,7 @@ export class SaleComponent implements OnInit, OnDestroy {
       rate: saleDetails.rate,
       sale_quantity: saleDetails.sale_quantity
     });
-    this.selectedProduct= saleDetails.product;
+    this.selectedProduct = saleDetails.product;
     // storing the current editable item to variable
     this.editableSaleDetailItemIndex = index;
   }
@@ -387,10 +431,10 @@ export class SaleComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes,Delete It!'
     }).then((result) => {
       if (result.isConfirmed) {
-        let productId = saleDetail.product.id;
-        let itemIndex = this.saleDetails.findIndex(x => x.product_id === productId);
+        const productId = saleDetail.product.id;
+        const itemIndex = this.saleDetails.findIndex(x => x.product_id === productId);
         this.saleDetails.splice(itemIndex, 1);
-        //calculating total again after deletion
+        // calculating total again after deletion
         const tempSaleTotal = this.saleDetails.reduce((total, record) => {
           // @ts-ignore
           return total + (record.rate * record.sale_quantity);
@@ -403,5 +447,12 @@ export class SaleComponent implements OnInit, OnDestroy {
         this.grossTotal = this.currentSaleTotal + this.roundedOff;
       }
     });
+  }
+
+  ngDoCheck(): void {
+    const changes = this.differ.diff(this.saleDetails);
+    if (changes) {
+      console.log('change detected', changes);
+    }
   }
 }
