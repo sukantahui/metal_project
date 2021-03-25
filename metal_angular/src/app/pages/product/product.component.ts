@@ -140,7 +140,7 @@ export class ProductComponent implements OnInit {
         });
       }
 
-    },(error) => {
+    }, (error) => {
       console.log(error);
     });
   }

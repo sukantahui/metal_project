@@ -100,7 +100,7 @@
             <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
               <button class="pull-right" tooltip="<p>Press Alt+a</p>" mat-stroked-button (click)="addItem()" *ngIf="editableSaleDetailItemIndex==-1" [ngxMousetrapKey]="'alt+a | alt+a'">Add</button>
               <button class="pull-right" mat-stroked-button (click)="updateItem()" *ngIf="editableSaleDetailItemIndex>=0">update</button>
-              <button class="pull-right" mat-stroked-button >clear</button>
+              <button class="pull-right" mat-stroked-button (click)="clearAll()">clear</button>
             </div>
 
             </form>
@@ -145,8 +145,8 @@
               <!--              Rate-->
               <td id="rate" class="text-right">
                                 <span *ngIf="saleDetail.isEditable">
-                                  <input appAutofocus type='number'  [(ngModel)]="saleDetail.rate" class="cellInput">
-                                  <button (click)="saleDetail.isEditable = false"  style="background-color: #c4c6ca; height: 30px; width: 30px; border-radius: 5px;">
+                                  <input appAutofocus type='number'  [(ngModel)]="saleDetail.rate"  class="cellInput">
+                                  <button  style="background-color: #c4c6ca; height: 30px; width: 30px; border-radius: 5px;" (click)="directUpdateSaleDetail(saleDetail,indexOfElement)">
                                     <fa-icon [icon]="faCheck"></fa-icon>
                                   </button>
                                 </span>
@@ -159,7 +159,7 @@
                 <a *ngIf="!saleDetail.isEditable" [routerLink]="" (click)="saleDetail.isEditable = true">{{saleDetail.sale_quantity + ' (' + saleDetail.unit.unit_name + ')'}}</a>
                 <span *ngIf="saleDetail.isEditable">
                                   <input appautofocus type='number' [(ngModel)]="saleDetail.sale_quantity" class="cellInput">
-                                  <button (click)="saleDetail.isEditable = false" style="background-color: #c4c6ca; height: 30px; width: 30px; border-radius: 5px;">
+                                  <button (click)="directUpdateSaleDetail(saleDetail,indexOfElement)" style="background-color: #c4c6ca; height: 30px; width: 30px; border-radius: 5px;">
                                      <fa-icon [icon]="faCheck"></fa-icon>
                                   </button>
                 </span>
@@ -181,12 +181,12 @@
             <tfoot>
             <tr>
               <td colspan="4">Total</td>
-              <td class="text-right pr-5">{{currentSaleTotal | number: '1.2' | currency: "&#8377; "}}</td>
+              <td class="text-right pr-5">{{currentSaleTotal | number: '1.2' | currency:"&#8377; " }}</td>
               <td colspan="2"></td>
             </tr>
             <tr *ngFor="let extraItem of extraItemDetails">
               <td colspan="4"><b>{{extraItem.item_type==1?'Add: ' : 'Less: '}}</b>{{extraItem.item_name}}</td>
-              <td class="text-right">{{extraItem.amount}}</td>
+              <td class="text-right">{{extraItem.amount | number: '1.2'}}</td>
               <td colspan="1" class="text-right">
                 <!--                                  <span><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>-->
               </td>
@@ -197,11 +197,42 @@
 
             <tr>
               <td colspan="4">Gross amount</td>
-              <td class="text-right">{{grossTotal | number: '1.2' | currency: "&#8377; "}}</td>
+              <td class="text-right">{{grossTotal}}</td>
               <td colspan="2"></td>
             </tr>
             </tfoot>
           </table>
+          <section class="example-section">
+            <mat-checkbox class="example-margin" [(ngModel)]="isExtraItemAdded">Extra item</mat-checkbox>
+
+            <div *ngIf="isExtraItemAdded" class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
+              <form [formGroup]="extraItemsForm">
+                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                  <mat-form-field fxFlex="30">
+                    <mat-label>Type</mat-label>
+                    <mat-select formControlName="item_type" placeholder="Extra item">
+                      <mat-option *ngFor="let extraItemType of extraItemTypes" [value]="extraItemType.value">
+                        {{extraItemType.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field fxFlex="30">
+                    <mat-label>Extra item</mat-label>
+                    <mat-select formControlName="extra_item_id" placeholder="Extra item" required>
+                      <mat-option *ngFor="let extraItem of extraItems | slice: 1" [value]="extraItem.id">
+                        {{extraItem.item_name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field fxFlex="20">
+                    <mat-label>Amount</mat-label>
+                    <input type="number" class="text-right" matInput formControlName="amount" placeholder="Extra amount" required>
+                  </mat-form-field>
+                  <button mat-raised-button color="primary" (click)="addExtraItemForSale()" [disabled]="extraItemsForm.invalid">Add</button>
+                </div>
+              </form>
+            </div>
+          </section>
         </mat-card-content>
       </mat-card>
 

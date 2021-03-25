@@ -1,4 +1,15 @@
-import {AfterViewInit, Component, DoCheck, ElementRef, IterableDiffer, IterableDiffers, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  DoCheck,
+  ElementRef,
+  IterableDiffer,
+  IterableDiffers,
+  KeyValueDiffers,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {formatDate} from '@angular/common';
 import {Customer} from '../../models/customer.model';
@@ -86,7 +97,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     extraItems?: ExtraItemDetails[]
   };
   private differ: IterableDiffer<SaleDetail>;
-
+  testDiffer: any;
+  isExtraItemAdded = false;
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -98,7 +110,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
               // tslint:disable-next-line:align
               , private service: NgxMousetrapService
               // tslint:disable-next-line:align
-              , private iterableDiff: IterableDiffers) {
+              , private iterableDiff: IterableDiffers
+              ) {
     this.differ = this.iterableDiff.find(this.saleDetails).create();
     const now = new Date();
     const currentSQLDate = formatDate(now, 'yyyy-MM-dd', 'en');
@@ -192,7 +205,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
 
     // The following code is used to fetch data from local storage
     // tslint:disable-next-line:max-line-length
-    this.storage.get('saleContainer').subscribe((tempSaleContainer: { tm?: TransactionMaster, td?: TransactionDetail[], sm?: SaleMaster,sd?: SaleDetail[]}) => {
+    this.storage.get('saleContainer').subscribe((tempSaleContainer: { tm?: TransactionMaster, td?: TransactionDetail[], sm?: SaleMaster, sd?: SaleDetail[]}) => {
+      console.log((tempSaleContainer));
       if (tempSaleContainer){
         this.saleContainer = tempSaleContainer;
         // updating transaction master from storage
@@ -221,11 +235,13 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
         // updating saleDetails from storage
         if (this.saleContainer.sd){
           this.saleDetails = this.saleContainer.sd;
-          const tempSaleTotal = this.saleDetails.reduce( (total, record) => {
-            // @ts-ignore
-            return total + (record.rate * record.sale_quantity);
-          }, 0);
-          this.currentSaleTotal = tempSaleTotal;
+          // const tempSaleTotal = this.saleDetails.reduce( (total, record) => {
+          //   // @ts-ignore
+          //   return total + (record.rate * record.sale_quantity);
+          // }, 0);
+          //
+          // this.currentSaleTotal = tempSaleTotal;
+          // console.log('current sale total', this.currentSaleTotal);
         }else{
           this.saleDetails = [];
           this.currentSaleTotal = 0;
@@ -451,8 +467,64 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
 
   ngDoCheck(): void {
     const changes = this.differ.diff(this.saleDetails);
+
     if (changes) {
-      console.log('change detected', changes);
+      const tempSaleTotal = this.saleDetails.reduce( (total, record) => {
+        // @ts-ignore
+        return total + (record.rate * record.sale_quantity);
+      }, 0);
+
+      this.currentSaleTotal = parseFloat(tempSaleTotal.toFixed(2));
+      const round = Math.round(this.currentSaleTotal) - this.currentSaleTotal;
+      this.roundedOff = parseFloat(round.toFixed(2));
+      this.grossTotal = this.currentSaleTotal + this.roundedOff;
+      this.extraItemDetails[0] = {extra_item_id: 1, amount: this.roundedOff, item_type: 1, item_name: 'Rounded off'};
+      this.saleContainer.sd = this.saleDetails;
+
+      this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
+
+      });
+      // changes.forEachChangedItem(r => console.log('changed ', r.currentValue));
+      changes.forEachIdentityChange(r => console.log('Identity Updatd ' ));
+      changes.forEachAddedItem(r => console.log('added ', r ));
+      changes.forEachRemovedItem(r => console.log('removed ' ));
+    } else {
+
     }
+
+  }
+
+  directUpdateSaleDetail(saleDetail: SaleDetail, currentIndex: number) {
+     const x = {...saleDetail};
+     x.isEditable = false;
+     console.log(saleDetail, currentIndex);
+     this.saleDetails[currentIndex] = x;
+  }
+  addExtraItemForSale() {
+    const extraItem = this.extraItemsForm.value;
+    const extraItemObj =  this.extraItems.find(x => x.id === extraItem.extra_item_id);
+    extraItem.item_name = extraItemObj.item_name;
+    this.extraItemDetails.push(extraItem);
+    this.grossTotal += extraItem.amount * extraItem.item_type;
+    this.transactionDetails[0].amount = this.grossTotal;
+    this.transactionDetails[1].amount = this.grossTotal;
+
+    this.saleContainer.td = this.transactionDetails;
+    this.saleContainer.extraItems = this.extraItemDetails;
+    this.saleContainer.grossTotal = this.grossTotal;
+    this.storage.set('saleContainer', this.saleContainer).subscribe(() => {});
+    this.extraItemsForm.patchValue({
+      extra_item_id: null,
+      amount: null,
+      item_type: null,
+      item_name: null,
+    });
+  }
+
+  clearAll() {
+    this.storage.delete('saleContainer').subscribe(() => {
+      console.log('SaleContainer storage cleared');
+      this.saleContainer = null;
+    });
   }
 }

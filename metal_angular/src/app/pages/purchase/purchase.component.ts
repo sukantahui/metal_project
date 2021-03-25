@@ -572,7 +572,6 @@ export class PurchaseComponent implements OnInit {
         item_type: null,
         item_name: null,
       });
-
   }
 
   setStockQuantity() {

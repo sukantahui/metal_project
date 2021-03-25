@@ -83,7 +83,7 @@
                 // Make changes here to the powershell.exe profile.
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "name": "Metal Angular Ng",
-                "commandline": "powershell.exe -NoLogo -NoExit -command ng serve",
+                "commandline": "powershell.exe -NoLogo -NoExit -command ng serve --hmr",
                 "hidden": false,
                 "colorScheme": "Blue Matrix",
                 "fontFace": "Cascadia Code PL",
