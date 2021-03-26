@@ -349,7 +349,6 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
 
 
     this.saleDetailsForm.patchValue({
-      product_category_id: null,
       product_id: null,
       rate: null,
       sale_quantity: null
@@ -494,12 +493,23 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
 
   }
 
-  directUpdateSaleDetail(saleDetail: SaleDetail, currentIndex: number) {
+  directUpdateSaleDetailRate(saleDetail: SaleDetail, rateHtmlInputElement: HTMLInputElement, currentIndex: number) {
      const x = {...saleDetail};
      x.isEditable = false;
+     x.rate = parseFloat(rateHtmlInputElement.value);
      console.log(saleDetail, currentIndex);
      this.saleDetails[currentIndex] = x;
   }
+
+  directUpdateSaleDetailQty(saleDetail: SaleDetail, qtyHtmlInputElement: HTMLInputElement, currentIndex: number) {
+    const x = {...saleDetail};
+    x.isEditable = false;
+    x.sale_quantity = parseFloat(qtyHtmlInputElement.value);
+    console.log(saleDetail, currentIndex);
+    this.saleDetails[currentIndex] = x;
+  }
+
+
   addExtraItemForSale() {
     const extraItem = this.extraItemsForm.value;
     const extraItemObj =  this.extraItems.find(x => x.id === extraItem.extra_item_id);

@@ -145,8 +145,8 @@
               <!--              Rate-->
               <td id="rate" class="text-right">
                                 <span *ngIf="saleDetail.isEditable">
-                                  <input appAutofocus type='number'  [(ngModel)]="saleDetail.rate"  class="cellInput">
-                                  <button  style="background-color: #c4c6ca; height: 30px; width: 30px; border-radius: 5px;" (click)="directUpdateSaleDetail(saleDetail,indexOfElement)">
+                                  <input appAutofocus type='number'  [ngModel]="saleDetail.rate" #rate  class="cellInput">
+                                  <button  style="background-color: #c4c6ca; height: 30px; width: 30px; border-radius: 5px;" (click)="directUpdateSaleDetailRate(saleDetail,rate,indexOfElement)">
                                     <fa-icon [icon]="faCheck"></fa-icon>
                                   </button>
                                 </span>
@@ -158,15 +158,15 @@
                 <!--                                  {{purchaseDetail.purchase_quantity + ' (' + purchaseDetail.unit.unit_name + ')'}}-->
                 <a *ngIf="!saleDetail.isEditable" [routerLink]="" (click)="saleDetail.isEditable = true">{{saleDetail.sale_quantity + ' (' + saleDetail.unit.unit_name + ')'}}</a>
                 <span *ngIf="saleDetail.isEditable">
-                                  <input appautofocus type='number' [(ngModel)]="saleDetail.sale_quantity" class="cellInput">
-                                  <button (click)="directUpdateSaleDetail(saleDetail,indexOfElement)" style="background-color: #c4c6ca; height: 30px; width: 30px; border-radius: 5px;">
+                                  <input appautofocus type='number' [ngModel]="saleDetail.sale_quantity" #saleQty class="cellInput">
+                                  <button (click)="directUpdateSaleDetailQty(saleDetail,saleQty,indexOfElement)" style="background-color: #c4c6ca; height: 30px; width: 30px; border-radius: 5px;">
                                      <fa-icon [icon]="faCheck"></fa-icon>
                                   </button>
                 </span>
               </td>
 
                 <!--                Amount-->
-              <td class="text-right">{{(saleDetail.rate * saleDetail.sale_quantity) | number: '1.2' | currency:"&#8377; "}}</td>
+              <td class="text-right">{{(saleDetail.rate * saleDetail.sale_quantity) }}</td>
 
               <!--              Action-->
               <!--              This will use to edit the current item-->
@@ -181,12 +181,12 @@
             <tfoot>
             <tr>
               <td colspan="4">Total</td>
-              <td class="text-right pr-5">{{currentSaleTotal | number: '1.2' | currency:"&#8377; " }}</td>
+              <td class="text-right pr-5">{{currentSaleTotal  }}</td>
               <td colspan="2"></td>
             </tr>
             <tr *ngFor="let extraItem of extraItemDetails">
               <td colspan="4"><b>{{extraItem.item_type==1?'Add: ' : 'Less: '}}</b>{{extraItem.item_name}}</td>
-              <td class="text-right">{{extraItem.amount | number: '1.2' | currency:"&#8377; "}}</td>
+              <td class="text-right">{{extraItem.amount }}</td>
               <td colspan="1" class="text-right">
                 <!--                                  <span><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>-->
               </td>
@@ -197,7 +197,7 @@
 
             <tr>
               <td colspan="4">Gross amount</td>
-              <td class="text-right">{{grossTotal | number: '1.2' | currency:"&#8377; "}}</td>
+              <td class="text-right">{{grossTotal}}</td>
               <td colspan="2"></td>
             </tr>
             </tfoot>
