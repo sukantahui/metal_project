@@ -150,7 +150,7 @@
                                     <mat-icon color="primary" >check_circle_outline</mat-icon>
                                   </button>
                                 </span>
-                <a *ngIf="!saleDetail.isEditable" [routerLink]="" (click)="saleDetail.isEditable = true" >{{saleDetail.rate | number: '1.2' | currency: "&#8377; "}}</a>
+                <a *ngIf="!saleDetail.isEditable" [routerLink]="" (click)="saleDetail.isEditable = true" class="currency-amount">{{saleDetail.rate | currency}}</a>
 
               </td>
               <!--              Quantity-->
@@ -166,7 +166,7 @@
               </td>
 
                 <!--                Amount-->
-              <td class="text-right">{{(saleDetail.rate * saleDetail.sale_quantity)  | currency:'INR':'symbol-narrow':'1.2-2'}}</td>
+              <td class="text-right">{{(saleDetail.rate * saleDetail.sale_quantity)  | currency}}</td>
 
               <!--              Action-->
               <!--              This will use to edit the current item-->
@@ -181,17 +181,17 @@
             <tfoot>
             <tr>
               <td colspan="4">Total</td>
-              <td class="text-right pr-5">{{currentSaleTotal | currency}}</td>
+              <td class="text-right pr-5">{{currentSaleTotal | currency }}</td>
               <td colspan="2"></td>
             </tr>
-            <tr *ngFor="let extraItem of extraItemDetails">
+            <tr *ngFor="let extraItem of extraItemDetails;let indexOfElement=index ">
               <td colspan="4"><b>{{extraItem.item_type==1?'Add: ' : 'Less: '}}</b>{{extraItem.item_name}}</td>
               <td class="text-right">{{extraItem.amount | currency}}</td>
-              <td colspan="1" class="text-right">
-                <!--                                  <span><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>-->
+              <td class="text-right">
+
               </td>
-              <td colspan="1" class="text-right">
-                <!--                                  <span (click)="deleteExtraItemDetails(extraItemDetails)"><fa-icon class="delete" [icon]="faTrashAlt"></fa-icon></span>-->
+              <td class="text-right">
+                <a [routerLink]="" *ngIf="indexOfElement>0" (click)="deleteExtraItem(extraItem,indexOfElement)"><fa-icon class="edit" [icon]="faTrashAlt"></fa-icon></a>
               </td>
             </tr>
 
@@ -232,6 +232,17 @@
                 </div>
               </form>
             </div>
+          </section>
+          <section>
+            
+            <form [formGroup]="saleMasterForm" class="">
+              <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                <mat-form-field fxFlex="60">
+                  <mat-label>Comment</mat-label>
+                  <input type="textarea" matInput formControlName="comment" placeholder="Comment">
+                </mat-form-field>
+              </div>
+            </form>
           </section>
         </mat-card-content>
       </mat-card>

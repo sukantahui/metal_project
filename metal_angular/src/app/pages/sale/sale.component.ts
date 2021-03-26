@@ -97,8 +97,10 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     extraItems?: ExtraItemDetails[]
   };
   private differSaleDetail: IterableDiffer<SaleDetail>;
+  private differExtraItemDetail: IterableDiffer<ExtraItemDetails>;
   testDiffer: any;
   isExtraItemAdded = false;
+  private extraItemTotal = 0;
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -113,6 +115,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
               , private iterableDiff: IterableDiffers
               ) {
     this.differSaleDetail = this.iterableDiff.find(this.saleDetails).create();
+    this.differExtraItemDetail = this.iterableDiff.find(this.extraItemDetails).create();
+
     const now = new Date();
     const currentSQLDate = formatDate(now, 'yyyy-MM-dd', 'en');
 
@@ -202,6 +206,12 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     this.http.get('http://127.0.0.1:8000/api/dev/extraItems').subscribe((response: {success: number, data: ExtraItem[]}) => {
       this.extraItems = response.data;
     });
+    // adding saleMasterForm change value to saleMaster
+    this.saleMasterForm.valueChanges.subscribe(val => {
+      this.saleMaster = val;
+      this.saleContainer.sm = this.saleMaster;
+      this.storage.set('saleContainer', this.saleContainer).subscribe(() => {});
+    });
 
     // The following code is used to fetch data from local storage
     // tslint:disable-next-line:max-line-length
@@ -228,6 +238,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
         // updating saleMaster
         if (this.saleContainer.sm){
           this.saleMaster = this.saleContainer.sm;
+          this.saleMasterForm.patchValue(this.saleMaster);
         }else{
           this.saleMaster = null;
         }
@@ -356,27 +367,12 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     this.currentItemAmount = null;
     this.selectedProduct = null;
 
-    const tempSaleTotal = this.saleDetails.reduce( (total, record) => {
-      // @ts-ignore
-      return total + (record.rate * record.sale_quantity);
-    }, 0);
-
-    this.currentSaleTotal = parseFloat(tempSaleTotal.toFixed(2));
-    const round = Math.round(this.currentSaleTotal) - this.currentSaleTotal;
-    this.roundedOff = parseFloat(round.toFixed(2));
-    this.grossTotal = this.currentSaleTotal + this.roundedOff;
-    this.extraItemDetails[0] = {extra_item_id: 1, amount: this.roundedOff, item_type: 1, item_name: 'Rounded off'};
-
-    // adding data to local storage
+      // adding data to local storage
     this.saleContainer = {
       tm: this.transactionMaster,
       td: this.transactionDetails,
       sm: this.saleMaster,
-      sd: this.saleDetails,
-      currentSaleTotal: this.currentSaleTotal,
-      roundedOff: this.roundedOff,
-      grossTotal: this.grossTotal,
-      extraItems: this.extraItemDetails
+      sd: this.saleDetails
     };
     this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
 
@@ -449,17 +445,6 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
         const productId = saleDetail.product.id;
         const itemIndex = this.saleDetails.findIndex(x => x.product_id === productId);
         this.saleDetails.splice(itemIndex, 1);
-        // calculating total again after deletion
-        const tempSaleTotal = this.saleDetails.reduce((total, record) => {
-          // @ts-ignore
-          return total + (record.rate * record.sale_quantity);
-        }, 0);
-
-        // this.currentPurchaseTotal = tempPurchaseTotal;
-        this.currentSaleTotal = parseFloat(tempSaleTotal.toFixed(2));
-        const round = Math.round(this.currentSaleTotal) - this.currentSaleTotal;
-        this.roundedOff = parseFloat(round.toFixed(2));
-        this.grossTotal = this.currentSaleTotal + this.roundedOff;
       }
     });
   }
@@ -478,15 +463,34 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       this.roundedOff = parseFloat(round.toFixed(2));
       this.grossTotal = this.currentSaleTotal + this.roundedOff;
       this.extraItemDetails[0] = {extra_item_id: 1, amount: this.roundedOff, item_type: 1, item_name: 'Rounded off'};
+      this.transactionDetails[0].amount = this.grossTotal;
+      this.transactionDetails[1].amount = this.grossTotal;
+      this.saleContainer.td = this.transactionDetails;
       this.saleContainer.sd = this.saleDetails;
 
-      this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
-
-      });
       // changes.forEachChangedItem(r => console.log('changed ', r.currentValue));
       changeSaleDetail.forEachIdentityChange(r => console.log('Identity Updatd ' ));
       changeSaleDetail.forEachAddedItem(r => console.log('added ', r ));
       changeSaleDetail.forEachRemovedItem(r => console.log('removed ' ));
+    } else {
+
+    }
+
+    const changeExtraItem = this.differExtraItemDetail.diff(this.extraItemDetails);
+    if (changeExtraItem) {
+      this.saleContainer.extraItems = this.extraItemDetails;
+      const tempTotal = this.extraItemDetails.reduce( (total, record) => {
+        // @ts-ignore
+        return total + (record.amount * record.item_type);
+      }, 0);
+      this.extraItemTotal = tempTotal;
+      this.grossTotal = this.currentSaleTotal + this.extraItemTotal;
+      this.transactionDetails[0].amount = this.grossTotal;
+      this.transactionDetails[1].amount = this.grossTotal;
+      this.saleContainer.td = this.transactionDetails;
+      changeExtraItem.forEachIdentityChange(r => console.log('Identity Updatd ' ));
+      changeExtraItem.forEachAddedItem(r => console.log('added ', r.item ));
+      changeExtraItem.forEachRemovedItem(r => console.log('removed ' ));
     } else {
 
     }
@@ -515,13 +519,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     const extraItemObj =  this.extraItems.find(x => x.id === extraItem.extra_item_id);
     extraItem.item_name = extraItemObj.item_name;
     this.extraItemDetails.push(extraItem);
-    this.grossTotal += extraItem.amount * extraItem.item_type;
-    this.transactionDetails[0].amount = this.grossTotal;
-    this.transactionDetails[1].amount = this.grossTotal;
 
-    this.saleContainer.td = this.transactionDetails;
-    this.saleContainer.extraItems = this.extraItemDetails;
-    this.saleContainer.grossTotal = this.grossTotal;
     this.storage.set('saleContainer', this.saleContainer).subscribe(() => {});
     this.extraItemsForm.patchValue({
       extra_item_id: null,
@@ -535,6 +533,24 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     this.storage.delete('saleContainer').subscribe(() => {
       console.log('SaleContainer storage cleared');
       this.saleContainer = null;
+    });
+  }
+
+  deleteExtraItem(extraItem: any, indexOfElement: number) {
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Are you sure to delete ' + extraItem.item_name,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,Delete It!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.extraItemDetails.splice(indexOfElement, 1);
+        this.saleContainer.extraItems = this.extraItemDetails;
+        this.storage.set('saleContainer', this.saleContainer).subscribe(() => {});
+      }
     });
   }
 }
