@@ -159,8 +159,8 @@
                 <a *ngIf="!saleDetail.isEditable" [routerLink]="" (click)="saleDetail.isEditable = true">{{saleDetail.sale_quantity + ' (' + saleDetail.unit.unit_name + ')'}}</a>
                 <span *ngIf="saleDetail.isEditable">
                                   <input appautofocus type='number' [ngModel]="saleDetail.sale_quantity" #saleQty class="cellInput">
-                                  <button (click)="directUpdateSaleDetailQty(saleDetail,saleQty,indexOfElement)" style="background-color: #c4c6ca; height: 30px; width: 30px; border-radius: 5px;">
-                                     <fa-icon [icon]="faCheck"></fa-icon>
+                                  <button (click)="directUpdateSaleDetailQty(saleDetail,saleQty,indexOfElement)" mat-mini-fab color="warn"   style="background-color: transparent !important;" aria-label="Example icon button with a filter list icon">
+                                    <mat-icon color="primary" >check_circle_outline</mat-icon>
                                   </button>
                 </span>
               </td>
