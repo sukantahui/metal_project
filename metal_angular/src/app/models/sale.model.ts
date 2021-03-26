@@ -7,6 +7,7 @@ export class SaleMaster{
   order_date?: string;
   delivery_date?: string;
   comment?: string;
+  customer_name?: string;
 }
 
 

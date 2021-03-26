@@ -329,7 +329,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       //   transactionAmount = this.saleContainer.td[0].amount;
       // }
 
-
+      this.saleMaster.customer_name = this.selectedLedger.billing_name;
       // tslint:disable-next-line:max-line-length
       this.transactionDetails.push(val);
       // tslint:disable-next-line:max-line-length
@@ -573,7 +573,23 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     };
     this.saleMasterData = masterData;
     this.saleService.saveSale(masterData).subscribe(response => {
-      console.log(response);
+      if (response.success === 1){
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Save successful',
+          showConfirmButton: false,
+          timer: 1000
+        });
+      }else{
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Validation error',
+          showConfirmButton: false,
+          timer: 3000
+        }).then(r => {});
+      }
     });
   }
 }
