@@ -7,7 +7,7 @@ export class PurchaseMaster{
   id?: number;
   invoice_number: string;
   case_number: string;
-  comment?: string
+  comment?: string;
 }
 export class PurchaseDetail{
   id?: number;

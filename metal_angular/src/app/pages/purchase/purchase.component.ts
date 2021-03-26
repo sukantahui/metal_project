@@ -639,8 +639,7 @@ export class PurchaseComponent implements OnInit {
     if (event.checked) {
       this.isShowAllPurchaseList = true;
     }else{
-      this.isShowAllPurchaseList=false;
+      this.isShowAllPurchaseList = false;
     }
-
   }
 }

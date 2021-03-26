@@ -30,6 +30,7 @@ import Swal from 'sweetalert2';
 import {PurchaseDetail, PurchaseMaster} from '../../models/purchase.model';
 import {TransactionDetail, TransactionMaster} from '../../models/transaction.model';
 import {ExtraItem, ExtraItemDetails} from '../purchase/purchase.component';
+import {SaleService} from '../../services/sale.service';
 
 
 
@@ -113,7 +114,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
               , private service: NgxMousetrapService
               // tslint:disable-next-line:align
               , private iterableDiff: IterableDiffers
-              ) {
+              // tslint:disable-next-line:align
+              , private saleService: SaleService) {
     this.differSaleDetail = this.iterableDiff.find(this.saleDetails).create();
     this.differExtraItemDetail = this.iterableDiff.find(this.extraItemDetails).create();
 
@@ -558,6 +560,15 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     const tempSaleDetails = this.saleContainer.sd.map(
       ({id , product_id , rate, sale_quantity }) => ({id, product_id, rate, sale_quantity})
     );
-    console.log(tempSaleDetails);
+    const masterData = {
+      transaction_master: this.saleContainer.tm,
+      transaction_details: this.saleContainer.td,
+      purchase_master: this.saleContainer.sm,
+      purchase_details: tempSaleDetails,
+      extra_items: this.saleContainer.extraItems
+    };
+    this.saleService.saveSale(masterData).subscribe(response => {
+      console.log(response);
+    });
   }
 }

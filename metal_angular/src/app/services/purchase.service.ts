@@ -42,6 +42,5 @@ export class PurchaseService {
               this.purchaseSubject.next([...this.purchaseList]);
           }
       }));
-
   }
 }
