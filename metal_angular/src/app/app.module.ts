@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {DEFAULT_CURRENCY_CODE, NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -104,7 +104,8 @@ import { HighlightDirective } from './directives/highlight.directive';
     TooltipModule,
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorInterceptor, multi: true},
-              {provide: DateAdapter, useClass: DateFormat} ],
+              {provide: DateAdapter, useClass: DateFormat}, {provide: DEFAULT_CURRENCY_CODE, useValue: 'INR'} ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule {

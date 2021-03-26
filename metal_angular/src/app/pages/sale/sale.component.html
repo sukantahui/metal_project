@@ -166,7 +166,7 @@
               </td>
 
                 <!--                Amount-->
-              <td class="text-right">{{(saleDetail.rate * saleDetail.sale_quantity) | number: '1.2' | currency: "&#8377; "}}</td>
+              <td class="text-right">{{(saleDetail.rate * saleDetail.sale_quantity)  | currency:'INR':'symbol-narrow':'1.2-2'}}</td>
 
               <!--              Action-->
               <!--              This will use to edit the current item-->
@@ -181,12 +181,12 @@
             <tfoot>
             <tr>
               <td colspan="4">Total</td>
-              <td class="text-right pr-5">{{currentSaleTotal | number: '1.2' | currency: "&#8377; "}}</td>
+              <td class="text-right pr-5">{{currentSaleTotal | currency}}</td>
               <td colspan="2"></td>
             </tr>
             <tr *ngFor="let extraItem of extraItemDetails">
               <td colspan="4"><b>{{extraItem.item_type==1?'Add: ' : 'Less: '}}</b>{{extraItem.item_name}}</td>
-              <td class="text-right">{{extraItem.amount | number: '1.2' | currency: "&#8377; "}}</td>
+              <td class="text-right">{{extraItem.amount | currency}}</td>
               <td colspan="1" class="text-right">
                 <!--                                  <span><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>-->
               </td>
@@ -197,7 +197,7 @@
 
             <tr>
               <td colspan="4">Gross amount</td>
-              <td class="text-right">{{grossTotal | number: '1.2' | currency: "&#8377; "}}</td>
+              <td class="text-right">{{grossTotal | currency}}</td>
               <td colspan="2"></td>
             </tr>
             </tfoot>
