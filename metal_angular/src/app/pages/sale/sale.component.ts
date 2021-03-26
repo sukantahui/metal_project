@@ -96,7 +96,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     grossTotal?: number,
     extraItems?: ExtraItemDetails[]
   };
-  private differ: IterableDiffer<SaleDetail>;
+  private differSaleDetail: IterableDiffer<SaleDetail>;
   testDiffer: any;
   isExtraItemAdded = false;
 
@@ -112,7 +112,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
               // tslint:disable-next-line:align
               , private iterableDiff: IterableDiffers
               ) {
-    this.differ = this.iterableDiff.find(this.saleDetails).create();
+    this.differSaleDetail = this.iterableDiff.find(this.saleDetails).create();
     const now = new Date();
     const currentSQLDate = formatDate(now, 'yyyy-MM-dd', 'en');
 
@@ -466,9 +466,9 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   ngDoCheck(): void {
-    const changes = this.differ.diff(this.saleDetails);
+    const changeSaleDetail = this.differSaleDetail.diff(this.saleDetails);
 
-    if (changes) {
+    if (changeSaleDetail) {
       const tempSaleTotal = this.saleDetails.reduce( (total, record) => {
         // @ts-ignore
         return total + (record.rate * record.sale_quantity);
@@ -485,9 +485,9 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
 
       });
       // changes.forEachChangedItem(r => console.log('changed ', r.currentValue));
-      changes.forEachIdentityChange(r => console.log('Identity Updatd ' ));
-      changes.forEachAddedItem(r => console.log('added ', r ));
-      changes.forEachRemovedItem(r => console.log('removed ' ));
+      changeSaleDetail.forEachIdentityChange(r => console.log('Identity Updatd ' ));
+      changeSaleDetail.forEachAddedItem(r => console.log('added ', r ));
+      changeSaleDetail.forEachRemovedItem(r => console.log('removed ' ));
     } else {
 
     }
