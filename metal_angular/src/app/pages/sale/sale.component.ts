@@ -102,6 +102,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   testDiffer: any;
   isExtraItemAdded = false;
   private extraItemTotal = 0;
+  // tslint:disable-next-line:max-line-length
+  saleMasterData: { transaction_master: TransactionMaster; sale_master: SaleMaster; sale_details: { rate: number; product_id: number; id: number; sale_quantity: number }[]; sale_extras: ExtraItemDetails[]; transaction_details: TransactionDetail[] };
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -140,6 +142,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       id: new FormControl(null),
       bill_number: new FormControl(null),
       comment: new FormControl(null),
+      order_date: new FormControl(currentSQLDate),
+      delivery_date: new FormControl(currentSQLDate),
     });
 
     this.saleDetailsForm = new FormGroup({
@@ -563,10 +567,11 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     const masterData = {
       transaction_master: this.saleContainer.tm,
       transaction_details: this.saleContainer.td,
-      purchase_master: this.saleContainer.sm,
-      purchase_details: tempSaleDetails,
-      extra_items: this.saleContainer.extraItems
+      sale_master: this.saleContainer.sm,
+      sale_details: tempSaleDetails,
+      sale_extras: this.saleContainer.extraItems
     };
+    this.saleMasterData = masterData;
     this.saleService.saveSale(masterData).subscribe(response => {
       console.log(response);
     });

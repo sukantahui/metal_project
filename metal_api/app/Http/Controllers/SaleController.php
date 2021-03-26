@@ -45,8 +45,8 @@ class SaleController extends Controller
         //validating sale_details
         $validator = Validator::make($input['sale_details'], [
             '*.product_id' => 'required|exists:products,id',
-            '*.quantity' => 'required|numeric|min:1|not_in:0',
-            '*.price' => 'required|numeric|min:1|not_in:0'
+            '*.sale_quantity' => 'required|numeric|min:1|not_in:0',
+            '*.rate' => 'required|numeric|min:1|not_in:0'
         ]);
 
         if($validator->fails()) {
@@ -131,8 +131,8 @@ class SaleController extends Controller
                 $saleDetail = new SaleDetail();
                 $saleDetail->sale_master_id = $saleMaster->id;
                 $saleDetail->product_id = $detail->product_id;
-                $saleDetail->quantity = $detail->quantity;
-                $saleDetail->price = $detail->price;
+                $saleDetail->quantity = $detail->sale_quantity;
+                $saleDetail->price = $detail->rate;
                 $saleDetail->save();
             }
 

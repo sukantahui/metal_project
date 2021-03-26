@@ -21,3 +21,18 @@ export class SaleDetail{
   unit?: Unit;
   isEditable?: boolean;
 }
+
+export class SaleResponse{
+  'success': number;
+  'data': {
+    'bill_number': string;
+    'order_date': string;
+    'delivery_date': string;
+    'comment': string;
+    'updated_at': string,
+    'created_at': string,
+    'id': number
+  };
+  'sale_total': number;
+  'error': any;
+}
