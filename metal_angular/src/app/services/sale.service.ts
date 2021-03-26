@@ -4,7 +4,9 @@ import {catchError, tap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {ErrorService} from './error.service';
 import {NgxFancyLoggerService} from 'ngx-fancy-logger';
-import {SaleResponse} from '../models/sale.model';
+import {SaleItem, SaleResponse} from '../models/sale.model';
+import {Subject} from 'rxjs';
+import {PurchaseList} from '../models/purchase.model';
 
 
 @Injectable({
@@ -12,17 +14,25 @@ import {SaleResponse} from '../models/sale.model';
 })
 // @ts-ignore
 export class SaleService {
+  private saleList: SaleItem[] = [];
+  saleSubject = new Subject<SaleItem[]>();
 
   constructor(private http: HttpClient, private errorService: ErrorService, private logger: NgxFancyLoggerService) { }
+  getSaleList(){
+    return [...this.saleList];
+  }
+  getSaleListServiceListener(){
+    return this.saleSubject.asObservable();
+  }
+
   saveSale(saleData){
     return this.http.post(GlobalVariable.BASE_API_URL + '/dev/sales', saleData)
       // tslint:disable-next-line:max-line-length
       .pipe(catchError(this.errorService.serverError), tap((response: SaleResponse) => {
         this.logger.warning('Sale saved', response);
         if (response.success === 1){
-          console.log('Success');
-          // this.saleList.unshift(response.data);
-          // this.purchaseSubject.next([...this.purchaseList]);
+          this.saleList.unshift(response.data);
+          this.saleSubject.next([...this.saleList]);
         }
       }));
   }

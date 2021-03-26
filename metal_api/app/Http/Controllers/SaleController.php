@@ -192,12 +192,20 @@ class SaleController extends Controller
                 $transactionDetail->save();
             }
 
+            $saleInfo = TransactionMaster::select("transaction_masters.id","transaction_masters.transaction_number","ledgers.ledger_name",
+                "transaction_masters.transaction_date","transaction_details.amount")
+                ->join('transaction_details','transaction_masters.id','transaction_details.transaction_master_id')
+                ->join('ledgers','ledgers.id','transaction_details.ledger_id')
+                ->where('transaction_masters.id',$transactionMaster->id)
+                ->where('transaction_details.transaction_type_id',1)
+                ->first();
+
             DB::commit();
         }catch(\Exception $e){
             DB::rollBack();
             return response()->json(['success'=>0,'exception'=>$e->getMessage()], 500);
         }
 
-        return response()->json(['success'=>1,'data'=>$saleMaster, 'sale_total'=>$sale->sale_total, 'error' => null], 200);
+        return response()->json(['success'=>1,'data'=>$saleInfo, 'error' => null], 200);
     }
 }

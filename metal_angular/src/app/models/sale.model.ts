@@ -24,16 +24,21 @@ export class SaleDetail{
 }
 
 export class SaleResponse{
-  'success': number;
-  'data': {
-    'bill_number': string;
-    'order_date': string;
-    'delivery_date': string;
-    'comment': string;
-    'updated_at': string,
-    'created_at': string,
-    'id': number
+  success: number;
+  data: {
+    id: number;
+    transaction_number: string;
+    ledger_name: string;
+    transaction_date: string;
+    amount: 48;
   };
-  'sale_total': number;
-  'error': any;
+  error?: any;
+}
+
+export class SaleItem{
+  id?: number;
+  transaction_number?: string;
+  ledger_name?: string;
+  transaction_date?: string;
+  amount?: number;
 }

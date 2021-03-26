@@ -141,6 +141,7 @@ class PurchaseController extends Controller
             $transactionMaster->save();
 
             //save data into transaction_details
+
             foreach($inputTransactionDetails as $inputTransactionDetail){
                 $transactionDetail = new TransactionDetail();
                 $transactionDetail->transaction_master_id = $transactionMaster->id;

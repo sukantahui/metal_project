@@ -222,7 +222,6 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     // The following code is used to fetch data from local storage
     // tslint:disable-next-line:max-line-length
     this.storage.get('saleContainer').subscribe((tempSaleContainer: { tm?: TransactionMaster, td?: TransactionDetail[], sm?: SaleMaster, sd?: SaleDetail[]}) => {
-      console.log((tempSaleContainer));
       if (tempSaleContainer){
         this.saleContainer = tempSaleContainer;
         // updating transaction master from storage
@@ -328,8 +327,6 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       // if (this.saleContainer && this.saleContainer.td){
       //   transactionAmount = this.saleContainer.td[0].amount;
       // }
-
-      this.saleMaster.customer_name = this.selectedLedger.billing_name;
       // tslint:disable-next-line:max-line-length
       this.transactionDetails.push(val);
       // tslint:disable-next-line:max-line-length
