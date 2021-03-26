@@ -553,4 +553,11 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       }
     });
   }
+
+  saveSale() {
+    const tempSaleDetails = this.saleContainer.sd.map(
+      ({id , product_id , rate, sale_quantity }) => ({id, product_id, rate, sale_quantity})
+    );
+    console.log(tempSaleDetails);
+  }
 }

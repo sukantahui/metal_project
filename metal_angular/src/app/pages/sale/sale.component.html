@@ -234,15 +234,24 @@
             </div>
           </section>
           <section>
-            
-            <form [formGroup]="saleMasterForm" class="">
-              <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-                <mat-form-field fxFlex="60">
-                  <mat-label>Comment</mat-label>
-                  <input type="textarea" matInput formControlName="comment" placeholder="Comment">
-                </mat-form-field>
+            <div fxLayout="row" fxLayoutAlign="start center" >
+              <div fxFlex="60">
+                <form [formGroup]="saleMasterForm" class="">
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field fxFlex="100">
+                      <mat-label>Comment</mat-label>
+                      <input type="textarea" matInput formControlName="comment" placeholder="Comment">
+                    </mat-form-field>
+                  </div>
+                </form>
               </div>
-            </form>
+              <div fxFlex="40">
+                <div class="container mt-3" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                  <button mat-stroked-button color="primary" mat-stroked-button (click)="saveSale()">Save Sale</button>
+                </div>
+              </div>
+            </div>
+
           </section>
         </mat-card-content>
       </mat-card>
