@@ -35,7 +35,7 @@ class SaleController extends Controller
 
         //validating sale_masters
         $validator = Validator::make($input['sale_master'],[
-            'comment' => 'required',
+            'comment' => 'max:255',
             'delivery_date'=> 'date_format:Y-m-d'
         ]);
         if($validator->fails()){
@@ -192,10 +192,11 @@ class SaleController extends Controller
                 $transactionDetail->save();
             }
 
-            $saleInfo = TransactionMaster::select("transaction_masters.id","transaction_masters.transaction_number","ledgers.ledger_name",
-                "transaction_masters.transaction_date","transaction_details.amount")
+            $saleInfo = TransactionMaster::select("transaction_masters.id","transaction_masters.transaction_number","sale_masters.bill_number","ledgers.ledger_name",
+                DB::raw('DATE_FORMAT(transaction_masters.transaction_date,"%d/%m/%Y") as transaction_date'),"transaction_details.amount")
                 ->join('transaction_details','transaction_masters.id','transaction_details.transaction_master_id')
                 ->join('ledgers','ledgers.id','transaction_details.ledger_id')
+                ->join('sale_masters','sale_masters.id','transaction_masters.sale_master_id')
                 ->where('transaction_masters.id',$transactionMaster->id)
                 ->where('transaction_details.transaction_type_id',1)
                 ->first();
@@ -207,5 +208,16 @@ class SaleController extends Controller
         }
 
         return response()->json(['success'=>1,'data'=>$saleInfo, 'error' => null], 200);
+    }
+
+    function getAllSales(){
+        $saleInfo = TransactionMaster::select("transaction_masters.id","transaction_masters.transaction_number","sale_masters.bill_number","ledgers.ledger_name",
+            DB::raw('DATE_FORMAT(transaction_masters.transaction_date,"%d/%m/%Y") as transaction_date'),"transaction_details.amount")
+            ->join('transaction_details','transaction_masters.id','transaction_details.transaction_master_id')
+            ->join('ledgers','ledgers.id','transaction_details.ledger_id')
+            ->join('sale_masters','sale_masters.id','transaction_masters.sale_master_id')
+            ->where('transaction_details.transaction_type_id',1)
+            ->get();
+        return response()->json(['success'=>1,'data'=>$saleInfo], 200);
     }
 }

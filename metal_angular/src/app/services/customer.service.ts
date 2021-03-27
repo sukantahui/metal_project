@@ -30,7 +30,7 @@ export class CustomerService {
     this.http.get(GlobalVariable.BASE_API_URL_DEV + '/customers')
       .subscribe((response: {success: number, data: Customer[]}) => {
           this.customers = response.data;
-          //sending update information to the listeners
+          // sending update information to the listeners
           this.customerSubject.next([...this.customers]);
     });
   }

@@ -10,7 +10,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {formatDate} from '@angular/common';
 import {Customer} from '../../models/customer.model';
 import {CustomerService} from '../../services/customer.service';
@@ -105,6 +105,11 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   // tslint:disable-next-line:max-line-length
   saleMasterData: { transaction_master: TransactionMaster; sale_master: SaleMaster; sale_details: { rate: number; product_id: number; id: number; sale_quantity: number }[]; sale_extras: ExtraItemDetails[]; transaction_details: TransactionDetail[] };
   saleList: SaleItem[] = [];
+  validatorError: any = null;
+  private pattern1: string;
+  private regex: RegExp = new RegExp(/^\d*\.?\d{0,2}$/g);
+
+
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
               , private http: HttpClient
@@ -141,7 +146,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     this.saleMasterForm = new FormGroup({
       id: new FormControl(null),
       bill_number: new FormControl(null),
-      comment: new FormControl(null),
+      comment: new FormControl(null, [Validators.maxLength(15)]),
       order_date: new FormControl(currentSQLDate),
       delivery_date: new FormControl(currentSQLDate),
     });
@@ -151,7 +156,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       product_category_id: new FormControl(1),
       product_id: new FormControl(null),
       rate: new FormControl(null),
-      sale_quantity: new FormControl(null),
+      sale_quantity: new FormControl(null, [Validators.max(50), Validators.pattern(this.regex)]),
       isEditable: new FormControl(false)
     });
     const userData: {id: number, personName: string, _authKey: string, personTypeId: number} = JSON.parse(localStorage.getItem('user'));
@@ -584,6 +589,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
           timer: 1000
         });
       }else{
+        console.log(response.error);
+        this.validatorError = response.error;
         Swal.fire({
           position: 'top-end',
           icon: 'error',

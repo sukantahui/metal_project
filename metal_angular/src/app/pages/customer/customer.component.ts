@@ -76,7 +76,7 @@ export class CustomerComponent implements OnInit {
       area: new FormControl(null),
       city: new FormControl(null),
       pin: new FormControl(null),
-      transaction_type_id: new FormControl(1,[Validators.required]),
+      transaction_type_id: new FormControl(1, [Validators.required]),
       opening_balance: new FormControl(0),
 
     });

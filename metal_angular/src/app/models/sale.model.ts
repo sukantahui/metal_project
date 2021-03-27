@@ -38,6 +38,7 @@ export class SaleResponse{
 export class SaleItem{
   id?: number;
   transaction_number?: string;
+  bill_number?: string;
   ledger_name?: string;
   transaction_date?: string;
   amount?: number;

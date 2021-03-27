@@ -17,7 +17,13 @@ export class SaleService {
   private saleList: SaleItem[] = [];
   saleSubject = new Subject<SaleItem[]>();
 
-  constructor(private http: HttpClient, private errorService: ErrorService, private logger: NgxFancyLoggerService) { }
+  constructor(private http: HttpClient, private errorService: ErrorService, private logger: NgxFancyLoggerService) {
+    this.http.get(GlobalVariable.BASE_API_URL_DEV + '/sales')
+      .subscribe((response: {success: number, data: SaleItem[]}) => {
+        this.saleList = response.data;
+        this.saleSubject.next([...this.saleList]);
+      });
+  }
   getSaleList(){
     return [...this.saleList];
   }
