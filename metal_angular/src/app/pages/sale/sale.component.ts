@@ -19,7 +19,7 @@ import {HttpClient} from '@angular/common/http';
 import {Product} from '../../models/product.model';
 import {ProductService} from '../../services/product.service';
 import {StorageMap} from '@ngx-pwa/local-storage';
-import {SaleDetail, SaleMaster} from '../../models/sale.model';
+import {SaleDetail, SaleItem, SaleMaster} from '../../models/sale.model';
 import {NgxMousetrapService} from 'ngx-mousetrap';
 import {Subscription} from 'rxjs';
 import {trigger, state, style, animate, transition, keyframes} from '@angular/animations';
@@ -104,7 +104,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   private extraItemTotal = 0;
   // tslint:disable-next-line:max-line-length
   saleMasterData: { transaction_master: TransactionMaster; sale_master: SaleMaster; sale_details: { rate: number; product_id: number; id: number; sale_quantity: number }[]; sale_extras: ExtraItemDetails[]; transaction_details: TransactionDetail[] };
-
+  saleList: SaleItem[] = [];
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
               , private http: HttpClient
@@ -217,6 +217,11 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       this.saleMaster = val;
       this.saleContainer.sm = this.saleMaster;
       this.storage.set('saleContainer', this.saleContainer).subscribe(() => {});
+    });
+
+    this.saleList = this.saleService.getSaleList();
+    this.saleService.getSaleListListener().subscribe(response => {
+      this.saleList = response;
     });
 
     // The following code is used to fetch data from local storage

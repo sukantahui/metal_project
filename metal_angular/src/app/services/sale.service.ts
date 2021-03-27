@@ -21,7 +21,7 @@ export class SaleService {
   getSaleList(){
     return [...this.saleList];
   }
-  getSaleListServiceListener(){
+  getSaleListListener(){
     return this.saleSubject.asObservable();
   }
 
