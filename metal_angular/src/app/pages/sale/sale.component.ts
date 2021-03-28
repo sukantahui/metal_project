@@ -10,7 +10,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup,  Validators} from '@angular/forms';
 import {formatDate} from '@angular/common';
 import {Customer} from '../../models/customer.model';
 import {CustomerService} from '../../services/customer.service';
@@ -107,8 +107,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   saleList: SaleItem[] = [];
   validatorError: any = null;
   private pattern1: string;
-  private regex: RegExp = new RegExp(/^\d*\.?\d{0,2}$/g);
 
+  numberRegEx = /^-?\d*[.,]?\d{0,2}$/;
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -156,7 +156,10 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       product_category_id: new FormControl(1),
       product_id: new FormControl(null),
       rate: new FormControl(null),
-      sale_quantity: new FormControl(null, [Validators.max(50), Validators.pattern(this.regex)]),
+      sale_quantity: new FormControl('', {
+        validators: [Validators.required, Validators.max(59), Validators.pattern(this.numberRegEx)],
+        updateOn: 'blur'
+      }),
       isEditable: new FormControl(false)
     });
     const userData: {id: number, personName: string, _authKey: string, personTypeId: number} = JSON.parse(localStorage.getItem('user'));
@@ -600,5 +603,10 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
         }).then(r => {});
       }
     });
+  }
+
+  /* Handle form errors in Angular 8 */
+  public errorHandling = (form: FormGroup , control: string, error: string) => {
+    return form.controls[control].hasError(error);
   }
 }
