@@ -155,9 +155,11 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       id: new FormControl(null),
       product_category_id: new FormControl(1),
       product_id: new FormControl(null),
-      rate: new FormControl(null),
-      sale_quantity: new FormControl('', {
-        validators: [Validators.required, Validators.max(59), Validators.pattern(this.numberRegEx)],
+      rate: new FormControl(null, {
+        validators: [Validators.required, Validators.pattern(this.numberRegEx)],
+        updateOn: 'change'}),
+      sale_quantity: new FormControl(null, {
+        validators: [Validators.required, Validators.pattern(this.numberRegEx)],
         updateOn: 'blur'
       }),
       isEditable: new FormControl(false)

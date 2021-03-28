@@ -220,4 +220,20 @@ class SaleController extends Controller
             ->get();
         return response()->json(['success'=>1,'data'=>$saleInfo], 200);
     }
+
+    function getSaleByTransactionID($id){
+
+        $output = array();
+        $saleInfo = TransactionMaster::select("transaction_masters.id","transaction_masters.transaction_number")
+            ->where('transaction_masters.id',$id)
+            ->first();
+        $output['transaction_master']=$saleInfo;
+
+        $saleInfo = TransactionDetail::select('id','transaction_master_id','ledger_id','transaction_type_id')
+            ->where('transaction_master_id',$id)
+            ->get();
+        $output['transaction_details']=$saleInfo;
+
+        return response()->json(['success'=>1,'data'=>$output], 200);
+    }
 }

@@ -85,14 +85,14 @@
               <mat-form-field fxFlex="20">
                 <mat-label>Rate</mat-label>
                 <input type="number" class="text-right" matInput formControlName="rate" placeholder="Rate">
+                <mat-error *ngIf="errorHandling(this.saleDetailsForm,'rate', 'required')">
+                  Not a valid Rate
+                </mat-error>
               </mat-form-field>
               <!--Quantity-->
               <mat-form-field fxFlex="20" *ngIf="selectedProduct">
                 <mat-label>Qty <b>{{selectedProduct.sale_unit_name}}</b></mat-label>
                 <input type="number" class="text-right" matInput formControlName="sale_quantity"  placeholder="Quantity">
-                <mat-error *ngIf="errorHandling(this.saleDetailsForm,'sale_quantity', 'max')">
-                  You must provide a<strong>name</strong>
-                </mat-error>
                 <mat-error *ngIf="errorHandling(this.saleDetailsForm,'sale_quantity', 'required')">
                   Not a valid Quantity
                 </mat-error>
@@ -104,7 +104,7 @@
               </mat-form-field>
             </div>
             <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-              <button class="pull-right" tooltip="<p>Press Alt+a</p>" [disabled]="saleDetailsForm.valid"  mat-stroked-button (click)="addItem()" *ngIf="editableSaleDetailItemIndex==-1" [ngxMousetrapKey]="'alt+a'">Add</button>
+              <button class="pull-right" tooltip="<p>Press Alt+a</p>" [disabled]="!saleDetailsForm.valid"  mat-stroked-button (click)="addItem()" *ngIf="editableSaleDetailItemIndex==-1" [ngxMousetrapKey]="'alt+a'">Add</button>
               <button class="pull-right" mat-stroked-button (click)="updateItem()" *ngIf="editableSaleDetailItemIndex>=0">update</button>
               <button class="pull-right" mat-stroked-button (click)="clearAll()">clear</button>
             </div>
@@ -288,7 +288,7 @@
             <tbody>
             <tr *ngFor="let sale of saleList| paginate: { itemsPerPage: pageSize, currentPage: p };let indexOfElement=index">
               <td>{{indexOfElement+1}}</td>
-              <td>{{sale.bill_number}}</td>
+              <td><a href="#">{{sale.bill_number}}</a></td>
               <td class="text-left">{{sale.ledger_name}}</td>
               <td class="text-right">{{sale.transaction_date}}</td>
               <td class="text-right pr-5">{{sale.amount}}</td>
