@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\SaleMaster;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 
 class TransactionMaster extends Model
 {
@@ -41,4 +43,16 @@ class TransactionMaster extends Model
      * @var mixed
      */
     private $id;
+
+    public function sale_master()
+    {
+        return $this->belongsTo('App\Models\SaleMaster','sale_master_id');
+    }
+
+    public function transaction_details()
+    {
+        return $this->hasMany('App\Models\TransactionDetail','transaction_master_id');
+    }
+
+
 }

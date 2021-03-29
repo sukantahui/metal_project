@@ -29,4 +29,7 @@ class SaleDetail extends Model
      * @var mixed
      */
     private $rate;
+    protected $hidden = [
+        "inforce","created_at","updated_at"
+    ];
 }

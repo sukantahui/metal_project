@@ -25,4 +25,7 @@ class TransactionDetail extends Model
      * @var mixed
      */
     private $amount;
+    protected $hidden = [
+        "inforce","created_at","updated_at"
+    ];
 }

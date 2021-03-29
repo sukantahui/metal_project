@@ -233,6 +233,13 @@ class SaleController extends Controller
             ->where('transaction_master_id',$id)
             ->get();
         $output['transaction_details']=$saleInfo;
+        $transactionMaster = TransactionMaster::find($id);
+        $output['sale_master']=$transactionMaster->sale_master;
+        $output['transaction_details']=$transactionMaster->transaction_details;
+
+        $saleMaster =SaleMaster::find($transactionMaster->sale_master->id);
+        $output['sale_details']=$saleMaster->sale_details;
+
 
         return response()->json(['success'=>1,'data'=>$output], 200);
     }
