@@ -194,9 +194,10 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       amount: new FormControl(null),
       item_type: new FormControl(1),
     });
+
     this.paidAmountForm = new FormGroup({
       id: new FormControl(),
-      voucher_id: new FormControl(3),
+      voucher_id: new FormControl(4),
       ledger_id: new FormControl(1),
       amount: new FormControl(0)
     });
@@ -372,16 +373,19 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       // this way delinking the objects
       // npm install lodash to use cloneDeep
       // const valObject = cloneDeep(val); or we can use Angular with ECMAScript6 by using the spread operator:
-      this.paymentTransactionDetails.push({...val});  // copying object to new object
-      this.paymentTransactionDetails[0].transaction_type_id = 1;
-      this.paymentTransactionDetails[0].amount = paidAmount;
-      // Getting payment Ledger current value i.e. Cash = 1 or Bank = 2
+
+      const receiptVoucherID = this.paidAmountForm.get('voucher_id').value;
+      this.paymentTransactionMaster.voucher_type_id = receiptVoucherID;
       const paymentCreditableLedger = this.paidAmountForm.get('ledger_id').value;
       // tslint:disable-next-line:max-line-length
-      this.paymentTransactionDetails.push({id: null, transaction_master_id: null, ledger_id: paymentCreditableLedger, transaction_type_id: 2, amount: paidAmount});
+      this.paymentTransactionDetails.push({id: null, transaction_master_id: null, ledger_id: paymentCreditableLedger, transaction_type_id: 1, amount: paidAmount});
+      this.paymentTransactionDetails.push({...val});  // copying object to new object
+      this.paymentTransactionDetails[1].transaction_type_id = 2;
+      this.paymentTransactionDetails[1].amount = paidAmount;
     });
 
     this.paidAmountForm.valueChanges.subscribe(val => {
+      console.log(val);
       if (val.amount > 0){
         this.paymentTransactionDetails[0].amount = val.amount;
         this.paymentTransactionDetails[1].amount = val.amount;

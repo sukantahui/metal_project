@@ -1,10 +1,11 @@
-import {Vendor} from "./vendor.model";
+import {Vendor} from './vendor.model';
 
 
 export class TransactionMaster{
   id?: number;
   transaction_number: string;
   user_id: string;
+  voucher_type_id?: number;
   purchase_master_id?: number;
   transaction_date: string;
 }
