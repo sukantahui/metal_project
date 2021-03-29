@@ -95,10 +95,12 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     td?: TransactionDetail[],
     sm?: SaleMaster,
     sd?: SaleDetail[],
+    extraItems?: ExtraItemDetails[]
+    paymentTransactionMaster?: TransactionMaster,
+    paymentTransactionDetails?: TransactionDetail[],
     currentSaleTotal?: number,
     roundedOff?: number,
     grossTotal?: number,
-    extraItems?: ExtraItemDetails[]
   };
   private differSaleDetail: IterableDiffer<SaleDetail>;
   private differExtraItemDetail: IterableDiffer<ExtraItemDetails>;
@@ -115,6 +117,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   isAmountPaid = false;
 
   paymentTransactionDetails: TransactionDetail[] = [];
+  paymentTransactionMaster: TransactionMaster;
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -308,6 +311,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       const x = val.transaction_date;
       val.transaction_date =  formatDate(x, 'yyyy-MM-dd', 'en');
       this.transactionMaster = val;
+      this.paymentTransactionMaster = val;
     });
 
     // this will fill up local customers variable from customerService
@@ -358,8 +362,41 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       this.transactionDetails.push(val);
       // tslint:disable-next-line:max-line-length
       this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 6, transaction_type_id: 2, amount: transactionAmount});
+
+      const paidAmount = this.paidAmountForm.value.amount;
+      this.paymentTransactionDetails = [];
+      // the reference val is generated when we select vendor ledger it is part of transactionDetailsForm
+      // we also pushing this value to paymentTransactionDetails and changing the transaction type here
+      // being reference it is also changing the value of transactionDetails array
+      // hence i am copying the val to new object first and then pushing the value
+      // this way delinking the objects
+      // npm install lodash to use cloneDeep
+      // const valObject = cloneDeep(val); or we can use Angular with ECMAScript6 by using the spread operator:
+      this.paymentTransactionDetails.push({...val});  // copying object to new object
+      this.paymentTransactionDetails[0].transaction_type_id = 1;
+      this.paymentTransactionDetails[0].amount = paidAmount;
+      // Getting payment Ledger current value i.e. Cash = 1 or Bank = 2
+      const paymentCreditableLedger = this.paidAmountForm.get('ledger_id').value;
+      // tslint:disable-next-line:max-line-length
+      this.paymentTransactionDetails.push({id: null, transaction_master_id: null, ledger_id: paymentCreditableLedger, transaction_type_id: 2, amount: paidAmount});
     });
-  }
+
+    this.paidAmountForm.valueChanges.subscribe(val => {
+      if (val.amount > 0){
+        this.paymentTransactionDetails[0].amount = val.amount;
+        this.paymentTransactionDetails[1].amount = val.amount;
+
+
+        this.saleContainer.paymentTransactionMaster =   this.paymentTransactionMaster;
+        this.saleContainer.paymentTransactionDetails =  this.paymentTransactionDetails;
+        this.storage.set('saleContainer', this.saleContainer).subscribe(() => {});
+      }
+      else {
+        this.paymentTransactionDetails[0].amount = 0;
+        this.paymentTransactionDetails[1].amount = 0;
+      }
+    });
+  } // end of ngOnIt
 
 
 
