@@ -239,6 +239,7 @@ class SaleController extends Controller
 
         $saleMaster =SaleMaster::find($transactionMaster->sale_master->id);
         $output['sale_details']=$saleMaster->sale_details;
+        $output['sale_extras']=$saleMaster->sale_extras;
 
 
         return response()->json(['success'=>1,'data'=>$output], 200);

@@ -36,4 +36,8 @@ class SaleMaster extends Model
     {
         return $this->hasMany( 'App\Models\SaleDetail', 'sale_master_id');
     }
+    public function sale_extras()
+    {
+        return $this->hasMany( 'App\Models\SaleExtra', 'sale_master_id');
+    }
 }

@@ -25,4 +25,7 @@ class SaleExtra extends Model
      * @var mixed
      */
     private $item_type;
+    protected $hidden = [
+        "inforce","created_at","updated_at"
+    ];
 }

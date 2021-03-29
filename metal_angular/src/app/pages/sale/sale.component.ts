@@ -54,6 +54,9 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   saleMasterForm: FormGroup;
   saleDetailsForm: FormGroup;
   extraItemsForm: FormGroup;
+  paidAmountForm: FormGroup;
+
+  paymentModes = [{id: 1, name: 'Cash'}, {id: 2, name: 'Cheque'}];
 
   customers: Customer[] = [];
   selectedLedger: Customer;
@@ -109,6 +112,9 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   private pattern1: string;
 
   numberRegEx = /^-?\d*[.,]?\d{0,2}$/;
+  isAmountPaid = false;
+
+  paymentTransactionDetails: TransactionDetail[] = [];
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -184,6 +190,12 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       extra_item_id: new FormControl(null),
       amount: new FormControl(null),
       item_type: new FormControl(1),
+    });
+    this.paidAmountForm = new FormGroup({
+      id: new FormControl(),
+      voucher_id: new FormControl(3),
+      ledger_id: new FormControl(1),
+      amount: new FormControl(0)
     });
   }
   updateItem(){
@@ -610,5 +622,12 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   /* Handle form errors in Angular 8 */
   public errorHandling = (form: FormGroup , control: string, error: string) => {
     return form.controls[control].hasError(error);
+  }
+
+  setPaidAmount(){
+    this.paidAmountForm.patchValue({amount: this.grossTotal});
+  }
+  onSelectedPaymentMode(value){
+    this.paymentTransactionDetails[1].ledger_id = value;
   }
 }

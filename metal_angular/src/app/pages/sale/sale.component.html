@@ -240,6 +240,28 @@
             </div>
           </section>
           <section>
+            <mat-checkbox class="example-margin" [(ngModel)]="isAmountPaid" (change)="setPaidAmount()">Amount Paid</mat-checkbox>
+            <div *ngIf="isAmountPaid" class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
+              <form [formGroup]="paidAmountForm">
+                <mat-form-field fxFlex="30">
+                  <mat-label>Mode</mat-label>
+                  <mat-select formControlName="ledger_id" (ngModelChange)="onSelectedPaymentMode($event)">
+                    <mat-option *ngFor="let mode of paymentModes" [value]="mode.id">
+                      {{mode.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                  <mat-form-field fxFlex="40">
+                    <mat-label>Amount</mat-label>
+                    <input type="number" class="text-right" matInput formControlName="amount" placeholder="Paid amount" required (click)="$event.target.select()">
+                  </mat-form-field>
+                </div>
+              </form>
+            </div>
+          </section>
+          <section>
             <div fxLayout="row" fxLayoutAlign="start center" >
               <div fxFlex="60">
                 <form [formGroup]="saleMasterForm" class="">
