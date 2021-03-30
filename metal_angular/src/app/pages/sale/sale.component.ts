@@ -101,6 +101,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     currentSaleTotal?: number,
     roundedOff?: number,
     grossTotal?: number,
+    isAmountReceived?: boolean;
   };
   private differSaleDetail: IterableDiffer<SaleDetail>;
   private differExtraItemDetail: IterableDiffer<ExtraItemDetails>;
@@ -114,7 +115,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   private pattern1: string;
 
   numberRegEx = /^-?\d*[.,]?\d{0,2}$/;
-  isAmountPaid = false;
+  isAmountReceived = false;
 
   paymentTransactionDetails: TransactionDetail[] = [];
   paymentTransactionMaster: TransactionMaster;
@@ -388,6 +389,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       console.log(val);
       if (val.amount > 0){
         this.paymentTransactionDetails[0].amount = val.amount;
+        this.paymentTransactionDetails[0].ledger_id = val.ledger_id;
         this.paymentTransactionDetails[1].amount = val.amount;
 
 
@@ -665,10 +667,9 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     return form.controls[control].hasError(error);
   }
 
-  setPaidAmount(){
+  setReceivedAmount(){
     this.paidAmountForm.patchValue({amount: this.grossTotal});
+    this.saleContainer.isAmountReceived = this.isAmountReceived;
   }
-  onSelectedPaymentMode(value){
-    this.paymentTransactionDetails[1].ledger_id = value;
-  }
+
 }
