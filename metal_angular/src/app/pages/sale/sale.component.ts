@@ -54,7 +54,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   saleMasterForm: FormGroup;
   saleDetailsForm: FormGroup;
   extraItemsForm: FormGroup;
-  paidAmountForm: FormGroup;
+  receivedAmountForm: FormGroup;
 
   paymentModes = [{id: 1, name: 'Cash'}, {id: 2, name: 'Cheque'}];
 
@@ -96,8 +96,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     sm?: SaleMaster,
     sd?: SaleDetail[],
     extraItems?: ExtraItemDetails[]
-    paymentTransactionMaster?: TransactionMaster,
-    paymentTransactionDetails?: TransactionDetail[],
+    receiveTransactionMaster?: TransactionMaster,
+    receiveTransactionDetails?: TransactionDetail[],
     currentSaleTotal?: number,
     roundedOff?: number,
     grossTotal?: number,
@@ -117,8 +117,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   numberRegEx = /^-?\d*[.,]?\d{0,2}$/;
   isAmountReceived = false;
 
-  paymentTransactionDetails: TransactionDetail[] = [];
-  paymentTransactionMaster: TransactionMaster;
+  receiveTransactionDetails: TransactionDetail[] = [];
+  receiveTransactionMaster: TransactionMaster;
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -196,7 +196,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       item_type: new FormControl(1),
     });
 
-    this.paidAmountForm = new FormGroup({
+    this.receivedAmountForm = new FormGroup({
       id: new FormControl(),
       voucher_id: new FormControl(4),
       ledger_id: new FormControl(1),
@@ -313,7 +313,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       const x = val.transaction_date;
       val.transaction_date =  formatDate(x, 'yyyy-MM-dd', 'en');
       this.transactionMaster = val;
-      this.paymentTransactionMaster = val;
+      this.receiveTransactionMaster = val;
     });
 
     // this will fill up local customers variable from customerService
@@ -365,8 +365,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       // tslint:disable-next-line:max-line-length
       this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 6, transaction_type_id: 2, amount: transactionAmount});
 
-      const paidAmount = this.paidAmountForm.value.amount;
-      this.paymentTransactionDetails = [];
+      const paidAmount = this.receivedAmountForm.value.amount;
+      this.receiveTransactionDetails = [];
       // the reference val is generated when we select vendor ledger it is part of transactionDetailsForm
       // we also pushing this value to paymentTransactionDetails and changing the transaction type here
       // being reference it is also changing the value of transactionDetails array
@@ -375,31 +375,31 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       // npm install lodash to use cloneDeep
       // const valObject = cloneDeep(val); or we can use Angular with ECMAScript6 by using the spread operator:
 
-      const receiptVoucherID = this.paidAmountForm.get('voucher_id').value;
-      this.paymentTransactionMaster.voucher_type_id = receiptVoucherID;
-      const paymentCreditableLedger = this.paidAmountForm.get('ledger_id').value;
+      const receiptVoucherID = this.receivedAmountForm.get('voucher_id').value;
+      this.receiveTransactionMaster.voucher_type_id = receiptVoucherID;
+      const paymentCreditableLedger = this.receivedAmountForm.get('ledger_id').value;
       // tslint:disable-next-line:max-line-length
-      this.paymentTransactionDetails.push({id: null, transaction_master_id: null, ledger_id: paymentCreditableLedger, transaction_type_id: 1, amount: paidAmount});
-      this.paymentTransactionDetails.push({...val});  // copying object to new object
-      this.paymentTransactionDetails[1].transaction_type_id = 2;
-      this.paymentTransactionDetails[1].amount = paidAmount;
+      this.receiveTransactionDetails.push({id: null, transaction_master_id: null, ledger_id: paymentCreditableLedger, transaction_type_id: 1, amount: paidAmount});
+      this.receiveTransactionDetails.push({...val});  // copying object to new object
+      this.receiveTransactionDetails[1].transaction_type_id = 2;
+      this.receiveTransactionDetails[1].amount = paidAmount;
     });
 
-    this.paidAmountForm.valueChanges.subscribe(val => {
+    this.receivedAmountForm.valueChanges.subscribe(val => {
       console.log(val);
       if (val.amount > 0){
-        this.paymentTransactionDetails[0].amount = val.amount;
-        this.paymentTransactionDetails[0].ledger_id = val.ledger_id;
-        this.paymentTransactionDetails[1].amount = val.amount;
+        this.receiveTransactionDetails[0].amount = val.amount;
+        this.receiveTransactionDetails[0].ledger_id = val.ledger_id;
+        this.receiveTransactionDetails[1].amount = val.amount;
 
 
-        this.saleContainer.paymentTransactionMaster =   this.paymentTransactionMaster;
-        this.saleContainer.paymentTransactionDetails =  this.paymentTransactionDetails;
+        this.saleContainer.receiveTransactionMaster =   this.receiveTransactionMaster;
+        this.saleContainer.receiveTransactionDetails =  this.receiveTransactionDetails;
         this.storage.set('saleContainer', this.saleContainer).subscribe(() => {});
       }
       else {
-        this.paymentTransactionDetails[0].amount = 0;
-        this.paymentTransactionDetails[1].amount = 0;
+        this.receiveTransactionDetails[0].amount = 0;
+        this.receiveTransactionDetails[1].amount = 0;
       }
     });
   } // end of ngOnIt
@@ -636,7 +636,10 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       transaction_details: this.saleContainer.td,
       sale_master: this.saleContainer.sm,
       sale_details: tempSaleDetails,
-      sale_extras: this.saleContainer.extraItems
+      sale_extras: this.saleContainer.extraItems,
+      receive_transaction_master: this.receiveTransactionMaster,
+      receive_transaction_details:  this.receiveTransactionDetails,
+      is_receiving: this.isAmountReceived,
     };
     this.saleMasterData = masterData;
     this.saleService.saveSale(masterData).subscribe(response => {
@@ -668,8 +671,11 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   setReceivedAmount(){
-    this.paidAmountForm.patchValue({amount: this.grossTotal});
+    this.receivedAmountForm.patchValue({amount: this.grossTotal});
     this.saleContainer.isAmountReceived = this.isAmountReceived;
+    this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
+
+    });
   }
 
 }

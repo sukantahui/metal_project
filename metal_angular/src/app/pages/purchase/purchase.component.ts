@@ -605,7 +605,7 @@ export class PurchaseComponent implements OnInit {
         // this.currentPurchaseTotal = tempPurchaseTotal;
         this.currentPurchaseTotal = parseFloat(tempPurchaseTotal.toFixed(2));
         this.logger.warning(this.currentPurchaseTotal);
-        this.logger.warning(this.roundedOff)
+        this.logger.warning(this.roundedOff);
         const round = Math.round(this.currentPurchaseTotal) - this.currentPurchaseTotal;
         this.logger.warning(round);
         this.roundedOff = parseFloat(round.toFixed(2));

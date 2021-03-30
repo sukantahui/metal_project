@@ -32,6 +32,9 @@ class SaleController extends Controller
         $inputExtraItems=($input['sale_extras']);
         $inputTransactionMaster=(object)($input['transaction_master']);
         $inputTransactionDetails=($input['transaction_details']);
+        $inputReceiveTransactionMaster=(object)($input['receive_transaction_master']);
+        $inputReceiveTransactionDetails=($input['receive_transaction_details']);
+        $isReceiving = $input['is_receiving'];
 
         //validating sale_masters
         $validator = Validator::make($input['sale_master'],[
@@ -191,6 +194,42 @@ class SaleController extends Controller
                 $transactionDetail->amount = $sale->sale_total; //calculated value
                 $transactionDetail->save();
             }
+
+            if($isReceiving){
+                $customVoucher = CustomVoucher::where('voucher_name', '=', "Transaction")->where('accounting_year', "=", $accounting_year)->first();
+                if ($customVoucher) {
+                    $customVoucher->last_counter = $customVoucher->last_counter + 1;
+                    $customVoucher->save();
+                } else {
+                    $customVoucher = new CustomVoucher();
+                    $customVoucher->voucher_name = "Transaction";
+                    $customVoucher->accounting_year = $accounting_year;
+                    $customVoucher->last_counter = 1;
+                    $customVoucher->delimiter = '-';
+                    $customVoucher->prefix = 'TRN';
+                    $customVoucher->save();
+                }
+                $voucher_number = $customVoucher->prefix . '-' . $customVoucher->last_counter . "-" . $accounting_year;
+                $transactionMaster2 = new TransactionMaster();
+                $transactionMaster2->transaction_number = $voucher_number;
+                $transactionMaster2->reference_transaction_master_id = $transactionMaster->id;
+                $transactionMaster2->user_id = $inputReceiveTransactionMaster->user_id;
+                $transactionMaster2->voucher_type_id = 4;
+                $transactionMaster2->sale_master_id = $saleMaster->id;
+                $transactionMaster2->transaction_date = $inputReceiveTransactionMaster->transaction_date;
+                $transactionMaster2->save();
+
+                //            save into transaction details for payment voucher
+                foreach ($inputReceiveTransactionDetails as $inputReceiveTransactionDetail) {
+                    $transactionDetail = new TransactionDetail();
+                    $transactionDetail->transaction_master_id = $transactionMaster2->id;
+                    $transactionDetail->ledger_id = $inputReceiveTransactionDetail['ledger_id'];
+                    $transactionDetail->transaction_type_id = $inputReceiveTransactionDetail['transaction_type_id'];
+                    $transactionDetail->amount = $inputReceiveTransactionDetail['amount'];
+                    $transactionDetail->save();
+                }
+            }
+
 
             $saleInfo = TransactionMaster::select("transaction_masters.id","transaction_masters.transaction_number","sale_masters.bill_number","ledgers.ledger_name",
                 DB::raw('DATE_FORMAT(transaction_masters.transaction_date,"%d/%m/%Y") as transaction_date'),"transaction_details.amount")
