@@ -685,6 +685,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
           console.log('memory cleared');
         });
         this.transactionDetailsForm.patchValue({ledger_id: null});
+        this.selectedLedger = null;
       }else{
         console.log(response.error);
         this.validatorError = response.error;
