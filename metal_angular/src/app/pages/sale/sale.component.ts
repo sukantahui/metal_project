@@ -19,7 +19,7 @@ import {HttpClient} from '@angular/common/http';
 import {Product} from '../../models/product.model';
 import {ProductService} from '../../services/product.service';
 import {StorageMap} from '@ngx-pwa/local-storage';
-import {SaleDetail, SaleItem, SaleMaster} from '../../models/sale.model';
+import {SaleContainer, SaleDetail, SaleItem, SaleMaster} from '../../models/sale.model';
 import {NgxMousetrapService} from 'ngx-mousetrap';
 import {Subscription} from 'rxjs';
 import {trigger, state, style, animate, transition, keyframes} from '@angular/animations';
@@ -31,6 +31,7 @@ import {PurchaseDetail, PurchaseMaster} from '../../models/purchase.model';
 import {TransactionDetail, TransactionMaster} from '../../models/transaction.model';
 import {ExtraItem, ExtraItemDetails} from '../purchase/purchase.component';
 import {SaleService} from '../../services/sale.service';
+import {Ledger} from '../../models/ledger.model';
 
 
 
@@ -90,18 +91,19 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   currentSaleTotal = 0;
   roundedOff = 0;
   grossTotal = 0;
-  saleContainer: {
-    tm?: TransactionMaster,
-    td?: TransactionDetail[],
-    sm?: SaleMaster,
-    sd?: SaleDetail[],
-    extraItems?: ExtraItemDetails[]
-    receiveTransactionMaster?: TransactionMaster,
-    receiveTransactionDetails?: TransactionDetail[],
-    currentSaleTotal?: number,
-    roundedOff?: number,
-    grossTotal?: number,
-    isAmountReceived?: boolean;
+  saleContainer: SaleContainer = {
+    tm: null,
+    td: null,
+    sm: null,
+    sd: null,
+    extraItems: null,
+    receiveTransactionMaster: null,
+    receiveTransactionDetails: null,
+    currentSaleTotal: null,
+    roundedOff: null,
+    grossTotal: null,
+    isAmountReceived: null,
+    selectedLedger: null
   };
   private differSaleDetail: IterableDiffer<SaleDetail>;
   private differExtraItemDetail: IterableDiffer<ExtraItemDetails>;
@@ -109,7 +111,13 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   isExtraItemAdded = false;
   private extraItemTotal = 0;
   // tslint:disable-next-line:max-line-length
-  saleMasterData: { transaction_master: TransactionMaster; sale_master: SaleMaster; sale_details: { rate: number; product_id: number; id: number; sale_quantity: number }[]; sale_extras: ExtraItemDetails[]; transaction_details: TransactionDetail[] };
+  saleMasterData: {
+    transaction_master?: TransactionMaster,
+    sale_master?: SaleMaster,
+    sale_details?: { rate: number; product_id: number; id: number; sale_quantity: number }[],
+    sale_extras?: ExtraItemDetails[],
+    transaction_details?: TransactionDetail[]
+  };
   saleList: SaleItem[] = [];
   validatorError: any = null;
   private pattern1: string;
@@ -238,17 +246,17 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     this.editableSaleDetailItemIndex = -1;
     this.selectedProduct = null;
     // adding data to local storage
-    this.saleContainer = {
-      tm: this.transactionMaster,
-      td: this.transactionDetails,
-      sd: this.saleDetails
-    };
-    this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
 
-    });
+    this.saleContainer.tm = this.transactionMaster;
+    this.saleContainer.td = this.transactionDetails;
+    this.saleContainer.sd = this.saleDetails;
+    this.storage.set('saleContainer', this.saleContainer).subscribe(() => {});
   }
 
   ngOnInit(): void {
+
+
+
     this.http.get('http://127.0.0.1:8000/api/dev/extraItems').subscribe((response: {success: number, data: ExtraItem[]}) => {
       this.extraItems = response.data;
     });
@@ -266,7 +274,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
 
     // The following code is used to fetch data from local storage
     // tslint:disable-next-line:max-line-length
-    this.storage.get('saleContainer').subscribe((tempSaleContainer: { tm?: TransactionMaster, td?: TransactionDetail[], sm?: SaleMaster, sd?: SaleDetail[]}) => {
+    this.storage.get('saleContainer').subscribe((tempSaleContainer: SaleContainer) => {
       if (tempSaleContainer){
         this.saleContainer = tempSaleContainer;
         // updating transaction master from storage
@@ -314,10 +322,29 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
         }else{
           this.extraItemDetails = [];
         }
+        if (this.saleContainer.selectedLedger){
+          this.selectedLedger = this.saleContainer.selectedLedger;
+        }else{
+          this.selectedLedger = null;
+        }
+
 
       }else{
         // storage is empty for saleContainer
-        this.saleContainer = null;
+        this.saleContainer = {
+          tm: null,
+          td: null,
+          sm: null,
+          sd: null,
+          extraItems: null,
+          receiveTransactionMaster: null,
+          receiveTransactionDetails: null,
+          currentSaleTotal: null,
+          roundedOff: null,
+          grossTotal: null,
+          isAmountReceived: null,
+          selectedLedger: null
+        };
       }
 
     });
@@ -327,6 +354,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       val.transaction_date =  formatDate(x, 'yyyy-MM-dd', 'en');
       this.transactionMaster = val;
       this.receiveTransactionMaster = val;
+
     });
 
     // this will fill up local customers variable from customerService
@@ -396,6 +424,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       this.receiveTransactionDetails.push({...val});  // copying object to new object
       this.receiveTransactionDetails[1].transaction_type_id = 2;
       this.receiveTransactionDetails[1].amount = paidAmount;
+
+
     });
 
     this.receivedAmountForm.valueChanges.subscribe(val => {
@@ -422,6 +452,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
 
   onSelectedCustomer(value) {
     this.selectedLedger = value;
+    this.saleContainer.selectedLedger = this.selectedLedger;
+    this.storage.set('saleContainer', this.saleContainer).subscribe(() => {});
   }
   onProductCategorySelected(value){
     this.selectedProductCategoryId = value;
@@ -454,15 +486,11 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     this.selectedProduct = null;
 
       // adding data to local storage
-    this.saleContainer = {
-      tm: this.transactionMaster,
-      td: this.transactionDetails,
-      sm: this.saleMaster,
-      sd: this.saleDetails
-    };
-    this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
-
-    });
+    this.saleContainer.tm = this.transactionMaster;
+    this.saleContainer.td = this.transactionDetails;
+    this.saleContainer.sm = this.saleMaster;
+    this.saleContainer.sd = this.saleDetails;
+    this.storage.set('saleContainer', this.saleContainer).subscribe(() => {});
 
 
     Swal.fire({

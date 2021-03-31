@@ -1,5 +1,8 @@
 import {Product} from './product.model';
 import {Unit} from '../pages/product/product.component';
+import {TransactionDetail, TransactionMaster} from './transaction.model';
+import {ExtraItemDetails} from '../pages/purchase/purchase.component';
+import {Customer} from './customer.model';
 
 export class SaleMaster{
   id?: number;
@@ -42,4 +45,19 @@ export class SaleItem{
   ledger_name?: string;
   transaction_date?: string;
   amount?: number;
+}
+
+export class SaleContainer{
+  tm?: TransactionMaster;
+  td?: TransactionDetail[];
+  sm?: SaleMaster;
+  sd?: SaleDetail[];
+  extraItems?: ExtraItemDetails[];
+  receiveTransactionMaster?: TransactionMaster;
+  receiveTransactionDetails?: TransactionDetail[];
+  currentSaleTotal?: number;
+  roundedOff?: number;
+  grossTotal?: number;
+  isAmountReceived?: boolean;
+  selectedLedger?: Customer;
 }
