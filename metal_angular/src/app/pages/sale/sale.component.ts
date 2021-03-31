@@ -170,7 +170,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
         updateOn: 'change'}),
       sale_quantity: new FormControl(null, {
         validators: [Validators.required, Validators.pattern(this.numberRegEx)],
-        updateOn: 'blur'
+        updateOn: 'change'
       }),
       isEditable: new FormControl(false)
     });
