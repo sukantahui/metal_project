@@ -331,20 +331,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
 
       }else{
         // storage is empty for saleContainer
-        this.saleContainer = {
-          tm: null,
-          td: null,
-          sm: null,
-          sd: null,
-          extraItems: null,
-          receiveTransactionMaster: null,
-          receiveTransactionDetails: null,
-          currentSaleTotal: null,
-          roundedOff: null,
-          grossTotal: null,
-          isAmountReceived: null,
-          selectedLedger: null
-        };
+        this.setDefaultSaleContainer();
       }
 
     });
@@ -388,9 +375,9 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       /* first it will erase all previous data, then it will first push the purchase ledger, its id is 5 and it is  permanent */
       /* in step2 i am pushing the vendor ledger */
       /*
-      * In purchase Journal is:-
-      * Purchase account Dr.
-      * Vendor/Cash/Bank A/C Cr.
+      * In Sale Journal is:-
+      * Vendor/Cash/Bank A/C Dr.
+      * * Purchase account Cr.
       * Amount to be adjusted latter
       */
       this.transactionDetails = [];
@@ -402,6 +389,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       //   transactionAmount = this.saleContainer.td[0].amount;
       // }
       // tslint:disable-next-line:max-line-length
+      console.log(val);
       this.transactionDetails.push(val);
       // tslint:disable-next-line:max-line-length
       this.transactionDetails.push({id: null, transaction_master_id: null, ledger_id: 6, transaction_type_id: 2, amount: transactionAmount});
@@ -425,7 +413,9 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       this.receiveTransactionDetails[1].transaction_type_id = 2;
       this.receiveTransactionDetails[1].amount = paidAmount;
 
-
+      this.saleContainer.td = this.transactionDetails;
+      this.receiveTransactionDetails = this.receiveTransactionDetails;
+      this.storage.set('saleContainer', this.saleContainer).subscribe(() => {});
     });
 
     this.receivedAmountForm.valueChanges.subscribe(val => {
@@ -566,7 +556,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   ngDoCheck(): void {
     const changeSaleDetail = this.differSaleDetail.diff(this.saleDetails);
 
-    if (changeSaleDetail && this.saleContainer != null) {
+    if (changeSaleDetail) {
       console.log(changeSaleDetail);
       const tempSaleTotal = this.saleDetails.reduce( (total, record) => {
         // @ts-ignore
@@ -721,9 +711,10 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
         this.extraItemDetails = [];
 
         // this.receiveTransactionDetails = [];
-        this.saleContainer = null;
+
         this.storage.delete('saleContainer').subscribe(res => {
           console.log('memory cleared');
+          this.setDefaultSaleContainer();
         });
         this.transactionDetailsForm.patchValue({ledger_id: null});
         this.selectedLedger = null;
@@ -745,6 +736,24 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   public errorHandling = (form: FormGroup , control: string, error: string) => {
     return form.controls[control].hasError(error);
   }
+
+  public setDefaultSaleContainer = () => {
+    this.saleContainer = {
+      tm: null,
+      td: null,
+      sm: null,
+      sd: null,
+      extraItems: null,
+      receiveTransactionMaster: null,
+      receiveTransactionDetails: null,
+      currentSaleTotal: null,
+      roundedOff: null,
+      grossTotal: null,
+      isAmountReceived: null,
+      selectedLedger: null
+    };
+  }
+
 
   setReceivedAmount(event){
     if (event.checked) {

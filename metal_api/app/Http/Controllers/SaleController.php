@@ -259,6 +259,7 @@ class SaleController extends Controller
             ->join('transaction_details','transaction_masters.id','transaction_details.transaction_master_id')
             ->join('ledgers','ledgers.id','transaction_details.ledger_id')
             ->join('sale_masters','sale_masters.id','transaction_masters.sale_master_id')
+            ->where('transaction_masters.voucher_type_id',1)
             ->where('transaction_details.transaction_type_id',1)
             ->get();
         return response()->json(['success'=>1,'data'=>$saleInfo], 200);

@@ -55,9 +55,9 @@
           </div>
           <hr size="10">
           <!--          sale details are here-->
-          <form [formGroup]="saleDetailsForm" class="purchase-details">
+          <form [formGroup]="saleDetailsForm" class="sale-details" >
 
-            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <div *ngIf="saleContainer.selectedLedger" class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
               <mat-form-field fxFlex="30">
                 <mat-label>Product category</mat-label>
                 <mat-select formControlName="product_category_id" placeholder="Product category" (ngModelChange)="onProductCategorySelected($event)">
@@ -80,7 +80,7 @@
               </div>
             </div>
 
-            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+            <div *ngIf="selectedProduct" class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
               <!--Rate-->
               <mat-form-field fxFlex="20">
                 <mat-label>Rate</mat-label>
@@ -90,7 +90,7 @@
                 </mat-error>
               </mat-form-field>
               <!--Quantity-->
-              <mat-form-field fxFlex="20" *ngIf="selectedProduct">
+              <mat-form-field fxFlex="20" >
                 <mat-label>Qty <b>{{selectedProduct.sale_unit_name}}</b></mat-label>
                 <input type="number" class="text-right" matInput formControlName="sale_quantity"  placeholder="Quantity">
                 <mat-error *ngIf="errorHandling(this.saleDetailsForm,'sale_quantity', 'required')">
@@ -100,11 +100,11 @@
               <!--Amount-->
               <mat-form-field fxFlex="20">
                 <mat-label>Amount</mat-label>
-                <input matInput [value]="currentItemAmount" readonly>
+                <input type="number" class="text-right" matInput [value]="currentItemAmount" readonly tooltip="<p>Rate X Quantity</p>">
               </mat-form-field>
             </div>
             <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-              <button class="pull-right" tooltip="<p>Press Alt+a</p>" [disabled]="!saleDetailsForm.valid"  mat-stroked-button (click)="addItem()" *ngIf="editableSaleDetailItemIndex==-1" [ngxMousetrapKey]="'alt+a'">Add</button>
+              <button class="pull-right"  [disabled]="!saleDetailsForm.valid"  mat-stroked-button (click)="addItem()" *ngIf="editableSaleDetailItemIndex==-1" [ngxMousetrapKey]="'alt+a'">Add</button>
               <button class="pull-right" mat-stroked-button (click)="updateItem()" *ngIf="editableSaleDetailItemIndex>=0">update</button>
               <button class="pull-right" mat-stroked-button (click)="clearAll()">clear</button>
             </div>
