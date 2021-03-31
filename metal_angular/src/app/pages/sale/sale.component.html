@@ -201,19 +201,21 @@
               </td>
             </tr>
 
+
+            <tr>
+              <td colspan="4">Gross amount</td>
+              <td class="text-right">{{grossTotal | currency}}</td>
+              <td colspan="2"></td>
+            </tr>
+
             <tr>
               <td colspan="4">Less: Amount Received</td>
-              <td class="text-right">{{grossTotal | currency}}</td>
+              <td class="text-right">{{this.receiveTransactionDetails[0].amount | currency}}</td>
               <td colspan="2"></td>
             </tr>
             <tr>
               <td colspan="4">Amount Due</td>
-              <td class="text-right">{{grossTotal | currency}}</td>
-              <td colspan="2"></td>
-            </tr>
-            <tr>
-              <td colspan="4">Gross amount</td>
-              <td class="text-right">{{grossTotal | currency}}</td>
+              <td class="text-right">{{(grossTotal - this.receiveTransactionDetails[0].amount ) | currency}}</td>
               <td colspan="2"></td>
             </tr>
             </tfoot>
@@ -250,7 +252,7 @@
             </div>
           </section>
           <section>
-            <mat-checkbox class="example-margin" [(ngModel)]="isAmountReceived" (change)="setReceivedAmount()">Amount Received</mat-checkbox>
+            <mat-checkbox class="example-margin" [(ngModel)]="isAmountReceived" (change)="setReceivedAmount($event)">Amount Received</mat-checkbox>
             <div *ngIf="isAmountReceived" class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
               <form [formGroup]="receivedAmountForm">
                 <mat-form-field fxFlex="30">

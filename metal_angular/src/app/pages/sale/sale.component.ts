@@ -670,9 +670,14 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     return form.controls[control].hasError(error);
   }
 
-  setReceivedAmount(){
-    this.receivedAmountForm.patchValue({amount: this.grossTotal});
-    this.saleContainer.isAmountReceived = this.isAmountReceived;
+  setReceivedAmount(event){
+    if (event.checked) {
+      this.receivedAmountForm.patchValue({amount: this.grossTotal});
+      this.saleContainer.isAmountReceived = true;
+    }else{
+      this.receivedAmountForm.patchValue({amount: 0});
+      this.saleContainer.isAmountReceived = false;
+    }
     this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
 
     });
