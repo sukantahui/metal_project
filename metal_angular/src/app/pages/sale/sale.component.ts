@@ -647,7 +647,20 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   clearAll() {
     this.storage.delete('saleContainer').subscribe(() => {
       console.log('SaleContainer storage cleared');
-      this.saleContainer = null;
+      this.saleContainer = {
+        tm: null,
+        td: null,
+        sm: null,
+        sd: null,
+        extraItems: null,
+        receiveTransactionMaster: null,
+        receiveTransactionDetails: null,
+        currentSaleTotal: null,
+        roundedOff: null,
+        grossTotal: null,
+        isAmountReceived: null,
+        selectedLedger: null
+      };
     });
   }
 
