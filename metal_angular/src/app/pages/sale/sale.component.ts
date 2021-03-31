@@ -118,7 +118,16 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   isAmountReceived = false;
 
   receiveTransactionDetails: TransactionDetail[] = [];
-  receiveTransactionMaster: TransactionMaster;
+  receiveTransactionMaster: TransactionMaster = {
+                                                  id: null,
+                                                  transaction_number: null,
+                                                  user_id: null,
+                                                  voucher_type_id: 3,
+                                                  sale_master_id: null,
+                                                  transaction_date: null,
+                                                  comment: 'Sale'
+                                                };
+  userData: {id: number, personName: string, _authKey: string, personTypeId: number};
 
   constructor(private customerService: CustomerService
               // tslint:disable-next-line:align
@@ -174,11 +183,11 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       }),
       isEditable: new FormControl(false)
     });
-    const userData: {id: number, personName: string, _authKey: string, personTypeId: number} = JSON.parse(localStorage.getItem('user'));
+    this.userData = JSON.parse(localStorage.getItem('user'));
     this.transactionMasterForm = new FormGroup({
       id: new FormControl(null),
       transaction_number: new FormControl(null),
-      user_id: new FormControl(userData.id),
+      user_id: new FormControl(this.userData.id),
       transaction_date: new FormControl(currentSQLDate)
     });
 
@@ -529,7 +538,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   ngDoCheck(): void {
     const changeSaleDetail = this.differSaleDetail.diff(this.saleDetails);
 
-    if (changeSaleDetail) {
+    if (changeSaleDetail && this.saleContainer != null) {
+      console.log(changeSaleDetail);
       const tempSaleTotal = this.saleDetails.reduce( (total, record) => {
         // @ts-ignore
         return total + (record.rate * record.sale_quantity);
@@ -655,6 +665,25 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
           showConfirmButton: false,
           timer: 1000
         });
+        this.receiveTransactionMaster = {
+          id: null,
+          transaction_number: null,
+          user_id: null,
+          voucher_type_id: 3,
+          sale_master_id: null,
+          transaction_date: null,
+          comment: 'Sale'
+        };
+
+        this.saleMaster = null;
+        this.saleDetails = [];
+
+        this.receiveTransactionMaster = null;
+        // this.receiveTransactionDetails = [];
+        this.saleContainer = null;
+        this.storage.delete('saleContainer').subscribe(res => {
+          console.log('memory cleared');
+        });
       }else{
         console.log(response.error);
         this.validatorError = response.error;
@@ -678,6 +707,15 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     if (event.checked) {
       this.receivedAmountForm.patchValue({amount: this.grossTotal});
       this.saleContainer.isAmountReceived = true;
+      this.receiveTransactionMaster = {
+        id: null,
+        transaction_number: null,
+        user_id: this.userData.id,
+        voucher_type_id: 3,
+        sale_master_id: null,
+        transaction_date: null,
+        comment: 'Sale'
+      };
       this.transactionMaster.comment = 'Amount received at the time of Sale';
     }else{
       this.receivedAmountForm.patchValue({amount: 0});

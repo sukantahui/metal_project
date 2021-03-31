@@ -4,9 +4,10 @@ import {Vendor} from './vendor.model';
 export class TransactionMaster{
   id?: number;
   transaction_number: string;
-  user_id: string;
+  user_id: number;
   voucher_type_id?: number;
   purchase_master_id?: number;
+  sale_master_id?: number;
   transaction_date: string;
   comment?: string;
 }

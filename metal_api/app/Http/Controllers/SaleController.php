@@ -220,10 +220,10 @@ class SaleController extends Controller
                 $transactionMaster2->voucher_type_id = 4;
                 $transactionMaster2->sale_master_id = $saleMaster->id;
                 $transactionMaster2->transaction_date = $inputReceiveTransactionMaster->transaction_date;
-                $transactionMaster2->comment = "Receive";
+                $transactionMaster2->comment = $inputReceiveTransactionMaster->comment;
                 $transactionMaster2->save();
 
-                //            save into transaction details for payment voucher
+                //            save into transaction details for receive voucher
                 foreach ($inputReceiveTransactionDetails as $inputReceiveTransactionDetail) {
                     $transactionDetail = new TransactionDetail();
                     $transactionDetail->transaction_master_id = $transactionMaster2->id;
