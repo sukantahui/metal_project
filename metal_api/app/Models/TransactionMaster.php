@@ -43,6 +43,7 @@ class TransactionMaster extends Model
      * @var mixed
      */
     private $id;
+    private $comment;
 
     public function sale_master()
     {

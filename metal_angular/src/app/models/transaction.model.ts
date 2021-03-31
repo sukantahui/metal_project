@@ -8,6 +8,7 @@ export class TransactionMaster{
   voucher_type_id?: number;
   purchase_master_id?: number;
   transaction_date: string;
+  comment?: string;
 }
 export class TransactionDetail{
   id?: number;

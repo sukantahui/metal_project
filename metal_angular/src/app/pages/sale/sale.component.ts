@@ -200,7 +200,11 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       id: new FormControl(),
       voucher_id: new FormControl(4),
       ledger_id: new FormControl(1),
-      amount: new FormControl(0)
+      amount: new FormControl(0),
+      comment: new FormControl('Received instantly at sale',{
+        validators: [Validators.required, Validators.max(255)],
+        updateOn: 'blur'
+      })
     });
   }
   updateItem(){
@@ -674,9 +678,11 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     if (event.checked) {
       this.receivedAmountForm.patchValue({amount: this.grossTotal});
       this.saleContainer.isAmountReceived = true;
+      this.transactionMaster.comment = 'Amount received at the time of Sale';
     }else{
       this.receivedAmountForm.patchValue({amount: 0});
       this.saleContainer.isAmountReceived = false;
+      this.transactionMaster.comment = '';
     }
     this.storage.set('saleContainer', this.saleContainer).subscribe(() => {
 

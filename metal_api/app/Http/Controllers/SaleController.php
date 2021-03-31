@@ -182,6 +182,7 @@ class SaleController extends Controller
             $transactionMaster->voucher_type_id = 1;
             $transactionMaster->sale_master_id = $saleMaster->id;
             $transactionMaster->transaction_date = $inputTransactionMaster->transaction_date;
+            $transactionMaster->comment = "Sale";
             $transactionMaster->save();
 
             //save data into transaction_details
@@ -209,7 +210,9 @@ class SaleController extends Controller
                     $customVoucher->prefix = 'TRN';
                     $customVoucher->save();
                 }
-                $voucher_number = $customVoucher->prefix . '-' . $customVoucher->last_counter . "-" . $accounting_year;
+                $counter = str_pad($customVoucher->last_counter,5,"0",STR_PAD_LEFT);
+                $voucher_number = $customVoucher->prefix.'-'.$counter."-".$accounting_year;
+
                 $transactionMaster2 = new TransactionMaster();
                 $transactionMaster2->transaction_number = $voucher_number;
                 $transactionMaster2->reference_transaction_master_id = $transactionMaster->id;
@@ -217,6 +220,7 @@ class SaleController extends Controller
                 $transactionMaster2->voucher_type_id = 4;
                 $transactionMaster2->sale_master_id = $saleMaster->id;
                 $transactionMaster2->transaction_date = $inputReceiveTransactionMaster->transaction_date;
+                $transactionMaster2->comment = "Receive";
                 $transactionMaster2->save();
 
                 //            save into transaction details for payment voucher
