@@ -564,7 +564,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     const changeExtraItem = this.differExtraItemDetail.diff(this.extraItemDetails);
-    if (changeExtraItem) {
+    if (changeExtraItem && this.extraItemDetails.length > 0) {
       this.saleContainer.extraItems = this.extraItemDetails;
       const tempTotal = this.extraItemDetails.reduce( (total, record) => {
         // @ts-ignore
@@ -677,8 +677,8 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
 
         this.saleMaster = null;
         this.saleDetails = [];
-
-        this.receiveTransactionMaster = null;
+        this.extraItemDetails = [];
+        
         // this.receiveTransactionDetails = [];
         this.saleContainer = null;
         this.storage.delete('saleContainer').subscribe(res => {
@@ -713,7 +713,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
         user_id: this.userData.id,
         voucher_type_id: 3,
         sale_master_id: null,
-        transaction_date: null,
+        transaction_date: this.transactionMaster.transaction_date,
         comment: 'Sale'
       };
       this.transactionMaster.comment = 'Amount received at the time of Sale';
