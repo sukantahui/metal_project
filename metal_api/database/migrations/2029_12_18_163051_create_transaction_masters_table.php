@@ -44,6 +44,7 @@ class CreateTransactionMastersTable extends Migration
 //            $table ->foreign('sale_master_id')->references('id')->on('sale_masters');
 
             $table->date('transaction_date');
+            $table->string('comment',255)->nullable(true);
 
             $table->tinyInteger('inforce')->default('1');
             $table->timestamps();
