@@ -14,7 +14,7 @@ $color-black-68: #dea110;
     background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
     background: linear-gradient($direction, $color-stops);
 }
-// snackbar items should be declared here
+
 .red-snackbar{
   background-color: rgb(153, 50, 50);
   color:lightgoldenrodyellow;

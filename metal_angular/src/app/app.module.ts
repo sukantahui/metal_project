@@ -48,7 +48,6 @@ import { SaleComponent } from './pages/sale/sale.component';
 import {NgxMousetrapModule} from 'ngx-mousetrap';
 import {TooltipModule} from 'ng2-tooltip-directive';
 import { HighlightDirective } from './directives/highlight.directive';
-import { SnackBarComponent } from './pages/snack-bar/snack-bar.component';
 
 
 
@@ -74,8 +73,7 @@ import { SnackBarComponent } from './pages/snack-bar/snack-bar.component';
     VendorComponent,
     PurchaseComponent,
     SaleComponent,
-    HighlightDirective,
-    SnackBarComponent
+    HighlightDirective
   ],
   imports: [
     BrowserModule,

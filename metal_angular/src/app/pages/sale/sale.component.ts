@@ -32,7 +32,6 @@ import {TransactionDetail, TransactionMaster} from '../../models/transaction.mod
 import {ExtraItem, ExtraItemDetails} from '../purchase/purchase.component';
 import {SaleService} from '../../services/sale.service';
 import {Ledger} from '../../models/ledger.model';
-import {SnackBarComponent} from '../snack-bar/snack-bar.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {SncakBarComponent} from '../../common/sncak-bar/sncak-bar.component';
 
@@ -486,12 +485,13 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     this.storage.set('saleContainer', this.saleContainer).subscribe(() => {});
 
     this._snackBar.openFromComponent(SncakBarComponent, {
-      duration: 1000
+      duration: 2000
       , data: {message: 'Product adding successful'}
-      , verticalPosition: 'top'  // 'top' | 'bottom'
+      , verticalPosition: 'top' // 'top' | 'bottom'
       , horizontalPosition: 'end' // 'start' | 'center' | 'end' | 'left' | 'right'
-      , panelClass: ['red-snackbar']
+      ,  panelClass: ['red-snackbar']
     });
+
     // Swal.fire({
     //   position: 'top-end',
     //   icon: 'success',
