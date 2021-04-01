@@ -713,13 +713,17 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
         this.extraItemDetails = [];
 
         // this.receiveTransactionDetails = [];
+        this.transactionDetailsForm.patchValue({ledger_id: null});
+        this.selectedLedger = null;
 
-        this.storage.delete('saleContainer').subscribe(res => {
+        this.storage.clear().subscribe(res => {
           console.log('memory cleared');
           this.setDefaultSaleContainer();
         });
-        this.transactionDetailsForm.patchValue({ledger_id: null});
-        this.selectedLedger = null;
+
+        this.storage.get('saleContainer').subscribe(res => {
+          console.log('Storage class is', res);
+        });
       }else{
         console.log(response.error);
         this.validatorError = response.error;
