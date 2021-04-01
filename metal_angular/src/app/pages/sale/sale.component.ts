@@ -44,7 +44,6 @@ import {SncakBarComponent} from '../../common/sncak-bar/sncak-bar.component';
   animations: [SaleAnimation]
 })
 export class SaleComponent implements OnInit, OnDestroy, DoCheck {
-
   faUserEdit = faUserEdit;
   faTrashAlt = faTrashAlt;
   faPencilAlt = faPencilAlt;
@@ -457,12 +456,13 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   addItem() {
+    this.isShowAllSalesList = false;
     // copying object
     const tempSaleDetailsObj = {...this.saleDetailsForm.value};
     const index = this.products.findIndex(x => x.id === tempSaleDetailsObj.product_id);
     tempSaleDetailsObj.product = this.products[index];
 
-    tempSaleDetailsObj.unit = this.units.find(x => x.id === tempSaleDetailsObj.product.purchase_unit_id);
+    tempSaleDetailsObj.unit = this.units.find(x => x.id === tempSaleDetailsObj.product.sale_unit_id);
     this.saleDetails.unshift(tempSaleDetailsObj);
 
     this.transactionMaster = this.transactionMasterForm.value;
@@ -711,6 +711,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
         this.saleMaster = null;
         this.saleDetails = [];
         this.extraItemDetails = [];
+        this.receiveTransactionDetails = [];
 
         // this.receiveTransactionDetails = [];
         this.transactionDetailsForm.patchValue({ledger_id: null});
@@ -724,6 +725,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
         this.storage.get('saleContainer').subscribe(res => {
           console.log('Storage class is', res);
         });
+        this.isShowAllSalesList = true;
       }else{
         console.log(response.error);
         this.validatorError = response.error;

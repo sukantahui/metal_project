@@ -117,7 +117,7 @@
 
   <div fxFlex="60" id="right-div">
     <div style="min-height: 92vh; background-color: rgba(202, 199, 224, 0.81);">
-      <mat-slide-toggle [(ngModel)]="isShowAllSalesList" (change)="onToggle($event)">Slide me!</mat-slide-toggle>
+      <mat-slide-toggle [(ngModel)]="isShowAllSalesList" (change)="onToggle($event)">{{isShowAllSalesList ? 'Slide to get Current selected items':'Slide to get Sales'}}</mat-slide-toggle>
 
       <mat-card *ngIf="saleDetails.length>0 && !isShowAllSalesList"  class="example-card">
         <mat-card-header>
