@@ -14,6 +14,11 @@ $color-black-68: #dea110;
     background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
     background: linear-gradient($direction, $color-stops);
 }
+// snackbar items should be declared here
+.red-snackbar{
+  background-color: rgb(153, 50, 50);
+  color:lightgoldenrodyellow;
+}
 
 @function is-direction($value) {
     $is-keyword: index((to top, to top right, to right top, to right, to bottom right, to right bottom, to bottom, to bottom left, to left bottom, to left, to left top, to top left), $value);

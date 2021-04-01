@@ -32,6 +32,9 @@ import {TransactionDetail, TransactionMaster} from '../../models/transaction.mod
 import {ExtraItem, ExtraItemDetails} from '../purchase/purchase.component';
 import {SaleService} from '../../services/sale.service';
 import {Ledger} from '../../models/ledger.model';
+import {SnackBarComponent} from '../snack-bar/snack-bar.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {SncakBarComponent} from '../../common/sncak-bar/sncak-bar.component';
 
 
 
@@ -149,7 +152,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
               // tslint:disable-next-line:align
               , private iterableDiff: IterableDiffers
               // tslint:disable-next-line:align
-              , private saleService: SaleService) {
+              , private saleService: SaleService, private _snackBar: MatSnackBar) {
     this.differSaleDetail = this.iterableDiff.find(this.saleDetails).create();
     this.differExtraItemDetail = this.iterableDiff.find(this.extraItemDetails).create();
 
@@ -482,14 +485,20 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
     this.saleContainer.sd = this.saleDetails;
     this.storage.set('saleContainer', this.saleContainer).subscribe(() => {});
 
-
-    Swal.fire({
-      position: 'top-end',
-      icon: 'success',
-      title: 'Product adding successful',
-      showConfirmButton: false,
-      timer: 1000
+    this._snackBar.openFromComponent(SncakBarComponent, {
+      duration: 1000
+      , data: {message: 'Product adding successful'}
+      , verticalPosition: 'top'  // 'top' | 'bottom'
+      , horizontalPosition: 'end' // 'start' | 'center' | 'end' | 'left' | 'right'
+      , panelClass: ['red-snackbar']
     });
+    // Swal.fire({
+    //   position: 'top-end',
+    //   icon: 'success',
+    //   title: 'Product adding successful',
+    //   showConfirmButton: false,
+    //   timer: 1000
+    // });
 
   }
 
