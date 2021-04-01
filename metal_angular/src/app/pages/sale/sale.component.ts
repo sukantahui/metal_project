@@ -653,13 +653,14 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
         sd: null,
         extraItems: null,
         receiveTransactionMaster: null,
-        receiveTransactionDetails: null,
+        receiveTransactionDetails: [],
         currentSaleTotal: null,
         roundedOff: null,
         grossTotal: null,
         isAmountReceived: null,
         selectedLedger: null
       };
+      this.setReceivedMasterDefault();
     });
   }
 
@@ -705,15 +706,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
           showConfirmButton: false,
           timer: 1000
         });
-        this.receiveTransactionMaster = {
-          id: null,
-          transaction_number: null,
-          user_id: null,
-          voucher_type_id: 3,
-          sale_master_id: null,
-          transaction_date: null,
-          comment: 'Sale'
-        };
+        this.setReceivedMasterDefault();
 
         this.saleMaster = null;
         this.saleDetails = [];
@@ -760,6 +753,17 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
       grossTotal: null,
       isAmountReceived: null,
       selectedLedger: null
+    };
+  }
+  public setReceivedMasterDefault = () => {
+    this.receiveTransactionMaster = {
+      id: null,
+      transaction_number: null,
+      user_id: this.userData.id,
+      voucher_type_id: 3,
+      sale_master_id: null,
+      transaction_date: null,
+      comment: 'Sale',
     };
   }
 
