@@ -12,8 +12,10 @@ import {ProductComponent} from './pages/product/product.component';
 import {CustomerComponent} from './pages/customer/customer.component';
 import {VendorComponent} from './pages/vendor/vendor.component';
 import {PurchaseComponent} from './pages/purchase/purchase.component';
-import {SaleComponent} from "./pages/sale/sale.component";
+
 import {SaleMasterComponent} from './pages/sale-master/sale-master.component';
+import {SaleComponent} from './pages/sale/sale.component';
+import {SaleMasterHomeComponent} from './pages/sale-master/sale-master-home/sale-master-home.component';
 
 
 // @ts-ignore
@@ -26,7 +28,12 @@ const routes: Routes = [
   {path: 'products', canActivate:  [AuthGuardService], component: ProductComponent},
   {path: 'purchase', canActivate:  [AuthGuardService], component: PurchaseComponent},
   {path: 'sale', canActivate:  [AuthGuardService], component: SaleComponent},
-  {path: 'saleMaster', canActivate:  [AuthGuardService], component: SaleMasterComponent}
+  {path: 'saleMaster', canActivate:  [AuthGuardService], component: SaleMasterComponent,
+    children: [
+      {path: '', component: SaleMasterHomeComponent},
+      {path: 'saleEntry', component: SaleComponent}
+    ]
+  }
 ];
 
 @NgModule({

@@ -1,5 +1,6 @@
-<div class="d-flex align-items-end flex-column bd-highlight mb-3" style="height: 92vh;">
-  <div class="p-2 bd-highlight" style="background-color: #dddddd; width: 100vw;">Flex item</div>
-  <div class="p-2 bd-highlight" style="background-color: #a0dd91; width: 100vw;">Flex item</div>
-  <div class="mt-auto p-2 bd-highlight" style="background-color: #da80dd; width: 100vw;">Flex item</div>
+<div class="d-flex align-items-end flex-column bd-highlight mb-3">
+  <div class="p-2 bd-highlight" style="background-color: #dddddd; width: 100vw;">
+    <button mat-raised-button class="btn btn-warning ml-2 mt-1 mb-1"  matBadgePosition="above before" [routerLink]="['./saleEntry']">Sale Entry</button>
+  </div>
 </div>
+<router-outlet></router-outlet>
