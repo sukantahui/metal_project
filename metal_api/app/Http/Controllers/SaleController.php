@@ -288,4 +288,8 @@ class SaleController extends Controller
 
         return response()->json(['success'=>1,'data'=>$output], 200);
     }
+
+    function getSaleDetailForPrint(){
+        
+    }
 }

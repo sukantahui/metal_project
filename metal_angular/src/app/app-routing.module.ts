@@ -14,8 +14,10 @@ import {VendorComponent} from './pages/vendor/vendor.component';
 import {PurchaseComponent} from './pages/purchase/purchase.component';
 
 import {SaleMasterComponent} from './pages/sale-master/sale-master.component';
-import {SaleComponent} from './pages/sale/sale.component';
+import {SaleComponent} from './pages/sale-master/sale/sale.component';
 import {SaleMasterHomeComponent} from './pages/sale-master/sale-master-home/sale-master-home.component';
+import {PrintBillComponent} from './pages/sale-master/print-bill/print-bill.component';
+import {SaleListComponent} from './pages/sale-master/sale-list/sale-list.component';
 
 
 // @ts-ignore
@@ -31,7 +33,13 @@ const routes: Routes = [
   {path: 'saleMaster', canActivate:  [AuthGuardService], component: SaleMasterComponent,
     children: [
       {path: '', component: SaleMasterHomeComponent},
-      {path: 'saleEntry', component: SaleComponent}
+      {path: 'saleEntry', component: SaleComponent},
+      {path: 'printBill/:id', component: PrintBillComponent},
+      {path: 'saleList', component: SaleListComponent,
+        children: [
+          {path: 'printBill/:id', component: PrintBillComponent}
+        ]
+      }
     ]
   }
 ];

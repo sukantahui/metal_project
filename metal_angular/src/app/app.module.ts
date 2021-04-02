@@ -44,11 +44,13 @@ import { VendorComponent } from './pages/vendor/vendor.component';
 import { PurchaseComponent } from './pages/purchase/purchase.component';
 import {PopoverModule} from 'ngx-smart-popover';
 import {LogLevel, NgxFancyLoggerModule} from 'ngx-fancy-logger';
-import { SaleComponent } from './pages/sale/sale.component';
+import { SaleComponent } from './pages/sale-master/sale/sale.component';
 import {NgxMousetrapModule} from 'ngx-mousetrap';
 import {TooltipModule} from 'ng2-tooltip-directive';
 import { HighlightDirective } from './directives/highlight.directive';
 import { SaleMasterComponent } from './pages/sale-master/sale-master.component';
+import { PrintBillComponent } from './pages/sale-master/print-bill/print-bill.component';
+import { SaleListComponent } from './pages/sale-master/sale-list/sale-list.component';
 
 
 
@@ -75,7 +77,9 @@ import { SaleMasterComponent } from './pages/sale-master/sale-master.component';
     PurchaseComponent,
     SaleComponent,
     HighlightDirective,
-    SaleMasterComponent
+    SaleMasterComponent,
+    PrintBillComponent,
+    SaleListComponent
   ],
   imports: [
     BrowserModule,
