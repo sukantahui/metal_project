@@ -327,7 +327,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let sale of saleList| paginate: { itemsPerPage: pageSize, currentPage: p };let indexOfElement=index">
-              <td>{{indexOfElement+1}}</td>
+              <td>{{(p-1)*10+indexOfElement+1}}</td>
               <td><a href="#">{{sale.bill_number}}</a></td>
               <td class="text-left">{{sale.ledger_name}}</td>
               <td class="text-right">{{sale.transaction_date}}</td>

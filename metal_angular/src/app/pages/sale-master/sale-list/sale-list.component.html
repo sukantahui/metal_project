@@ -1,0 +1,68 @@
+<div fxLayout.xs="column" fxLayout="row" fxFlexFill>
+  <div fxFlex="40" id="left-div">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table class="table table-bordered" id="purchase-list">
+          <thead>
+          <tr>
+            <th class="w-10">SL</th>
+            <th class="w-30">Bill number</th>
+            <th class="w-10">Vendor</th>
+            <th class="w-10">Date</th>
+            <th class="w-10">Amount</th>
+            <th class="w-30 text-center" colspan="2">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let sale of saleList| paginate: { itemsPerPage: pageSize, currentPage: p };let indexOfElement=index">
+            <td>{{(p-1)*10+indexOfElement+1}}</td>
+            <td><a href="#">{{sale.bill_number}}</a></td>
+            <td class="text-left">{{sale.ledger_name}}</td>
+            <td class="text-right">{{sale.transaction_date}}</td>
+            <td class="text-right pr-5">{{sale.amount}}</td>
+            <td class="text-right">
+              <a [routerLink]="['./printBill',sale.id]" ><fa-icon class="print" [icon]="faPrint"></fa-icon></a>
+            </td>
+            <td class="text-right">
+              <span ><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
+            </td>
+            <td class="text-right">
+              <span ><fa-icon class="edit" [icon]="faTrashAlt"></fa-icon></span>
+            </td>
+          </tr>
+          </tbody>
+
+          <tfoot>
+          <tr>
+            <td colspan="4">Total</td>
+            <td class="text-right"></td>
+            <td colspan="2"></td>
+          </tr>
+          </tfoot>
+        </table>
+      </mat-card-content>
+      <mat-card-actions>
+        <div fxLayout.xs="column" fxLayout="column" fxFlexFill>
+          <!--    https://www.npmjs.com/package/ngx-pagination-->
+          <!--    npm i ngx-pagination-->
+          <pagination-controls (pageChange)="p = $event"
+                               responsive="true"
+                               autoHide="true"
+                               previousLabel="আগে"
+                               nextLabel="পরে"
+                               screenReaderPaginationLabel="Pagination"
+                               screenReaderPageLabel="page"
+                               directionLinks="true">
+          </pagination-controls>
+        </div>
+      </mat-card-actions>
+
+    </mat-card>
+  </div>
+  <div fxFlex="60" id="right-div">
+      <router-outlet></router-outlet>
+  </div>
+</div>

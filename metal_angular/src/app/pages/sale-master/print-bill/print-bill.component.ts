@@ -9,12 +9,13 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class PrintBillComponent implements OnInit {
   private sub: Subscription;
+  transactionId: number;
 
   constructor(public activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.sub = this.activatedRoute.params.subscribe(response => {
-      console.log(response);
+      this.transactionId = response.id;
     });
   }
 

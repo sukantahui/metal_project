@@ -50,6 +50,7 @@ import {TooltipModule} from 'ng2-tooltip-directive';
 import { HighlightDirective } from './directives/highlight.directive';
 import { SaleMasterComponent } from './pages/sale-master/sale-master.component';
 import { PrintBillComponent } from './pages/sale-master/print-bill/print-bill.component';
+import { SaleListComponent } from './pages/sale-master/sale-list/sale-list.component';
 
 
 
@@ -77,7 +78,8 @@ import { PrintBillComponent } from './pages/sale-master/print-bill/print-bill.co
     SaleComponent,
     HighlightDirective,
     SaleMasterComponent,
-    PrintBillComponent
+    PrintBillComponent,
+    SaleListComponent
   ],
   imports: [
     BrowserModule,
