@@ -333,6 +333,9 @@
               <td class="text-right">{{sale.transaction_date}}</td>
               <td class="text-right pr-5">{{sale.amount}}</td>
               <td class="text-right">
+                <a [routerLink]="['./../printBill',sale.id]" ><fa-icon class="print" [icon]="faPrint"></fa-icon></a>
+              </td>
+              <td class="text-right">
                 <span ><fa-icon class="edit" [icon]="faUserEdit"></fa-icon></span>
               </td>
               <td class="text-right">

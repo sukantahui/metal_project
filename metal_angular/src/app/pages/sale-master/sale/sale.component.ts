@@ -12,28 +12,27 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup,  Validators} from '@angular/forms';
 import {formatDate} from '@angular/common';
-import {Customer} from '../../models/customer.model';
-import {CustomerService} from '../../services/customer.service';
-import {ProductCategory, Unit} from '../product/product.component';
+import {Customer} from '../../../models/customer.model';
+import {CustomerService} from '../../../services/customer.service';
+import {ProductCategory, Unit} from '../../product/product.component';
 import {HttpClient} from '@angular/common/http';
-import {Product} from '../../models/product.model';
-import {ProductService} from '../../services/product.service';
+import {Product} from '../../../models/product.model';
+import {ProductService} from '../../../services/product.service';
 import {StorageMap} from '@ngx-pwa/local-storage';
-import {SaleContainer, SaleDetail, SaleItem, SaleMaster} from '../../models/sale.model';
+import {SaleContainer, SaleDetail, SaleItem, SaleMaster} from '../../../models/sale.model';
 import {NgxMousetrapService} from 'ngx-mousetrap';
 import {Subscription} from 'rxjs';
 import {trigger, state, style, animate, transition, keyframes} from '@angular/animations';
 import {SaleAnimation} from './animation.sale';
-import { faUserEdit, faTrashAlt, faPencilAlt} from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit, faTrashAlt, faPencilAlt, faPrint} from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
-import {PurchaseDetail, PurchaseMaster} from '../../models/purchase.model';
-import {TransactionDetail, TransactionMaster} from '../../models/transaction.model';
-import {ExtraItem, ExtraItemDetails} from '../purchase/purchase.component';
-import {SaleService} from '../../services/sale.service';
-import {Ledger} from '../../models/ledger.model';
+import {TransactionDetail, TransactionMaster} from '../../../models/transaction.model';
+import {ExtraItem, ExtraItemDetails} from '../../purchase/purchase.component';
+import {SaleService} from '../../../services/sale.service';
+
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {SncakBarComponent} from '../../common/sncak-bar/sncak-bar.component';
+import {SncakBarComponent} from '../../../common/sncak-bar/sncak-bar.component';
 
 
 
@@ -47,6 +46,7 @@ export class SaleComponent implements OnInit, OnDestroy, DoCheck {
   faUserEdit = faUserEdit;
   faTrashAlt = faTrashAlt;
   faPencilAlt = faPencilAlt;
+  faPrint = faPrint;
   faCheck = faCheck;
 
   isDeveloperAreaShowable = true;
