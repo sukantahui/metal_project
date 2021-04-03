@@ -319,9 +319,11 @@ class SaleController extends Controller
                             ,'sale_details.product_id'
                             ,'sale_details.quantity'
                             ,'sale_details.price'
-                            ,'products.product_name')
+                            ,'products.product_name'
+                            ,'units.unit_name')
                     ->where('sale_master_id',$output['sale_master']->id)
                     ->join('products','products.id','sale_details.sale_master_id')
+                    ->join('units','products.sale_unit_id','units.id')
                     ->get();
         $output['sale_details']=$saleInfo;
 

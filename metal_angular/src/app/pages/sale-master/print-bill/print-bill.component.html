@@ -23,9 +23,13 @@
               <td>{{billData.transaction_master.transaction_date}}</td>
             </tr>
           </thead>
-          <tbody>
-            <tr *ngFor="let saleDetail of billData.sale_details">
-
+          <tbody *ngFor="let saleDetail of billData.sale_details">
+            <tr>
+              <td colspan="2">{{saleDetail.product_name}}</td>
+            </tr>
+            <tr>
+              <td align="right">{{saleDetail.quantity}} {{saleDetail.unit_name}} x {{saleDetail.price | currency}}=</td>
+              <td>{{(saleDetail.quantity * saleDetail.price) | currency }}</td>
             </tr>
           </tbody>
         </table>

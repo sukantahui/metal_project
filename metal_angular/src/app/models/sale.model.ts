@@ -22,6 +22,7 @@ export class SaleDetail{
   sale_quantity?: number;
   rate?: number;
   product?: Product;
+  product_name?: string;
   unit?: Unit;
   isEditable?: boolean;
 }
