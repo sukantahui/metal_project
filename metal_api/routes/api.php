@@ -96,6 +96,7 @@ Route::group(array('prefix' => 'dev'), function() {
     Route::post("sales",[SaleController::class,'saveSale']);
     Route::get("sales",[SaleController::class,'getAllSales']);
     Route::get("sales/{id}",[SaleController::class,'getSaleByTransactionID']);
+    Route::get("salesPrint/{id}",[SaleController::class,'getSaleDetailForPrint']);
 
 
     //saleMaster

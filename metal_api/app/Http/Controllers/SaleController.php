@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\CustomVoucher;
+use App\Models\ExtraItem;
+use App\Models\Ledger;
 use App\Models\SaleMaster;
 use App\Models\SaleDetail;
 use App\Models\SaleExtra;
@@ -220,7 +222,7 @@ class SaleController extends Controller
                 $transactionMaster2->voucher_type_id = 4;
                 $transactionMaster2->sale_master_id = $saleMaster->id;
                 $transactionMaster2->transaction_date = $inputReceiveTransactionMaster->transaction_date;
-                $transactionMaster2->comment = $inputReceiveTransactionMaster->comment;
+                $transactionMaster2->comment = 'Received';
                 $transactionMaster2->save();
 
                 //            save into transaction details for receive voucher
@@ -289,7 +291,35 @@ class SaleController extends Controller
         return response()->json(['success'=>1,'data'=>$output], 200);
     }
 
-    function getSaleDetailForPrint(){
-        
+    function getSaleDetailForPrint($id){
+        $output = array();
+        $saleInfo = TransactionMaster::select("transaction_masters.id","transaction_masters.transaction_number"
+            ,"transaction_masters.transaction_date" ,"transaction_masters.sale_master_id")
+            ->where('transaction_masters.id',$id)
+            ->first();
+        $output['transaction_master']=$saleInfo;
+
+        $saleInfo = TransactionDetail::select()
+            ->where('transaction_details.transaction_master_id',$id)
+            ->where('transaction_details.transaction_type_id',1)
+            ->first();
+        $customer = Ledger::find($saleInfo->ledger_id);
+        $output['customer']=$customer;
+
+        $saleInfo = SaleMaster::select()
+            ->where('id',$output['transaction_master']->sale_master_id)
+            ->first();
+        $output['sale_master']=$saleInfo;
+
+        $saleInfo = SaleDetail::select()
+                    ->where('sale_master_id',$output['sale_master']->id)
+                    ->get();
+        $output['sale_details']=$saleInfo;
+
+        $saleInfo = SaleExtra::select()
+                    ->where('sale_master_id',$output['sale_master']->id)
+                    ->get();
+        $output['sale_extra_items']=$saleInfo;
+        return response()->json(['success'=>1,'data'=>$output], 200);
     }
 }
