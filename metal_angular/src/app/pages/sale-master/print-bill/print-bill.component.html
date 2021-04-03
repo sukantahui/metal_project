@@ -1,8 +1,50 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title></mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    This is Print Area for Transaction id is {{transactionId}}
-  </mat-card-content>
-</mat-card>
+<div fxLayout.xs="column" fxLayout="row" fxFlexFill>
+  <div fxFlex="40" id="left-div">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table class="table table-bordered" id="bill-table">
+          <thead>
+            <tr>
+              <td colspan="2" align="center">BILL</td>
+            </tr>
+            <tr>
+              <td>Customer</td>
+              <td>{{billData.customer.billing_name}}</td>
+            </tr>
+            <tr>
+              <td>Bill No.</td>
+              <td>{{billData.sale_master.bill_number}}</td>
+            </tr>
+            <tr>
+              <td>Bill Date</td>
+              <td>{{billData.transaction_master.transaction_date}}</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let saleDetail of billData.sale_details">
+
+            </tr>
+          </tbody>
+        </table>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="60" id="right-div">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        This is Print Area for Transaction id is {{transactionId}}
+        <pre>
+          {{billData | json}}
+        </pre>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+

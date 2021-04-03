@@ -263,6 +263,8 @@ class SaleController extends Controller
             ->join('sale_masters','sale_masters.id','transaction_masters.sale_master_id')
             ->where('transaction_masters.voucher_type_id',1)
             ->where('transaction_details.transaction_type_id',1)
+            ->orderBy('transaction_masters.transaction_date', 'DESC')
+            ->orderBy('transaction_masters.id','DESC')
             ->get();
         return response()->json(['success'=>1,'data'=>$saleInfo], 200);
     }
@@ -294,7 +296,8 @@ class SaleController extends Controller
     function getSaleDetailForPrint($id){
         $output = array();
         $saleInfo = TransactionMaster::select("transaction_masters.id","transaction_masters.transaction_number"
-            ,"transaction_masters.transaction_date" ,"transaction_masters.sale_master_id")
+            ,DB::raw('DATE_FORMAT(transaction_masters.transaction_date,"%d/%m/%Y") as transaction_date')
+            ,"transaction_masters.sale_master_id")
             ->where('transaction_masters.id',$id)
             ->first();
         $output['transaction_master']=$saleInfo;
@@ -311,15 +314,21 @@ class SaleController extends Controller
             ->first();
         $output['sale_master']=$saleInfo;
 
-        $saleInfo = SaleDetail::select()
+        $saleInfo = SaleDetail::select( 'sale_details.id'
+                            ,'sale_details.sale_master_id'
+                            ,'sale_details.product_id'
+                            ,'sale_details.quantity'
+                            ,'sale_details.price'
+                            ,'products.product_name')
                     ->where('sale_master_id',$output['sale_master']->id)
+                    ->join('products','products.id','sale_details.sale_master_id')
                     ->get();
         $output['sale_details']=$saleInfo;
 
         $saleInfo = SaleExtra::select()
                     ->where('sale_master_id',$output['sale_master']->id)
                     ->get();
-        $output['sale_extra_items']=$saleInfo;
+        $output['sale_extras']=$saleInfo;
         return response()->json(['success'=>1,'data'=>$output], 200);
     }
 }

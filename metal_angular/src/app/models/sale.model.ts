@@ -1,7 +1,7 @@
 import {Product} from './product.model';
 import {Unit} from '../pages/product/product.component';
 import {TransactionDetail, TransactionMaster} from './transaction.model';
-import {ExtraItemDetails} from '../pages/purchase/purchase.component';
+import {ExtraItem, ExtraItemDetails} from '../pages/purchase/purchase.component';
 import {Customer} from './customer.model';
 
 export class SaleMaster{
@@ -61,3 +61,12 @@ export class SaleContainer{
   isAmountReceived?: boolean;
   selectedLedger?: Customer;
 }
+
+export class SaleBill{
+  transaction_master?: TransactionMaster;
+  customer?: Customer;
+  sale_master?: SaleMaster;
+  sale_details?: SaleDetail[];
+  sale_extras?: ExtraItem[];
+}
+

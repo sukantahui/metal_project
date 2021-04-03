@@ -42,4 +42,7 @@ export class SaleService {
         }
       }));
   }
+  getSaleForPrint(id: number){
+    return this.http.get(GlobalVariable.BASE_API_URL_DEV + '/salesPrint/' + id);
+  }
 }
