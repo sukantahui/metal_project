@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\StateResource;
 use App\Models\State;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -21,7 +22,7 @@ class StateController extends Controller
     }
     public function getStateByID($id){
         $state = State::findOrFail($id);
-        return response()->json(['success'=>1,'data'=>$state], 200,[],JSON_NUMERIC_CHECK);
+        return response()->json(['success'=>1,'data'=>new StateResource($state)], 200,[],JSON_NUMERIC_CHECK);
     }
 
     public function create(Request $request)
