@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ledger;
 use App\Models\State;
 use Illuminate\Http\Request;
 
@@ -18,70 +19,39 @@ class StateController extends Controller
         $states = State::get();
         return response()->json(['success'=>1,'data'=>$states], 200,[],JSON_NUMERIC_CHECK);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function getStateByID($id){
+        $state = State::findOrFail($id);
+        return response()->json(['success'=>1,'data'=>$state], 200,[],JSON_NUMERIC_CHECK);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function create(Request $request)
     {
-        //
+        $state = new State();
+        $state->state_name = $request->input('state_name');
+        $state->state_code = $request->input('state_code');
+        $state->save();
+
+        return response()->json(['success'=>1,'data'=>$state], 200,[],JSON_NUMERIC_CHECK);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\State  $state
-     * @return \Illuminate\Http\Response
-     */
-    public function show(State $state)
+    public function edit(Request $request)
     {
-        //
+        $state = new State();
+        $state = $state::find($request->input('id'));
+        $state->state_name = $request->input('state_name');
+        $state->state_code = $request->input('state_code');
+        $state->save();
+        return response()->json(['success'=>1,'data'=>$state], 200,[],JSON_NUMERIC_CHECK);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\State  $state
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(State $state)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\State  $state
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, State $state)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\State  $state
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(State $state)
-    {
-        //
+        $state = State::find($id);
+        if(!empty($state)){
+            $result = $state->delete();
+        }else{
+            $result = false;
+        }
+        return response()->json(['success'=>$result,'id'=>$id], 200);
     }
 }

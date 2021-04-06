@@ -83,6 +83,12 @@ Route::group(array('prefix' => 'dev'), function() {
 
     //others
     Route::get("states",[StateController::class,'index']);
+    Route::get("states/{id}",[StateController::class, 'getStateByID']);
+    Route::post("states",[StateController::class, 'create']);
+    Route::patch("states",[StateController::class, 'edit']);
+    Route::delete("states/{id}",[StateController::class, 'destroy']);
+
+
     Route::get("transactionTypes",[TransactionTypeController::class,'index']);
 
     Route::get("extraItems",[ExtraItemController::class,'index']);

@@ -11,4 +11,12 @@ class State extends Model
     protected $hidden = [
         "inforce","created_at","updated_at"
     ];
+    /**
+     * @var mixed
+     */
+    private $state_name;
+    /**
+     * @var mixed
+     */
+    private $state_code;
 }
