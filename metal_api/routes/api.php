@@ -15,6 +15,8 @@ use App\Http\Controllers\ExtraItemController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleMasterController;
 use App\Http\Controllers\SaleController;
+use App\Models\TransactionMaster;
+use App\Http\Controllers\TransactionController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -108,6 +110,9 @@ Route::group(array('prefix' => 'dev'), function() {
     //saleMaster
     Route::post("saleMasters",[SaleMasterController::class,'store']);
     Route::get("saleMasters",[SaleMasterController::class,'index']);
+
+
+    Route::get("transactions/{id}",[TransactionController::class, 'getTransactionByID']);
 
 });
 
