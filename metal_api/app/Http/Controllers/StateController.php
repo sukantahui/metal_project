@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ledger;
 use App\Models\State;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class StateController extends Controller
 {
@@ -26,6 +26,14 @@ class StateController extends Controller
 
     public function create(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'state_name' => 'required|unique:states,state_name',
+            'state_code' => 'required'
+        ]);
+        if($validator->fails()){
+            return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 200,[],JSON_NUMERIC_CHECK);
+        }
+
         $state = new State();
         $state->state_name = $request->input('state_name');
         $state->state_code = $request->input('state_code');
