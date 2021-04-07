@@ -40,7 +40,7 @@ class TransactionResource extends JsonResource
             "voucher_type_id"=> $this->voucher_type_id,
             "purchase_master_id"=> $this->purchase_master_id,
             "sale_master_id"=> $this->sale_master_id,
-            'sale_master' => $this->sale_master,
+            'sale_master' => $this->sale_master_id? $this->sale_master: 'not sale',
             "transaction_date"=> $this->transaction_date,
             "transaction_date_display"=> date('d/m/Y', strtotime($this->transaction_date)),
             'voucher_type' => $this->voucher_type->voucher_type_name,

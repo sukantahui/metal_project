@@ -220,7 +220,7 @@ class SaleController extends Controller
                 $transactionMaster2->reference_transaction_master_id = $transactionMaster->id;
                 $transactionMaster2->user_id = $inputReceiveTransactionMaster->user_id;
                 $transactionMaster2->voucher_type_id = 4;
-                $transactionMaster2->sale_master_id = $saleMaster->id;
+//                $transactionMaster2->sale_master_id = null;
                 $transactionMaster2->transaction_date = $inputReceiveTransactionMaster->transaction_date;
                 $transactionMaster2->comment = 'Received';
                 $transactionMaster2->save();
