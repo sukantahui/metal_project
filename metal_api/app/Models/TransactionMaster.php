@@ -45,6 +45,10 @@ class TransactionMaster extends Model
     private $id;
     private $comment;
 
+    public function voucher_type()
+    {
+        return $this->belongsTo('App\Models\VoucherType','voucher_type_id');
+    }
     public function sale_master()
     {
         return $this->belongsTo('App\Models\SaleMaster','sale_master_id');
