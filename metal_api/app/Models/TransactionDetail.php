@@ -28,4 +28,8 @@ class TransactionDetail extends Model
     protected $hidden = [
         "inforce","created_at","updated_at"
     ];
+    public function ledger()
+    {
+        return $this->belongsTo('App\Models\Ledger','ledger_id');
+    }
 }

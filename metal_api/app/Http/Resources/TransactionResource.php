@@ -27,7 +27,7 @@ class TransactionResource extends JsonResource
             "transaction_date"=> $this->transaction_date,
             "comment"=> $this->comment,
             "inforce"=> $this->inforce,
-            'transaction_details'=>TransactionMaster::find($this->id)->transaction_details
+            'transaction_details'=>TransactionDetailResource::collection(TransactionMaster::find($this->id)->transaction_details)
         ];
 
 

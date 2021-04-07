@@ -82,7 +82,7 @@ class SaleMasterController extends Controller
      */
     public function update(Request $request, SaleMaster $saleMaster)
     {
-        $saleMaster
+
     }
 
     /**
