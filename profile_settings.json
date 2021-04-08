@@ -117,6 +117,7 @@
                 "name": "Metal JSON",
                 "commandline": "powershell.exe -NoLogo -NoExit -command json-server --watch db.json",
                 "hidden": false,
+
                 "colorScheme": "Blue Matrix",
                 "fontFace": "Cascadia Code PL",
                 "fontSize": 10,
@@ -128,12 +129,28 @@
                 "startingDirectory": "E:\\metal_project\\json-server"
             },
             {
-                // Make changes here to the cmd.exe profile.
+                //  Make changes here to the cmd.exe profile.
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "name": "Command Prompt",
                 "commandline": "cmd.exe",
                 "startingDirectory" : "E:/metal_project",
                 "hidden": false
+            },
+            {
+                //  Make changes here to the cmd.exe profile.
+                "guid": "{38bf79b9-c925-4343-ad2f-2310b3dd3ba7}",
+                "name": "Metal tinker",
+                "commandline": "powershell.exe -NoLogo -NoExit -command php artisan tinker",
+                "hidden": false,
+
+                "colorScheme": "Blue Matrix",
+                "fontFace": "Cascadia Code PL",
+                "fontSize": 10,
+                "backgroundImage": "e:\\terminal2.jpg",
+                "backgroundImageOpacity": 0.2,
+                "acrylicOpacity": 0.8,
+                "useAcrylic": true,
+                "startingDirectory": "E:\\metal_project\\metal_api"
             },
             {
                 "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
