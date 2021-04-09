@@ -9,6 +9,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @property mixed purchase_unit
  * @property mixed sale_unit
+ * @property mixed sale_unit_id
+ * @property mixed gst_rate
+ * @property mixed hsn_code
+ * @property mixed purchase_unit_id
+ * @property mixed category
+ * @property mixed product_category_id
+ * @property mixed description
+ * @property mixed product_name
+ * @property mixed id
  */
 class productResource extends JsonResource
 {
