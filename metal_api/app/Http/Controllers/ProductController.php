@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use http\Exception;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\productResource;
 
 class ProductController extends Controller
 {
@@ -28,6 +29,12 @@ class ProductController extends Controller
                     ->join('product_categories','product_categories.id','products.product_category_id')
                     ->get();
         return response()->json(['success'=>1,'data'=>$products], 200,[],JSON_NUMERIC_CHECK);
+    }
+
+    public function getProductById($id){
+        $product = Product::find($id);
+        return response()->json(['success'=>1,'data'=>new ProductResource($product)], 200,[],JSON_NUMERIC_CHECK);
+
     }
 
     public function saveProduct(Request $request){

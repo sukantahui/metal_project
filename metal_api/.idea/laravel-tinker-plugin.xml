@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="laravelTinkerProject">
-    <option name="lastCode" value="&lt;?php&#10;//Tinker away!&#10;use App\Models\TransactionMaster;&#10;use App\Models\SaleMaster;&#10;use App\Models\SaleDetail;&#10;use App\Models\Product;&#10;$x = new \App\Http\Resources\productResource(Product::find(2));&#10;$x-&gt;jsonSerialize();&#10;&#10;&#10;    " />
+    <option name="lastCode" value="&lt;?php&#10;//Tinker away!&#10;use App\Models\TransactionMaster;&#10;use App\Models\SaleMaster;&#10;use App\Models\SaleDetail;&#10;use App\Models\Product;&#10;$x = new \App\Http\Resources\productResource(Product::find(2));&#10;$x-&gt;jsonSerialize();&#10;&#10;//$y = new \App\Http\Resources\UnitResource(Unit::find(2));&#10;//$y-&gt;jsonSerialize();&#10;&#10;&#10;    " />
   </component>
 </project>

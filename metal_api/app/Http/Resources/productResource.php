@@ -2,8 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\UnitResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+
+/**
+ * @property mixed purchase_unit
+ * @property mixed sale_unit
+ */
 class productResource extends JsonResource
 {
     /**
@@ -21,9 +27,9 @@ class productResource extends JsonResource
             'productCategoryId' =>$this->product_category_id,
             'productCategory' => $this->category,
             'purchaseUnitId' => $this->purchase_unit_id,
-            'purchaseUnit' => $this->purchase_unit,
+            'purchaseUnit' => new UnitResource($this->purchase_unit),
             'saleUnitId' => $this->sale_unit_id,
-            'saleUnit' => $this->sale_unit,
+            'saleUnit' => new UnitResource($this->sale_unit),
             'gst_rate' => $this->gst_rate,
             'hsn_code' => $this->hsn_code
 
