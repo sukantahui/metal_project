@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="laravelTinkerProject">
-    <option name="lastCode" value="&lt;?php&#10;//Tinker away!&#10;$x = new \App\Http\Resources\TransactionResource(\App\Models\TransactionMaster::find(2));&#10;$x-&gt;jsonSerialize();" />
+    <option name="lastCode" value="&lt;?php&#10;//Tinker away!&#10;$x =new \App\Http\Resources\TransactionResource(\App\Models\TransactionMaster::find(2));&#10;$x-&gt;jsonSerialize();" />
   </component>
 </project>
