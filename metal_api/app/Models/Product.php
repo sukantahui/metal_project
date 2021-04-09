@@ -33,4 +33,5 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\Unit','sale_unit_id');
     }
+
 }

@@ -10,6 +10,7 @@ class TransactionController extends Controller
 {
     public function getTransactionByID($id){
         $transaction_master = TransactionMaster::findOrFail($id);
-        return response()->json(['success'=>1,'data'=>new TransactionResource($transaction_master)], 200,[],JSON_NUMERIC_CHECK);
+        return response()->json(['success'=>1,'data'=>new
+        ($transaction_master)], 200,[],JSON_NUMERIC_CHECK);
     }
 }

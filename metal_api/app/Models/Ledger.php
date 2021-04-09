@@ -30,5 +30,29 @@ class Ledger extends Model
     protected $hidden = [
         "inforce","created_at","updated_at",'password', 'remember_token',
     ];
+
+
     protected $guarded = ['id'];
+
+    public function customer_category()
+    {
+        return $this->belongsTo('App\Models\CustomerCategory','customer_category_id');
+    }
+
+    public function ledger_group()
+    {
+        return $this->belongsTo('App\Models\LedgerGroup','ledger_group_id');
+    }
+
+    public function state()
+    {
+        return $this->belongsTo('App\Models\State','state_id');
+    }
+
+    public function transaction_type()
+    {
+        return $this->belongsTo('App\Models\TransactionType','transaction_type_id');
+    }
 }
+
+
