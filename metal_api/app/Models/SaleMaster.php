@@ -40,4 +40,5 @@ class SaleMaster extends Model
     {
         return $this->hasMany( 'App\Models\SaleExtra', 'sale_master_id');
     }
+
 }

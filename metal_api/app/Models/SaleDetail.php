@@ -32,4 +32,12 @@ class SaleDetail extends Model
     protected $hidden = [
         "inforce","created_at","updated_at"
     ];
+    public function transaction_type()
+    {
+        return $this->belongsTo('App\Models\TransactionType','transaction_type_id');
+    }
+    public function product()
+    {
+        return $this->belongsTo('App\Models\Product','product_id');
+    }
 }
