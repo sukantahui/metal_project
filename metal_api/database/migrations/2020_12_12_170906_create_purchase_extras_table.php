@@ -17,10 +17,10 @@ class CreatePurchaseExtrasTable extends Migration
             $table->id();
 
             $table->bigInteger('purchase_master_id')->unsigned();
-            $table ->foreign('purchase_master_id')->references('id')->on('purchase_masters');
+            $table ->foreign('purchase_master_id')->references('id')->on('purchase_masters')->onDelete('cascade');;
 
             $table->bigInteger('extra_item_id')->unsigned();
-            $table ->foreign('extra_item_id')->references('id')->on('extra_items');
+            $table ->foreign('extra_item_id')->references('id')->on('extra_items')->onDelete('cascade');;
 
             $table->double('amount')->default(0);
             $table->integer('item_type')->default(0);   //item_type describes income(1)/expense(-1) recorded

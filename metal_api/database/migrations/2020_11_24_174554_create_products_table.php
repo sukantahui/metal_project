@@ -19,13 +19,13 @@ class CreateProductsTable extends Migration
             $table->string('description',50)->nullable(true);
 
             $table->unsignedBigInteger('product_category_id');
-            $table ->foreign('product_category_id')->references('id')->on('product_categories');
+            $table ->foreign('product_category_id')->references('id')->on('product_categories')->onDelete('cascade');;
 
             $table->unsignedBigInteger('purchase_unit_id');
-            $table ->foreign('purchase_unit_id')->references('id')->on('units');
+            $table ->foreign('purchase_unit_id')->references('id')->on('units')->onDelete('cascade');;
 
             $table->unsignedBigInteger('sale_unit_id');
-            $table ->foreign('sale_unit_id')->references('id')->on('units');
+            $table ->foreign('sale_unit_id')->references('id')->on('units')->onDelete('cascade');;
 
             $table->integer('gst_rate')->default(12);
             $table->string('hsn_code',12)->nullable(true);
