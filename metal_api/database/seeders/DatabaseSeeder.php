@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
         UserType::create(['user_type_name' => 'Worker']);
         UserType::create(['user_type_name' => 'Developer']);
         UserType::create(['user_type_name' => 'Customer']);
+        $this->command->info('User Type creation Finished');
 
         User::create(['user_name'=>'Arindam Biswas','mobile1'=>'9836444999','mobile2'=>'100','email'=>'arindam','password'=>"81dc9bdb52d04dc20036dbd8313ed055",'user_type_id'=>1]);
 

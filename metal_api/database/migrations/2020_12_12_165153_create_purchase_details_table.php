@@ -17,10 +17,10 @@ class CreatePurchaseDetailsTable extends Migration
             $table->id();
 
             $table->bigInteger('purchase_master_id')->unsigned();
-            $table ->foreign('purchase_master_id')->references('id')->on('purchase_masters');
+            $table ->foreign('purchase_master_id')->references('id')->on('purchase_masters')->onDelete('cascade');;
 
             $table->bigInteger('product_id')->unsigned();
-            $table ->foreign('product_id')->references('id')->on('products');
+            $table ->foreign('product_id')->references('id')->on('products')->onDelete('cascade');;
 
             $table->double('purchase_quantity')->default(0)->nullable(false);
             $table->double('stock_quantity')->default(0)->nullable(false);
